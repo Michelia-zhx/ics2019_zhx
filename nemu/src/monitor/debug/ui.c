@@ -38,6 +38,19 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+static int cmd_si(char *args);
+
+static int cmd_info(char *args);
+
+static int cmd_p(char *args);
+
+static int cmd_x_N(char *args);
+
+static int cmd_w(char *args);
+
+static int cmd_d(char *args);
+
+
 static struct {
   char *name;
   char *description;
@@ -46,8 +59,12 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
-  /* TODO: Add more commands */
+  { "si [N]", "Step through the program to run N orders and then pause, default N=1", cmd_si},
+  { "info SUBCMD", "Display the state of the program", cmd_info},
+  { "p EXPR", "Calculate the value of expression EXPR", cmd_p},
+  { "x N EXPR", "Calculate the value of expression EXPR and set as the starting memory address", cmd_x_N},
+  { "w EXPR", "When the value of EXPR changes, pause the program", cmd_w},
+  { "d N", "Delete the watchpoint of index N", cmd_d}
 
 };
 
@@ -73,6 +90,30 @@ static int cmd_help(char *args) {
     }
     printf("Unknown command '%s'\n", arg);
   }
+  return 0;
+}
+
+static int cmd_si(char *args){
+  return 0;
+}
+
+static int cmd_info(char *args){
+  return 0;
+}
+
+static int cmd_p(char *args){
+  return 0;
+}
+
+static int cmd_x_N(char *args){
+  return 0;
+}
+
+static int cmd_w(char *args){
+  return 0;
+}
+
+static int cmd_d(char *args){
   return 0;
 }
 
