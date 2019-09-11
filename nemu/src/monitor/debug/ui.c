@@ -74,6 +74,7 @@ static int cmd_help(char *args) {
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
   int i;
+  printf("%s", arg);
 
   if (arg == NULL) {
     /* no argument given */
@@ -103,7 +104,7 @@ static int cmd_si(char *args){
   while (arg!=NULL){
     int num = *arg - '0';
     if ((num<0) || (num>9)){
-      printf("The input should be a number!");
+      printf("The input should be a number!\n");
       return 0;
     }
     i = i*10+num;
