@@ -41,31 +41,30 @@ void reg_test() {
 }
 
 void isa_reg_display(){
-  printf("Hello");
-  printf("eax          %20d \n", cpu.eax);
-  printf("ecx          %20d \n", cpu.ecx);
-  printf("edx          %20d \n", cpu.edx);
-  printf("ebx          %20d \n", cpu.ebx);
-  printf("esp          %20d \n", cpu.esp);
-  printf("ebp          %20d \n", cpu.ebp);
-  printf("esi          %20d \n", cpu.esi);
-  printf("edi          %20d \n", cpu.edi);
-  /*printf("ax           %+20d \n", cpu.ax);
-  printf("cx           %+20d \n", cpu.cx);
-  printf("dx           %+20d \n", cpu.dx);
-  printf("bx           %+20d \n", cpu.bx);
-  printf("sp           %+20d \n", cpu.sp);
-  printf("bp           %+20d \n", cpu.bp);
-  printf("si           %+20d \n", cpu.si);
-  printf("di           %+20d \n", cpu.di);
-  printf("al           %+20d \n", cpu.al);
-  printf("cl           %+20d \n", cpu.cl);
-  printf("dl           %+20d \n", cpu.dl);
-  printf("bl           %+20d \n", cpu.bl);
-  printf("ah           %+20d \n", cpu.ah);
-  printf("ch           %+20d \n", cpu.ch);
-  printf("dh           %+20d \n", cpu.dh);
-  printf("bh           %+20d \n", cpu.bh);*/
+  printf("eax    %-20x      %-20d \n", cpu.eax, cpu.eax);
+  printf("ecx    %-20x      %-20d \n", cpu.ecx, cpu.ecx);
+  printf("edx    %-20x      %-20d \n", cpu.edx, cpu.edx);
+  printf("ebx    %-20x      %-20d \n", cpu.ebx, cpu.ebx);
+  printf("esp    %-20x      %-20d \n", cpu.esp, cpu.esp);
+  printf("ebp    %-20x      %-20d \n", cpu.ebp, cpu.ebp);
+  printf("esi    %-20x      %-20d \n", cpu.esi, cpu.esi);
+  printf("edi    %-20x      %-20d \n", cpu.edi, cpu.edi);
+  printf("ax     %-20x      %+20d \n", cpu.gpr[0]._16, cpu.gpr[0]._16);
+  printf("cx     %-20x      %+20d \n", cpu.gpr[1]._16, cpu.gpr[1]._16);
+  printf("dx     %-20x      %+20d \n", cpu.gpr[2]._16, cpu.gpr[2]._16);
+  printf("bx     %-20x      %+20d \n", cpu.gpr[3]._16, cpu.gpr[3]._16);
+  printf("sp     %-20x      %+20d \n", cpu.gpr[4]._16, cpu.gpr[4]._16);
+  printf("bp     %-20x      %+20d \n", cpu.gpr[5]._16, cpu.gpr[5]._16);
+  printf("si     %-20x      %+20d \n", cpu.gpr[6]._16, cpu.gpr[6]._16);
+  printf("di     %-20x      %+20d \n", cpu.gpr[7]._16, cpu.gpr[7]._16);
+  printf("al     %-20x      %+20d \n", cpu.gpr[0]._8[0], cpu.gpr[0]._8[0]);
+  printf("cl     %-20x      %+20d \n", cpu.gpr[0]._8[1], cpu.gpr[0]._8[1]);
+  printf("dl     %-20x      %+20d \n", cpu.gpr[1]._8[0], cpu.gpr[1]._8[0]);
+  printf("bl     %-20x      %+20d \n", cpu.gpr[1]._8[1], cpu.gpr[1]._8[1]);
+  printf("ah     %-20x      %+20d \n", cpu.gpr[2]._8[0], cpu.gpr[2]._8[0]);
+  printf("ch     %-20x      %+20d \n", cpu.gpr[2]._8[1], cpu.gpr[2]._8[1]);
+  printf("dh     %-20x      %+20d \n", cpu.gpr[3]._8[0], cpu.gpr[3]._8[0]);
+  printf("bh     %-20x      %+20d \n", cpu.gpr[3]._8[1], cpu.gpr[3]._8[1]);
 }
 
 uint32_t isa_reg_str2val(const char *s, bool *success) {
