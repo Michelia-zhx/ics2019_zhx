@@ -110,6 +110,8 @@ static int cmd_si(char *args){
   return 0;
 }
 
+extern void isa_reg_display();
+
 static int cmd_info(char *args){
   char *arg = strtok(NULL, " ");
   if (arg==NULL){
@@ -117,7 +119,7 @@ static int cmd_info(char *args){
     return 0;
   }
   if (*arg=='r'){
-    printf("%d", cpu.eax);
+    isa_reg_display();
   }
   return 0;
 }
