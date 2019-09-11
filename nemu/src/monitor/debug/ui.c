@@ -108,7 +108,7 @@ static int cmd_si(char *args){
       return 0;
     }
     i = i*10+num;
-    arg = strtok(NULL, " ");
+    arg += 1;
   }
   printf("The i is %d", i);
   for (int j=1; j<=i; ++j){
