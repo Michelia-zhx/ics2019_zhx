@@ -98,21 +98,10 @@ static int cmd_si(char *args){
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
   int i=0;
-  printf("%s", arg);
   if (arg == NULL) i = 1;
   
-  while (arg!=NULL){
-    /*int num = *arg - '0';
-    
-    if ((num<0) || (num>9)){
-      printf("The input should be a number!\n");
-      return 0;
-    }
-    i = i*10+num;
-    */
-    printf("%s", arg);
-    ++arg;
-  }
+  else i = atoi(arg);
+
   printf("The i is %d", i);
   for (int j=1; j<=i; ++j){
     cpu_exec(1);
