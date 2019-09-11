@@ -98,11 +98,15 @@ static int cmd_si(char *args){
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
   int i=0;
-  if (arg == NULL) i = 1;
   
+  if (arg == NULL) i = 1;
   else i = atoi(arg);
 
-  printf("The i is %d", i);
+  if (i==0) {
+    printf("Input is not a number, default i=1");
+    i = 1;
+  }
+
   for (int j=1; j<=i; ++j){
     cpu_exec(1);
   }
