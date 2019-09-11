@@ -42,14 +42,14 @@ void reg_test() {
 
 void isa_reg_display(){
   printf("Hello");
-  printf("eax          %+20d \n", cpu.eax);
-  printf("ecx          %+20d \n", cpu.ecx);
-  printf("edx          %+20d \n", cpu.edx);
-  printf("ebx          %+20d \n", cpu.ebx);
-  printf("esp          %+20d \n", cpu.esp);
-  printf("ebp          %+20d \n", cpu.ebp);
-  printf("esi          %+20d \n", cpu.esi);
-  printf("edi          %+20d \n", cpu.edi);
+  printf("eax          %20d \n", cpu.eax);
+  printf("ecx          %20d \n", cpu.ecx);
+  printf("edx          %20d \n", cpu.edx);
+  printf("ebx          %20d \n", cpu.ebx);
+  printf("esp          %20d \n", cpu.esp);
+  printf("ebp          %20d \n", cpu.ebp);
+  printf("esi          %20d \n", cpu.esi);
+  printf("edi          %20d \n", cpu.edi);
   /*printf("ax           %+20d \n", cpu.ax);
   printf("cx           %+20d \n", cpu.cx);
   printf("dx           %+20d \n", cpu.dx);
