@@ -102,8 +102,8 @@ static int cmd_si(char *args){
   if (arg == NULL) i = 1;
   
   while (arg!=NULL){
-    int num = arg[0] - '0';
-    printf("%d", arg[0]);
+    int num = *arg - '0';
+    printf("%d", *arg);
     if ((num<0) || (num>9)){
       printf("The input should be a number!\n");
       return 0;
