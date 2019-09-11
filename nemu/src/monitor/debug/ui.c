@@ -96,8 +96,12 @@ static int cmd_help(char *args) {
 static int cmd_si(char *args){
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
-  int i=0;
-  printf("Hello,%s, %d", arg, i);
+  int i;
+  if (arg == NULL) i = 1;
+  else i = *arg - '0';
+  for (int j=1; j<=i; ++j){
+    cpu_exec(1);
+  }
   
   return 0;
 }
