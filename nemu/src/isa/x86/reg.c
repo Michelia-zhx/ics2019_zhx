@@ -40,7 +40,8 @@ void reg_test() {
   assert(pc_sample == cpu.pc);
 }
 
-void isa_reg_display() {
+void isa_reg_display(){
+  printf("Hello.");
 }
 
 uint32_t isa_reg_str2val(const char *s, bool *success) {

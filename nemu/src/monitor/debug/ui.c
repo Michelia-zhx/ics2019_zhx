@@ -98,23 +98,27 @@ static int cmd_si(char *args){
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
   int i=0;
-  
   if (arg == NULL) i = 1;
   else i = atoi(arg);
-
   if (i==0) {
     printf("Input is not a number, default i=1");
     i = 1;
   }
-
   for (int j=1; j<=i; ++j){
     cpu_exec(1);
   }
-  
   return 0;
 }
 
 static int cmd_info(char *args){
+  char *arg = strtok(NULL, " ");
+  if (arg==NULL){
+    printf("For example: 'info r'--display the state of register; 'info w'--display the state of watchpoint.");
+    return 0;
+  }
+  if (*arg=='r'){
+    printf("%d", cpu.eax);
+  }
   return 0;
 }
 
