@@ -94,6 +94,11 @@ static int cmd_help(char *args) {
 }
 
 static int cmd_si(char *args){
+  /* extract the first argument */
+  char *arg = strtok(NULL, " ");
+  int i=0;
+  printf("Hello,%s, %d", arg, i);
+  
   return 0;
 }
 
