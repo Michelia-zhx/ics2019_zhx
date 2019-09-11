@@ -102,14 +102,16 @@ static int cmd_si(char *args){
   if (arg == NULL) i = 1;
   
   while (arg!=NULL){
-    int num = *arg - '0';
-    printf("%d", *arg);
+    /*int num = *arg - '0';
+    
     if ((num<0) || (num>9)){
       printf("The input should be a number!\n");
       return 0;
     }
     i = i*10+num;
-    arg += 1;
+    */
+    printf("%s", arg);
+    ++arg;
   }
   printf("The i is %d", i);
   for (int j=1; j<=i; ++j){
