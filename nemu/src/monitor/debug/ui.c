@@ -96,9 +96,20 @@ static int cmd_help(char *args) {
 static int cmd_si(char *args){
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
-  int i;
+  int i=0;
+
   if (arg == NULL) i = 1;
-  else i = *arg - '0';
+  
+  while (arg!=NULL){
+    int num = *arg - '0';
+    if ((num<0) || (num>9)){
+      printf("The input should be a number!");
+      return 0;
+    }
+    i = i*10+num;
+    arg = strtok(NULL, " ");
+  }
+  printf("The i is %d", i);
   for (int j=1; j<=i; ++j){
     cpu_exec(1);
   }
