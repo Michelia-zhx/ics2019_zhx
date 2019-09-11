@@ -42,7 +42,30 @@ void reg_test() {
 
 void isa_reg_display(){
   printf("Hello");
-  printf("eax     %-20d", cpu.eax);
+  printf("eax          %+20d \n", cpu.eax);
+  printf("ecx          %+20d \n", cpu.ecx);
+  printf("edx          %+20d \n", cpu.edx);
+  printf("ebx          %+20d \n", cpu.ebx);
+  printf("esp          %+20d \n", cpu.esp);
+  printf("ebp          %+20d \n", cpu.ebp);
+  printf("esi          %+20d \n", cpu.esi);
+  printf("edi          %+20d \n", cpu.edi);
+  /*printf("ax           %+20d \n", cpu.ax);
+  printf("cx           %+20d \n", cpu.cx);
+  printf("dx           %+20d \n", cpu.dx);
+  printf("bx           %+20d \n", cpu.bx);
+  printf("sp           %+20d \n", cpu.sp);
+  printf("bp           %+20d \n", cpu.bp);
+  printf("si           %+20d \n", cpu.si);
+  printf("di           %+20d \n", cpu.di);
+  printf("al           %+20d \n", cpu.al);
+  printf("cl           %+20d \n", cpu.cl);
+  printf("dl           %+20d \n", cpu.dl);
+  printf("bl           %+20d \n", cpu.bl);
+  printf("ah           %+20d \n", cpu.ah);
+  printf("ch           %+20d \n", cpu.ch);
+  printf("dh           %+20d \n", cpu.dh);
+  printf("bh           %+20d \n", cpu.bh);*/
 }
 
 uint32_t isa_reg_str2val(const char *s, bool *success) {
