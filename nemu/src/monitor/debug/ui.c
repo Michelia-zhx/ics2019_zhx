@@ -130,10 +130,10 @@ static int cmd_p(char *args){
 }
 
 extern uint32_t paddr_read(paddr_t addr, int len);
-/*int htoi(char s[])
+int htoi(char s[])
 {
-	int n = 0;
-	int i = 0;
+	paddr_t n = 0;
+	paddr_t i = 0;
 	while (s[i] != '\0' && s[i] != '\n') {
 		if (s[i] == '0') {
 			if (s[i+1] == 'x' || s[i+1] == 'X')
@@ -151,14 +151,15 @@ extern uint32_t paddr_read(paddr_t addr, int len);
 
 	}
 	return n;
-}*/
+}
 static int cmd_x_N(char *args){
   char *arg = strtok(NULL, " ");
   int n = atoi(arg);
   arg = strtok(NULL, " ");
   char addr[15];
   strcpy(addr, arg);
-  printf("%s", addr);
+  paddr_t address = htoi(addr);
+  printf("%d", address);
   printf("%x", paddr_read(0x10000, n));
   return 0;
 }
