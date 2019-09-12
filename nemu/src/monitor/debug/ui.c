@@ -63,7 +63,7 @@ static struct {
   { "si", "Step through the program to run N orders and then pause, default N=1", cmd_si},
   { "info", "Display the state of the program", cmd_info},
   { "p", "Calculate the value of expression EXPR", cmd_p},
-  { "x", "Calculate the value of expression EXPR and set as the starting memory address", cmd_x_N},
+  { "x", "Calculate the value of expression EXPR and set as the starting memory address, print successive N 4 bytes in hexadecimal form", cmd_x_N},
   { "w", "When the value of EXPR changes, pause the program", cmd_w},
   { "d", "Delete the watchpoint of index N", cmd_d}
 
@@ -109,7 +109,7 @@ static int cmd_si(char *args){
     cpu_exec(1);
   }
   return 0;
-}
+}//单步执行
 
 extern void isa_reg_display();
 
@@ -123,38 +123,22 @@ static int cmd_info(char *args){
     isa_reg_display();
   }
   return 0;
-}
+}//打印寄存器
 
 static int cmd_p(char *args){
   return 0;
 }
 
 extern uint32_t paddr_read(paddr_t addr, int len);
-int htoi(char s[])
-{
-	paddr_t n = 0;
-	paddr_t i = 0;
-	while (s[i] != '\0' && s[i] != '\n') {
-		if (s[i] == '0') {
-			if (s[i+1] == 'x' || s[i+1] == 'X')
-                            i+=2;
-		}
-		if (s[i] >= '0' && s[i] <= '9') {
-			n = n * 16 + (s[i] - '0');
-		} else if (s[i] >= 'a' && s[i] <= 'f') {
-			n = n * 16 + (s[i] - 'a') + 10;
-		} else if (s[i] >= 'A' && s[i] <= 'F') {
-			n = n * 16 + (s[i] - 'A') + 10;
-		} else
-			return -1;
-		++i;
+extern int htoi(char s[]);
 
-	}
-	return n;
-}
 static int cmd_x_N(char *args){
   char *arg = strtok(NULL, " ");
   int n = atoi(arg);
+  if (n<=0){
+    printf("The input N should be a positive number.");
+    return -1;
+  }
   arg = strtok(NULL, " ");
   char addr[15];
   strcpy(addr, arg);
@@ -164,7 +148,7 @@ static int cmd_x_N(char *args){
   }
   
   return 0;
-}
+}//扫描内存
 
 static int cmd_w(char *args){
   return 0;
@@ -210,4 +194,27 @@ void ui_mainloop(int is_batch_mode) {
 
     if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
   }
+}
+
+int htoi(char s[])
+{
+	paddr_t n = 0;
+	paddr_t i = 0;
+	while (s[i] != '\0' && s[i] != '\n') {
+		if (s[i] == '0') {
+			if (s[i+1] == 'x' || s[i+1] == 'X')
+                            i+=2;
+		}
+		if (s[i] >= '0' && s[i] <= '9') {
+			n = n * 16 + (s[i] - '0');
+		} else if (s[i] >= 'a' && s[i] <= 'f') {
+			n = n * 16 + (s[i] - 'a') + 10;
+		} else if (s[i] >= 'A' && s[i] <= 'F') {
+			n = n * 16 + (s[i] - 'A') + 10;
+		} else
+			return -1;
+		++i;
+
+	}
+	return n;
 }
