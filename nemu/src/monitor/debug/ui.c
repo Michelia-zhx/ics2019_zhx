@@ -154,13 +154,13 @@ int htoi(char s[])
 }
 static int cmd_x_N(char *args){
   char *arg = strtok(NULL, " ");
-  //int n = atoi(arg);
+  int n = atoi(arg);
   arg = strtok(NULL, " ");
   char addr[15];
   strcpy(addr, arg);
   paddr_t address = htoi(addr);
-  printf("%d", address);
-  //printf("%x", paddr_read(0x100000, n));
+  //printf("%d", address);
+  printf("%d", paddr_read(address, n));
   return 0;
 }
 
