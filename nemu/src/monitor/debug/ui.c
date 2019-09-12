@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <string.h>
 
 void cpu_exec(uint64_t);
 
@@ -129,12 +130,35 @@ static int cmd_p(char *args){
 }
 
 extern uint32_t paddr_read(paddr_t addr, int len);
+int htoi(char s[])
+{
+	int n = 0;
+	int i = 0;
+	while (s[i] != '\0' && s[i] != '\n') {
+		if (s[i] == '0') {
+			if (s[i+1] == 'x' || s[i+1] == 'X')
+                            i+=2;
+		}
+		if (s[i] >= '0' && s[i] <= '9') {
+			n = n * 16 + (s[i] - '0');
+		} else if (s[i] >= 'a' && s[i] <= 'f') {
+			n = n * 16 + (s[i] - 'a') + 10;
+		} else if (s[i] >= 'A' && s[i] <= 'F') {
+			n = n * 16 + (s[i] - 'A') + 10;
+		} else
+			return -1;
+		++i;
 
+	}
+	return n;
+}
 static int cmd_x_N(char *args){
   char *arg = strtok(NULL, " ");
   int n = atoi(arg);
   arg = strtok(NULL, " ");
-  printf("%d, %s", n, arg);
+  char addr[15];
+  memcpy(addr, arg, strlen(arg)+1);
+  printf("%d, %d", n, addr[1]);
   //paddr_read();
   return 0;
 }
