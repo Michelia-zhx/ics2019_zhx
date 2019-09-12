@@ -156,7 +156,7 @@ static int cmd_x_N(char *args){
   char *arg = strtok(NULL, " ");
   int n = atoi(arg);
   arg = strtok(NULL, " ");
-  paddr_read(*arg, n);
+  printf("%d", paddr_read(*arg, n));
   return 0;
 }
 
