@@ -159,8 +159,10 @@ static int cmd_x_N(char *args){
   char addr[15];
   strcpy(addr, arg);
   paddr_t address = htoi(addr);
-  //printf("%d", address);
-  printf("%d", paddr_read(address, n));
+  for (int i=0; i<n; ++i){
+    printf("%-20x%-20x", address, paddr_read(address+i, 4));
+  }
+  
   return 0;
 }
 
