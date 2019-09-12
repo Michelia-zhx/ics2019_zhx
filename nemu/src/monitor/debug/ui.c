@@ -160,7 +160,7 @@ static int cmd_x_N(char *args){
   strcpy(addr, arg);
   paddr_t address = htoi(addr);
   for (int i=0; i<n; ++i){
-    printf("%-20x%-20x\n", address+i, paddr_read(address+i, 4));
+    printf("0x%-20x 0x%-20x\n", address+i, paddr_read(address+i, 4));
   }
   
   return 0;
