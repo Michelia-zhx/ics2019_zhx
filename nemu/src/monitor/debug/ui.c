@@ -128,7 +128,14 @@ static int cmd_p(char *args){
   return 0;
 }
 
+extern uint32_t paddr_read(paddr_t addr, int len);
+
 static int cmd_x_N(char *args){
+  char *arg = strtok(NULL, " ");
+  int n = atoi(arg);
+  arg = strtok(NULL, " ");
+  printf("%d, %s", n, arg);
+  //paddr_read();
   return 0;
 }
 

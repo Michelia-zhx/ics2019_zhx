@@ -63,8 +63,8 @@ void isa_reg_display(){
   printf("bl        0x%-20x      %-20d \n", cpu.gpr[1]._8[1], cpu.gpr[1]._8[1]);
   printf("ah        0x%-20x      %-20d \n", cpu.gpr[2]._8[0], cpu.gpr[2]._8[0]);
   printf("ch        0x%-20x      %-20d \n", cpu.gpr[2]._8[1], cpu.gpr[2]._8[1]);
-  printf("dh        0x%-20x      %-20d \n", cpu.gpr[3]._8[0], cpu.gpr[3]._8[0]);
-  printf("bh        0x%-20x      %-20d \n", cpu.gpr[3]._8[1], cpu.gpr[3]._8[1]);
+  printf("bh        0x%-20x      %-20d \n", cpu.gpr[3]._8[0], cpu.gpr[3]._8[0]);
+  printf("dh        0x%-20x      %-20d \n", cpu.gpr[3]._8[1], cpu.gpr[3]._8[1]);
 }
 
 uint32_t isa_reg_str2val(const char *s, bool *success) {
