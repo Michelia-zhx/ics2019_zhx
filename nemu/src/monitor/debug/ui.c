@@ -130,7 +130,7 @@ static int cmd_p(char *args){
 }
 
 extern uint32_t paddr_read(paddr_t addr, int len);
-int htoi(char s[])
+/*int htoi(char s[])
 {
 	int n = 0;
 	int i = 0;
@@ -151,15 +151,12 @@ int htoi(char s[])
 
 	}
 	return n;
-}
+}*/
 static int cmd_x_N(char *args){
   char *arg = strtok(NULL, " ");
   int n = atoi(arg);
   arg = strtok(NULL, " ");
-  char addr[15];
-  memcpy(addr, arg, strlen(arg)+1);
-  printf("%d, %d", n, addr[1]);
-  //paddr_read();
+  paddr_read(*arg, n);
   return 0;
 }
 
