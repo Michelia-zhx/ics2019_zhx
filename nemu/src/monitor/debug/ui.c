@@ -145,12 +145,14 @@ static int cmd_x_N(char *args){
   paddr_t address = htoi(addr);
   int four = 0x4;
   for (int i=1; i<=n; ++i){
-	if (i%4==0)
-		printf("0x%-14x", address);
+    if (i%4==0){
+      printf("0x%-14x", address);
+    }
     printf("0x%-14x\n", paddr_read(address, 4));
-	address = address + four;
-	if (i%4==0)
-		printf("\n");
+    address = address + four;
+    if (i%4==0){
+      printf("\n");
+    }
   }
   
   return 0;
