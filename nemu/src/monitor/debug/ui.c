@@ -143,8 +143,14 @@ static int cmd_x_N(char *args){
   char addr[15];
   strcpy(addr, arg);
   paddr_t address = htoi(addr);
-  for (int i=0; i<n; ++i){
-    printf("0x%-20x 0x%-20x\n", address+i, paddr_read(address+i, 4));
+  int four = 0x4;
+  for (int i=1; i<=n; ++i){
+	if (i%4==0)
+		printf("0x%-14x", address);
+    printf("0x%-14x\n", paddr_read(address, 4));
+	address = address + four;
+	if (i%4==0)
+		printf("\n");
   }
   
   return 0;
