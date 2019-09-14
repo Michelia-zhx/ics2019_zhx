@@ -147,7 +147,7 @@ static int cmd_x_N(char *args){
   paddr_t four = 0x4;
   for (int i=0; i<n; ++i){
     if (i%4==0){
-      printf("0x%-14x", address);
+      printf("0x%-14x:", address);
     }
     printf("0x%-14x", paddr_read(address, 4));
     address = address + four;
