@@ -143,7 +143,8 @@ static int cmd_x_N(char *args){
   char addr[15];
   strcpy(addr, arg);
   paddr_t address = htoi(addr);
-  int four = 0x4;
+  printf("the address is:%x\n", address);
+  paddr_t four = 0x4;
   for (int i=1; i<=n; ++i){
     if (i%4==0){
       printf("0x%-14x", address);
@@ -154,7 +155,7 @@ static int cmd_x_N(char *args){
       printf("\n");
     }
   }
-  
+  printf("\n");
   return 0;
 }//扫描内存
 
