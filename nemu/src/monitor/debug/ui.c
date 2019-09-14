@@ -145,7 +145,7 @@ static int cmd_x_N(char *args){
   paddr_t address = htoi(addr);
   printf("the address is:%x\n", address);
   paddr_t four = 0x4;
-  for (int i=1; i<=n; ++i){
+  for (int i=0; i<n; ++i){
     if (i%4==0){
       printf("0x%-14x", address);
     }
