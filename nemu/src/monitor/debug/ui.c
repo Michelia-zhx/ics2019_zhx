@@ -151,7 +151,7 @@ static int cmd_x_N(char *args){
     }
     printf("0x%-14x", paddr_read(address, 4));
     address = address + four;
-    if (i%4==0){
+    if ((i+1)%4==0){
       printf("\n");
     }
   }
