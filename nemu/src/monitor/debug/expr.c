@@ -91,7 +91,7 @@ static bool make_token(char *e) {
          * of tokens, some extra actions should be performed.
          */
 
-        tokens[nr_token].type = i;
+        tokens[nr_token].type = rules[i].token_type;
         
         for (int j=0; j<substr_len; ++j){
           token_str[j] = substr_start[j];
