@@ -146,17 +146,18 @@ uint32_t eval(int p, int q) {
     return 0;
   }
   else if (p == q) {
+    printf("token type: %d, token str: %s", tokens[p].type, tokens[p].str);
     if (tokens[p].type == 259){
       int number = 0;
-      for (int j=0; j<strlen(tokens[p].str); ++j){
-        number = number*10 + tokens[p].str[j];
+      for (int j=2; j<strlen(tokens[p].str); ++j){
+        number = number*16 + tokens[p].str[j];
       }
       return number;
     }
     else if (tokens[p].type==260){
       int number = 0;
-      for (int j=2; j<strlen(tokens[p].str); ++j){
-        number = number*16 + tokens[p].str[j];
+      for (int j=0; j<strlen(tokens[p].str); ++j){
+        number = number*10 + tokens[p].str[j];
       }
       return number;
     }
