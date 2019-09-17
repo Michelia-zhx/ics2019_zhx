@@ -97,39 +97,42 @@ static bool make_token(char *e) {
           token_str[j] = substr_start[j];
           token_str[substr_len] = '\0';
         }
-        nr_token += 1;
+        
         //printf("token_str: %s\n", token_str);
 
         switch (rules[i].token_type) {
-          case '+': break;
-          case '-': break;
-          case '*': break;
-          case '/': break;
-          case '(': break;
-          case ')': break;
-          case 256: nr_token -= 1; break;
-          case 257: break;
+          case '+': nr_token += 1; break;
+          case '-': nr_token += 1; break;
+          case '*': nr_token += 1; break;
+          case '/': nr_token += 1; break;
+          case '(': nr_token += 1; break;
+          case ')': nr_token += 1; break;
+          case 256: nr_token += 1; break;
+          case 257: nr_token += 1; break;
           case 258: {
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
             printf("The token is: %s\n", tokens[nr_token].str);
+            nr_token += 1; 
             break;
           }
           case 259: {
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
             printf("The token is: %s\n", tokens[nr_token].str);
+            nr_token += 1; 
             break;
           }
           case 260: {
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
             printf("The token is: %s\n", token_str);
+            nr_token += 1; 
             break;
           }
           default: {
             printf("The token can be matched but whose type isn't here.\n");
-          };
+          }
         }
         break;
       }
