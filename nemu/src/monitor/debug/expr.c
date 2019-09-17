@@ -98,7 +98,7 @@ static bool make_token(char *e) {
           token_str[substr_len] = '\0';
         }
         nr_token += 1;
-        printf("token_str: %s\n", token_str);
+        //printf("token_str: %s\n", token_str);
 
         switch (rules[i].token_type) {
           case '+': break;
@@ -121,7 +121,7 @@ static bool make_token(char *e) {
           }
           case 260: {
             strncpy(tokens[nr_token].str, token_str, substr_len);
-            //printf("The token is: %s\n", tokens[nr_token].str);
+            printf("The token is: %s\n", tokens[nr_token].str);
             break;
           }
           default: {
