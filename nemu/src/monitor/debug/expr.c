@@ -110,17 +110,17 @@ static bool make_token(char *e) {
           case 256: nr_token -= 1; break;
           case 257: break;
           case 258: {
-            strncpy(tokens[nr_token].str, token_str, substr_len);
+            strncpy(tokens[nr_token].str, token_str, substr_len+1);
             //printf("The token is: %s\n", tokens[nr_token].str);
             break;
           }
           case 259: {
-            strncpy(tokens[nr_token].str, token_str, substr_len);
+            strncpy(tokens[nr_token].str, token_str, substr_len+1);
             //printf("The token is: %s\n", tokens[nr_token].str);
             break;
           }
           case 260: {
-            strncpy(tokens[nr_token].str, token_str, substr_len);
+            strncpy(tokens[nr_token].str, token_str, substr_len+1);
             printf("The token is: %s\n", tokens[nr_token].str);
             break;
           }
@@ -147,8 +147,7 @@ uint32_t eval(int p, int q) {
     return 0;
   }
   else if (p == q) {
-    printf("token type: %d, token str: %s", tokens[p].type, tokens[p].str);
-    printf("The token is: %s\n", tokens[p].str);
+    printf("token type: %d, token str: %s\n", tokens[p].type, tokens[p].str);
     if (tokens[p].type == 259){
       int number = 0;
       for (int j=2; j<strlen(tokens[p].str); ++j){
