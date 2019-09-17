@@ -164,7 +164,7 @@ uint32_t eval(int p, int q) {
     else if (tokens[p].type==260){
       int number = 0;
       for (int j=0; j<strlen(tokens[p].str); ++j){
-        number = number*10 + tokens[p].str[j];
+        number = number*10 + (tokens[p].str[j]-'0');
         printf("%d\n", number);
       }
       return number;
