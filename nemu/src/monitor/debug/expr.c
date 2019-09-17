@@ -140,7 +140,7 @@ static bool make_token(char *e) {
       return false;
     }
   }
-
+  printf("The first token is: %s\n", tokens[0].str);
   return true;
 }
 
@@ -190,7 +190,6 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  make_token(e);
   printf("Hello, %d %s\n", tokens[0].type, tokens[0].str);
   return eval(0, nr_token-1);
 }
