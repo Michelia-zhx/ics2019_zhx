@@ -112,13 +112,13 @@ static bool make_token(char *e) {
           case 258: {
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
-            //printf("The token is: %s\n", tokens[nr_token].str);
+            printf("The token is: %s\n", tokens[nr_token].str);
             break;
           }
           case 259: {
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
-            //printf("The token is: %s\n", tokens[nr_token].str);
+            printf("The token is: %s\n", tokens[nr_token].str);
             break;
           }
           case 260: {
@@ -190,6 +190,6 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  
+  printf("%s", tokens[0].str);
   return eval(0, nr_token-1);
 }
