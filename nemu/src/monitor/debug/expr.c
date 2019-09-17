@@ -98,6 +98,7 @@ static bool make_token(char *e) {
           token_str[substr_len] = '\0';
         }
         nr_token += 1;
+        printf("token_str: %s\n", token_str);
 
         switch (rules[i].token_type) {
           case '+': break;
