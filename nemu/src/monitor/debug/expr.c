@@ -5,9 +5,10 @@
  */
 #include <sys/types.h>
 #include <regex.h>
+#include <string.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ
+  TK_NOTYPE = 256, TK_EQ, TK_NUMBER
 
   /* TODO: Add more token types */
 
@@ -21,9 +22,10 @@ static struct rule {
   /* TODO: Add more rules.
    * Pay attention to the precedence level of different rules.
    */
-
+  {"\\d+", TK_NUMBER},   // numbers, may be wrong
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
+  {"\\-", '-'},            // minus
   {"==", TK_EQ}         // equal
 };
 
@@ -65,10 +67,12 @@ static bool make_token(char *e) {
 
   while (e[position] != '\0') {
     /* Try all rules one by one. */
+    char token_str[32];
     for (i = 0; i < NR_REGEX; i ++) {
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
+        printf("substr_len:%d \n", substr_len);
 
         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
@@ -78,6 +82,14 @@ static bool make_token(char *e) {
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
+        tokens[nr_token].type = i;
+        
+        for (int j=0; j<substr_len; ++j){
+          token_str[j] = substr_start[j];
+          token_str[substr_len] = '\0';
+        }
+        strncpy(tokens[nr_token].str, token_str, substr_len);
+        nr_token += 1;
 
         switch (rules[i].token_type) {
           default: TODO();

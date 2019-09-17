@@ -125,7 +125,11 @@ static int cmd_info(char *args){
   return 0;
 }//打印寄存器
 
+extern bool make_token(char *e);
+
 static int cmd_p(char *args){
+  char *expr = strtok(NULL, " ");
+  make_token(expr);
   return 0;
 }
 
