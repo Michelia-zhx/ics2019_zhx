@@ -24,15 +24,15 @@ static struct rule {
    */
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
-  {"\\-", '-'},            // minus
+  {"-", '-'},            // minus
   {"\\*", '*'},         // times
   {"/", '/'},           //divide
   {"\\(", '('},           // left bracket
   {"\\)", ')'},           // right bracket
   {"==", TK_EQ},        // equal
   {"\\$e[a-d]x | \\$esp | \\$ebp | \\$esi | \\$ebi", TK_GPR},    //
-  {"\\d+", TK_DECIMAL},   // decimal numbers
-  {"0x\\d+", TK_HEXADECIMAL}  // hexadecimal numbers
+  {"[0-9]+", TK_DECIMAL},   // decimal numbers
+  {"0x[0-9]+", TK_HEXADECIMAL}  // hexadecimal numbers
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
