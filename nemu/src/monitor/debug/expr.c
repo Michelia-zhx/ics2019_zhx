@@ -190,6 +190,6 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  printf("%s", tokens[0].str);
+  printf("Hello, %s", tokens[0].str);
   return eval(0, nr_token-1);
 }
