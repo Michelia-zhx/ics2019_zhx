@@ -79,6 +79,7 @@ static bool make_token(char *e) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
         printf("substr_len:%d \n", substr_len);
+        printf("token type: %d \n", rules[i].token_type);
 
         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
@@ -98,6 +99,10 @@ static bool make_token(char *e) {
         nr_token += 1;
 
         switch (rules[i].token_type) {
+          //TK_NOTYPE: nr_token -= 1; break;
+          //TK_GPR: break;
+          //TK_HEXADECIMAL: break;
+          //TK_DECIMAL: break;
           default: TODO();
         }
 
