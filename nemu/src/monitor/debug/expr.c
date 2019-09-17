@@ -8,7 +8,7 @@
 #include <string.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_GPR, TK_DECIMAL, TK_HEXADECIMAL
+  TK_NOTYPE = 256, TK_EQ, TK_GPR, TK_HEXADECIMAL, TK_DECIMAL
 
   /* TODO: Add more token types */
 
@@ -31,8 +31,8 @@ static struct rule {
   {"\\)", ')'},           // right bracket
   {"==", TK_EQ},        // equal
   {"\\$[e,a,b,c,d,s].*?[x,p,i,l,h]", TK_GPR},    //GPR
-  {"[0-9]+", TK_DECIMAL},   // decimal numbers
-  {"0x[0-9]+", TK_HEXADECIMAL}  // hexadecimal numbers
+  {"0x[0-9]+", TK_HEXADECIMAL},  // hexadecimal numbers
+  {"[0-9]+", TK_DECIMAL}    // decimal numbers
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -110,21 +110,21 @@ static bool make_token(char *e) {
           case 257: break;
           case 258: {
             strncpy(tokens[nr_token].str, token_str, substr_len);
-            printf("The token is: %s\n", tokens[nr_token].str);
+            //printf("The token is: %s\n", tokens[nr_token].str);
             break;
           }
           case 259: {
             strncpy(tokens[nr_token].str, token_str, substr_len);
-            printf("The token is: %s\n", tokens[nr_token].str);
+            //printf("The token is: %s\n", tokens[nr_token].str);
             break;
           }
           case 260: {
             strncpy(tokens[nr_token].str, token_str, substr_len);
-            printf("The token is: %s\n", tokens[nr_token].str);
+            //printf("The token is: %s\n", tokens[nr_token].str);
             break;
           }
           default: {
-            printf("The token\n");
+            printf("The token can be matched but whose type isn't here.\n");
           };
         }
         break;
@@ -140,6 +140,43 @@ static bool make_token(char *e) {
   return true;
 }
 
+uint32_t eval(int p, int q) {
+  if (p > q) {
+    printf("fatal error, the start of the sub-expression is bigger than its end.");
+    return 0;
+  }
+  else if (p == q) {
+    if (tokens[p].type == 259){
+      int number = 0;
+      for (int j=0; j<strlen(tokens[p].str); ++j){
+        number = number*10 + tokens[p].str[j];
+      }
+      return number;
+    }
+    else if (tokens[p].type==260){
+      int number = 0;
+      for (int j=2; j<strlen(tokens[p].str); ++j){
+        number = number*16 + tokens[p].str[j];
+      }
+      return number;
+    }
+    else {
+      printf("Something wrong! The expression is illegal.");
+      return 0;
+    }
+  }
+  //else if (check_parentheses(p, q) == true) {
+      /* The expression is surrounded by a matched pair of parentheses.
+      * If that is the case, just throw away the parentheses.
+      */
+  //    return eval(p + 1, q - 1);
+  //}
+  //else {
+      /* We should do more things here. */
+  //}
+  return 0;
+}
+
 uint32_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
@@ -149,8 +186,5 @@ uint32_t expr(char *e, bool *success) {
 
   /* TODO: Insert codes to evaluate the expression. */
   
-  printf("break here\n");
-
-  return 0;
+  return eval(0, nr_token-1);
 }
-
