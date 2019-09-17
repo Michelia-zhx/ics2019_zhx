@@ -30,7 +30,7 @@ static struct rule {
   {"\\(", '('},           // left bracket
   {"\\)", ')'},           // right bracket
   {"==", TK_EQ},        // equal
-  {"\\$e[a-d]x | \\$esp | \\$ebp | \\$esi | \\$ebi", TK_GPR},    //
+  {"$e[a-d]x | $esp | $ebp | $esi | $ebi", TK_GPR},    //
   {"[0-9]+", TK_DECIMAL},   // decimal numbers
   {"0x[0-9]+", TK_HEXADECIMAL}  // hexadecimal numbers
 };
