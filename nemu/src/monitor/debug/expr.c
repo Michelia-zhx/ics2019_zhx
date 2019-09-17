@@ -77,7 +77,7 @@ static bool make_token(char *e) {
     for (i = 0; i < NR_REGEX; i ++) {
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
-        printf("%s\n", substr_start);
+        //printf("%s\n", substr_start);
         int substr_len = pmatch.rm_eo;
         //printf("substr_len:%d \n", substr_len);
         //printf("token type: %d \n", rules[i].token_type);
@@ -148,6 +148,7 @@ uint32_t eval(int p, int q) {
   }
   else if (p == q) {
     printf("token type: %d, token str: %s", tokens[p].type, tokens[p].str);
+    printf("The token is: %s\n", tokens[p].str);
     if (tokens[p].type == 259){
       int number = 0;
       for (int j=2; j<strlen(tokens[p].str); ++j){
