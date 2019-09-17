@@ -30,7 +30,7 @@ static struct rule {
   {"\\(", '('},           // left bracket
   {"\\)", ')'},           // right bracket
   {"==", TK_EQ},        // equal
-  {"$e[a-d]x | $esp | $ebp | $esi | $ebi", TK_GPR},    //
+  {"\\$[e,a,b,c,d,s].*?[x,p,i,l,h]", TK_GPR},    //GPR
   {"[0-9]+", TK_DECIMAL},   // decimal numbers
   {"0x[0-9]+", TK_HEXADECIMAL}  // hexadecimal numbers
 };
@@ -111,6 +111,7 @@ static bool make_token(char *e) {
           case '(': break;
           case ')': break;
           case 256: nr_token -= 1; break;
+          case 257: strncpy(tokens[nr_token].str, token_str, substr_len); break;
           case 258: strncpy(tokens[nr_token].str, token_str, substr_len); break;
           case 259: strncpy(tokens[nr_token].str, token_str, substr_len); break;
           case 260: strncpy(tokens[nr_token].str, token_str, substr_len); break;
@@ -143,3 +144,4 @@ uint32_t expr(char *e, bool *success) {
 
   return 0;
 }
+
