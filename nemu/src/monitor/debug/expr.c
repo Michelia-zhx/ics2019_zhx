@@ -27,8 +27,8 @@ static struct rule {
   {"\\-", '-'},            // minus
   {"\\*", '*'},         // times
   {"/", '/'},           //divide
-  {"(", '('},           // left bracket
-  {")", ')'},           // right bracket
+  {"\\(", '('},           // left bracket
+  {"\\)", ')'},           // right bracket
   {"==", TK_EQ},        // equal
   {"\\$e[a-d]x | \\$esp | \\$ebp | \\$esi | \\$ebi", TK_GPR},    //
   {"\\d+", TK_DECIMAL},   // decimal numbers
