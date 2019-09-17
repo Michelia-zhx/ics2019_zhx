@@ -8,7 +8,7 @@
 #include <string.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_NUMBER
+  TK_NOTYPE = 256, TK_EQ, TK_GPR, TK_DECIMAL, TK_HEXADECIMAL
 
   /* TODO: Add more token types */
 
@@ -22,11 +22,17 @@ static struct rule {
   /* TODO: Add more rules.
    * Pay attention to the precedence level of different rules.
    */
-  {"\\d+", TK_NUMBER},   // numbers, may be wrong
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
   {"\\-", '-'},            // minus
-  {"==", TK_EQ}         // equal
+  {"\\*", '*'},         // times
+  {"/", '/'},           //divide
+  {"(", '('},           // left bracket
+  {")", ')'},           // right bracket
+  {"==", TK_EQ},        // equal
+  {"\\$e[a-d]x | \\$esp | \\$ebp | \\$esi | \\$ebi", TK_GPR},    //
+  {"\\d+", TK_DECIMAL},   // decimal numbers
+  {"0x\\d+", TK_HEXADECIMAL}  // hexadecimal numbers
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
