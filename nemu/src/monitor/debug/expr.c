@@ -72,6 +72,7 @@ static bool make_token(char *e) {
   nr_token = 0;
 
   while (e[position] != '\0') {
+    printf("%s", e);
     /* Try all rules one by one. */
     //char token_str[32];
     for (i = 0; i < NR_REGEX; i ++) {
@@ -99,10 +100,10 @@ static bool make_token(char *e) {
         nr_token += 1;
 
         switch (rules[i].token_type) {
-          //TK_NOTYPE: nr_token -= 1; break;
-          //TK_GPR: break;
-          //TK_HEXADECIMAL: break;
-          //TK_DECIMAL: break;
+          case 256: nr_token -= 1; break;
+          case 258: break;
+          case 259: break;
+          case 260: break;
           default: TODO();
         }
 
