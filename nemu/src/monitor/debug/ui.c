@@ -126,10 +126,10 @@ static int cmd_info(char *args){
 }//打印寄存器
 
 static int cmd_p(char *args){
-  char *arg = strtok(NULL, " ");
+  //char *arg = strtok(NULL, " ");
   bool suc = true;
   bool *success = &suc;
-  expr(arg, success);
+  expr(args, success);
   printf("The token-matching is: %d \n", *success);
   return 0;
 }
