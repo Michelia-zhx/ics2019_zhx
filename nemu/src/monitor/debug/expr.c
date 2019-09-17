@@ -73,7 +73,7 @@ static bool make_token(char *e) {
 
   while (e[position] != '\0') {
     /* Try all rules one by one. */
-    char token_str[32];
+    //char token_str[32];
     for (i = 0; i < NR_REGEX; i ++) {
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
@@ -90,11 +90,11 @@ static bool make_token(char *e) {
          */
         tokens[nr_token].type = i;
         
-        for (int j=0; j<substr_len; ++j){
-          token_str[j] = substr_start[j];
-          token_str[substr_len] = '\0';
-        }
-        strncpy(tokens[nr_token].str, token_str, substr_len);
+        //for (int j=0; j<substr_len; ++j){
+        //  token_str[j] = substr_start[j];
+        //  token_str[substr_len] = '\0';
+        //}
+        //strncpy(tokens[nr_token].str, token_str, substr_len);
         nr_token += 1;
 
         switch (rules[i].token_type) {
