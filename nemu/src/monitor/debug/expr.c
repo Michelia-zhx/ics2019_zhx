@@ -72,7 +72,7 @@ static bool make_token(char *e) {
   nr_token = 0;
 
   while (e[position] != '\0') {
-    printf("hi!!!");
+    printf("hi!\n");
     //printf("%s", e);
     /* Try all rules one by one. */
     char token_str[32];
@@ -88,7 +88,7 @@ static bool make_token(char *e) {
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
         position += substr_len;
 
-        printf("hi!!!");
+        printf("hi!!\n");
         /* TODO: Now a new token is recognized with rules[i]. Add codes
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
@@ -100,7 +100,7 @@ static bool make_token(char *e) {
           token_str[j] = substr_start[j];
           token_str[substr_len] = '\0';
         }
-        printf("hi!!!");
+        printf("hi!!!\n");
         nr_token += 1;
 
         switch (rules[i].token_type) {
@@ -116,7 +116,7 @@ static bool make_token(char *e) {
           case 260: strncpy(tokens[nr_token].str, token_str, substr_len); break;
           default: TODO();
         }
-        printf("hi!!!");
+        printf("hi!!!!\n");
         break;
       }
     }
