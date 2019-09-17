@@ -104,6 +104,12 @@ static bool make_token(char *e) {
         nr_token += 1;
 
         switch (rules[i].token_type) {
+          case '+': break;
+          case '-': break;
+          case '*': break;
+          case '/': break;
+          case '(': break;
+          case ')': break;
           case 256: nr_token -= 1; break;
           case 258: strncpy(tokens[nr_token].str, token_str, substr_len); break;
           case 259: strncpy(tokens[nr_token].str, token_str, substr_len); break;
