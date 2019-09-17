@@ -72,8 +72,6 @@ static bool make_token(char *e) {
   nr_token = 0;
 
   while (e[position] != '\0') {
-    printf("hi!\n");
-    //printf("%s", e);
     /* Try all rules one by one. */
     char token_str[32];
     for (i = 0; i < NR_REGEX; i ++) {
@@ -81,14 +79,13 @@ static bool make_token(char *e) {
         char *substr_start = e + position;
         printf("%s\n", substr_start);
         int substr_len = pmatch.rm_eo;
-        printf("substr_len:%d \n", substr_len);
-        printf("token type: %d \n", rules[i].token_type);
+        //printf("substr_len:%d \n", substr_len);
+        //printf("token type: %d \n", rules[i].token_type);
 
         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
         position += substr_len;
 
-        printf("hi!!\n");
         /* TODO: Now a new token is recognized with rules[i]. Add codes
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
@@ -100,7 +97,6 @@ static bool make_token(char *e) {
           token_str[j] = substr_start[j];
           token_str[substr_len] = '\0';
         }
-        printf("hi!!!\n");
         nr_token += 1;
 
         switch (rules[i].token_type) {
@@ -115,9 +111,10 @@ static bool make_token(char *e) {
           case 258: strncpy(tokens[nr_token].str, token_str, substr_len); break;
           case 259: strncpy(tokens[nr_token].str, token_str, substr_len); break;
           case 260: strncpy(tokens[nr_token].str, token_str, substr_len); break;
-          default: TODO();
+          default: {
+            printf("The token\n");
+          };
         }
-        printf("hi!!!!\n");
         break;
       }
     }
@@ -140,7 +137,7 @@ uint32_t expr(char *e, bool *success) {
 
   /* TODO: Insert codes to evaluate the expression. */
   
-  TODO();
+  printf("break here\n");
 
   return 0;
 }
