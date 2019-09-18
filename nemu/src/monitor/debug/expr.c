@@ -187,6 +187,7 @@ uint32_t eval(int p, int q) {
   }
 
   else if (p == q) {
+    printf("p:%d, q:%d\n", p, q);
     if (tokens[p].type == 259){
       int number = 0;
       for (int j=2; j<strlen(tokens[p].str); ++j){
@@ -214,9 +215,11 @@ uint32_t eval(int p, int q) {
   else{
     printf("Starting checking parentheses!\n");
     if (check_parentheses(p, q) == 1) {
+      printf("p:%d, q:%d\n", p, q);
       /* The expression is surrounded by a matched pair of parentheses.
       * If that is the case, just throw away the parentheses.
       */
+      printf("p+1:%d, q-1:%d\n", p+1, q-1);
       return eval(p + 1, q - 1);
     }
 
