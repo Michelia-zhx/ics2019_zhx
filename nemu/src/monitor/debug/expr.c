@@ -173,8 +173,8 @@ static bool make_token(char *e) {
       return false;
     }
   }
-  printf("The first token is: %s\n", tokens[0].str);
-  printf("The first type is%d:", tokens[0].type);
+  printf("The last token is: %s\n", tokens[nr_token-1].str);
+  printf("The first type is: %d\n:", tokens[0].type);
   return true;
 }
 
