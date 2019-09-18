@@ -323,7 +323,8 @@ Status Pop(Stack *S, SElemType *e){
 int check_parentheses(int p, int q){
     Stack S;
     int e,temp[32];
-    int *m = NULL;
+    int a = 0;
+    int *m = &a;
     int i=p;
     int flag=1;
 
