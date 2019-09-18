@@ -360,7 +360,7 @@ bool check_parentheses(int p, int q){
       //printf("%d\n", e);
         switch(e){
             case '(':   case '[':   case '{': {
-                printf("(\n");
+                //printf("(\n");
                 if (!StackEmpty(&S)||i==p){
                     Push(&S, e);
                 }
@@ -373,11 +373,11 @@ bool check_parentheses(int p, int q){
                 break; //左括号入栈
             }
             case ')':{
-                printf(")\n");
+                //printf(")\n");
                 if (!StackEmpty(&S)){
                     Pop(&S, m);                //右括号 匹配的话 出栈
                     printf("m:%d", *m);
-                    if (*m!='(') {flag=0; printf("failed here");}
+                    if (*m!='(') flag=0; //printf("failed here");
                 }
                 else if (i!=q) {
                     printf("false, bad expression");
@@ -390,7 +390,7 @@ bool check_parentheses(int p, int q){
             case ']':{
                 if(!StackEmpty(&S)){
                     Pop(&S, m);
-                    if(*m!='[') {flag=0; printf("failed here");}
+                    if(*m!='[') flag=0; //printf("failed here");
                 }
                 else if (i!=q) {
                     printf("false, bad expression");
@@ -403,7 +403,7 @@ bool check_parentheses(int p, int q){
             case '}':{
                 if(!StackEmpty(&S)){
                     Pop(&S, m);
-                    if(*m!='{') {flag=0; printf("failed here");}
+                    if(*m!='{') flag=0; //printf("failed here");
                 }
                 else if (i!=q) {
                     printf("false, bad expression");
