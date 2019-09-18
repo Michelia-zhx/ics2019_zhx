@@ -3,9 +3,26 @@
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
  */
+#include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <regex.h>
 #include <string.h>
+
+#define OVERFLOW -1
+#define OK 1
+#define ERROR 0
+#define STACK_INIT_SIZE 100
+#define STACKINCREMENT 10
+
+typedef int SElemType;
+typedef int  Status;
+
+typedef struct{
+    SElemType *top;
+    SElemType *base;
+    int stacksize;
+}Stack;
 
 enum {
   TK_NOTYPE = 256, TK_EQ, TK_GPR, TK_HEXADECIMAL, TK_DECIMAL
@@ -29,6 +46,10 @@ static struct rule {
   {"/", '/'},           //divide
   {"\\(", '('},           // left bracket
   {"\\)", ')'},           // right bracket
+  {"\\[", '['},           // left bracket
+  {"\\]", ']'},
+  {"\\{", '{'},           // left bracket
+  {"\\}", '}'},
   {"==", TK_EQ},        // equal
   {"\\$[e,a,b,c,d,s].*?[x,p,i,l,h]", TK_GPR},    //GPR
   {"0x[0-9]+", TK_HEXADECIMAL},  // hexadecimal numbers
@@ -107,6 +128,10 @@ static bool make_token(char *e) {
           case '/': nr_token += 1; break;
           case '(': nr_token += 1; break;
           case ')': nr_token += 1; break;
+          case '[': nr_token += 1; break;
+          case ']': nr_token += 1; break;
+          case '{': nr_token += 1; break;
+          case '}': nr_token += 1; break;
           case 256: nr_token += 1; break;
           case 257: nr_token += 1; break;
           case 258: {
@@ -147,17 +172,19 @@ static bool make_token(char *e) {
   return true;
 }
 
+extern int check_parentheses(int p, int q);
+
 uint32_t eval(int p, int q) {
   if (p > q) {
     printf("fatal error, the start of the sub-expression is bigger than its end.");
     return 0;
   }
+
   else if (p == q) {
-    //printf("token type: %d, token str: %s\n", tokens[p].type, tokens[p].str);
     if (tokens[p].type == 259){
       int number = 0;
       for (int j=2; j<strlen(tokens[p].str); ++j){
-        number = number*16 + tokens[p].str[j];
+        number = number*16 + (tokens[p].str[j]-'0');
       }
       return number;
     }
@@ -165,24 +192,30 @@ uint32_t eval(int p, int q) {
       int number = 0;
       for (int j=0; j<strlen(tokens[p].str); ++j){
         number = number*10 + (tokens[p].str[j]-'0');
-        printf("%d\n", number);
+        //printf("%d\n", number);
       }
       return number;
     }
+    //else if (tokens[p].type==258){
+      //return get_gpr(tokens[p].str);
+    //}
     else {
       printf("Something wrong! The expression is illegal.");
       return 0;
     }
   }
-  //else if (check_parentheses(p, q) == true) {
+
+  else if (check_parentheses(p, q) == 1) {
       /* The expression is surrounded by a matched pair of parentheses.
       * If that is the case, just throw away the parentheses.
       */
-  //    return eval(p + 1, q - 1);
-  //}
-  //else {
+      return eval(p + 1, q - 1);
+  }
+
+  else {
       /* We should do more things here. */
-  //}
+  }
+
   return 0;
 }
 
@@ -192,8 +225,181 @@ uint32_t expr(char *e, bool *success) {
 
     return 0;
   }
+  
+  int p = 0;
+  int q = nr_token-1;
 
   /* TODO: Insert codes to evaluate the expression. */
-  printf("Hello, %d %s\n", tokens[0].type, tokens[0].str);
-  return eval(0, nr_token-1);
+  //printf("Hello, %d %s\n", tokens[0].type, tokens[0].str);
+  return eval(p, q);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Status InitStack(Stack *S){
+    (*S).base=(SElemType *)malloc(STACK_INIT_SIZE * sizeof(SElemType));     //开辟空间
+    if(!(*S).base) return(OVERFLOW);      //存储分配失败
+    else {
+        (*S).top=(*S).base;
+        (*S).stacksize=STACK_INIT_SIZE;
+        return OK;
+    }
+}
+
+Status DestroyStack(Stack *S){    
+    free((*S).base);
+    (*S).base=NULL;
+    (*S).top=NULL;
+    (*S).stacksize=0;
+    return OK;
+}
+
+Status StackEmpty(Stack *S){
+    if((*S).top==(*S).base) return OK;
+    else return ERROR;
+}
+
+Status Push(Stack *S, SElemType e){
+    if((*S).top-(*S).base >= (*S).stacksize){
+        (*S).base = (SElemType *)realloc((*S).base, ((*S).stacksize+STACKINCREMENT)*sizeof(SElemType));
+        if(!(*S).base) exit(OVERFLOW);        //储存分配失败
+        (*S).top = (*S).base + (*S).stacksize;
+        (*S).stacksize += STACKINCREMENT;
+    }
+    *(*S).top = e;
+    (*S).top++;
+    return OK;
+}
+
+Status Pop(Stack *S, SElemType *e){
+    if(S->top == S->base) return ERROR;
+    else {
+        e = S->top;
+        S->top -= 1;
+        return OK;
+    }
+}
+
+ 
+
+int check_parentheses(int p, int q){
+    Stack S;
+    int e,temp[32];
+    int *m = NULL;
+    int i=p;
+    int flag=1;
+
+    for (i=p; i<=q; ++i)  temp[i] = tokens[i].type;
+    InitStack(&S);
+    if (temp[p]!='('||temp[q]!=')'){
+        printf("false, the whole expression is not surrounded by a matched pair of parentheses");
+        return 0;
+    }
+
+    i=p;
+    e=temp[i];
+
+    while(i<=q && flag){
+        switch(e){
+            case '(':   case '[':   case '{': {
+                if (!StackEmpty(&S)||i==p){
+                    Push(&S, e); 
+                    i++; 
+                    e=temp[i];
+                }
+                else{
+                    printf("false, the leftmost '(' and the rightmost ')' are not matched");
+                    flag = 0;
+                    i++;
+                    e = temp[i];
+                }
+                break; //左括号入栈
+            }
+            case ')':{
+                if (!StackEmpty(&S)){
+                    Pop(&S, m);                  //右括号 匹配的话 出栈
+                    if (e!='(') flag=0;
+                }
+                else if (i!=q) {
+                    printf("false, bad expression");
+                    flag=0;
+                    i++;
+                    e=temp[i];
+                }
+                break;
+            }
+            case ']':{
+                if(!StackEmpty(&S)){
+                    Pop(&S, m);
+                    if(e!='[') flag=0;
+                }
+                else if (i!=q) {
+                    printf("false, bad expression");
+                    flag=0;
+                    i++;
+                    e=temp[i];
+                }
+                break;
+            }
+            case '}':{
+                if(!StackEmpty(&S)){
+                    Pop(&S, m);
+                    if(e!='{')   flag=0;
+                }
+                else if (i!=q) {
+                    printf("false, bad expression");
+                    flag=0;
+                    i++;
+                    e=temp[i];
+                }
+                break;
+            }
+            default:    break;
+        }
+    }
+
+    if(!StackEmpty(&S)) flag=0;
+
+    DestroyStack(&S);
+
+    if(flag==1) return 1;
+    else  return 0;
 }
