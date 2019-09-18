@@ -96,7 +96,7 @@ static bool make_token(char *e) {
   nr_token = 0;
 
   while (e[position] != '\0') {
-    printf("%d", position);
+    printf("position: %d\n", position);
     /* Try all rules one by one. */
     char token_str[32];
 
