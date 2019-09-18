@@ -204,18 +204,20 @@ uint32_t eval(int p, int q) {
       return 0;
     }
   }
-
-  else if (check_parentheses(p, q) == 1) {
+  
+  else{
+    printf("Starting checking parentheses!");
+    if (check_parentheses(p, q) == 1) {
       /* The expression is surrounded by a matched pair of parentheses.
       * If that is the case, just throw away the parentheses.
       */
       return eval(p + 1, q - 1);
-  }
+    }
 
-  else {
-      /* We should do more things here. */
+    else {
+        /* We should do more things here. */
+    }
   }
-
   return 0;
 }
 
@@ -322,9 +324,11 @@ Status Pop(Stack *S, SElemType *e){
 
 int check_parentheses(int p, int q){
     Stack S;
+    printf("hi!");
     int e,temp[32];
     int a = 0;
     int *m = &a;
+    printf("hi!!");
     int i=p;
     int flag=1;
 
@@ -334,7 +338,7 @@ int check_parentheses(int p, int q){
         printf("false, the whole expression is not surrounded by a matched pair of parentheses");
         return 0;
     }
-
+    printf("hi!!!");
     i=p;
     e=temp[i];
 
