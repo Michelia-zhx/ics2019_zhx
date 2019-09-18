@@ -348,7 +348,7 @@ bool check_parentheses(int p, int q){
 
     for (i=p; i<=q; ++i)  temp[i] = tokens[i].type;
     InitStack(&S);
-    if (temp[p]!=40||temp[q]!=41){
+    if (temp[p]!='('||temp[q]!=')'){
         printf("false, the whole expression is not surrounded by a matched pair of parentheses");
         return false;
     }
