@@ -99,6 +99,7 @@ static bool make_token(char *e) {
     printf("%d", position);
     /* Try all rules one by one. */
     char token_str[32];
+
     for (i = 0; i < NR_REGEX; i ++) {
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
@@ -141,21 +142,21 @@ static bool make_token(char *e) {
           case 258: {
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
-            //printf("The token is: %s\n", tokens[nr_token].str);
+            printf("The %d token is: %s\n", nr_token, token_str);
             nr_token += 1; 
             break;
           }
           case 259: {
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
-            //printf("The token is: %s\n", tokens[nr_token].str);
+            printf("The %d token is: %s\n", nr_token, token_str);
             nr_token += 1; 
             break;
           }
           case 260: {
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
-            //printf("The token is: %s\n", token_str);
+            printf("The %d token is: %s\n", nr_token, token_str);
             nr_token += 1; 
             break;
           }
