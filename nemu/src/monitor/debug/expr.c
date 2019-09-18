@@ -407,7 +407,11 @@ bool check_parentheses(int p, int q){
                 e=temp[i];
                 break;
             }
-            default: break;
+            default:{
+                i++;
+                e=temp[i];
+                break;
+            }
         }
     }
 
