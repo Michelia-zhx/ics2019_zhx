@@ -326,7 +326,8 @@ Status Push(Stack *S, SElemType e){
 Status Pop(Stack *S, SElemType *e){
     if(S->top == S->base) return ERROR;
     else {
-        e = S->top;
+        printf("top:%d\n",*(S->top));
+        *e = *(S->top);
         S->top -= 1;
         return OK;
     }
