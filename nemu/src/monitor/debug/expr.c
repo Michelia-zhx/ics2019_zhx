@@ -354,20 +354,18 @@ bool check_parentheses(int p, int q){
     e=temp[i];
 
     while(i<=q && flag){
-      printf("%d", e);
+      printf("%d\n", e);
         switch(e){
             case 40:   case 91:   case 123: {
                 if (!StackEmpty(&S)||i==p){
-                    Push(&S, e); 
-                    i++; 
-                    e=temp[i];
+                    Push(&S, e);
                 }
                 else{
                     printf("false, the leftmost '(' and the rightmost ')' are not matched");
                     flag = 0;
-                    i++;
-                    e = temp[i];
                 }
+                i++;
+                e = temp[i];
                 break; //左括号入栈
             }
             case ')':{
@@ -378,9 +376,9 @@ bool check_parentheses(int p, int q){
                 else if (i!=q) {
                     printf("false, bad expression");
                     flag=0;
-                    i++;
-                    e=temp[i];
                 }
+                i++;
+                e=temp[i];
                 break;
             }
             case ']':{
@@ -391,9 +389,9 @@ bool check_parentheses(int p, int q){
                 else if (i!=q) {
                     printf("false, bad expression");
                     flag=0;
-                    i++;
-                    e=temp[i];
                 }
+                i++;
+                e=temp[i];
                 break;
             }
             case '}':{
@@ -404,12 +402,12 @@ bool check_parentheses(int p, int q){
                 else if (i!=q) {
                     printf("false, bad expression");
                     flag=0;
-                    i++;
-                    e=temp[i];
                 }
+                i++;
+                e=temp[i];
                 break;
             }
-            default:    break;
+            default: break;
         }
     }
 
