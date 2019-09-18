@@ -339,7 +339,7 @@ bool check_parentheses(int p, int q){
     int e,temp[32];
     int a = 0;
     int *m = &a;
-    printf("hi!!");
+    //printf("hi!!");
     int i=p;
     int flag=1;
 
@@ -349,12 +349,12 @@ bool check_parentheses(int p, int q){
         printf("false, the whole expression is not surrounded by a matched pair of parentheses");
         return false;
     }
-    printf("hi!!!");
+    //printf("hi!!!");
     i=p;
     e=temp[i];
 
     while(i<=q && flag){
-      printf("%d\n", e);
+      //printf("%d\n", e);
         switch(e){
             case 40:   case 91:   case 123: {
                 if (!StackEmpty(&S)||i==p){
