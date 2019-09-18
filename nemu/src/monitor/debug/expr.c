@@ -212,7 +212,7 @@ uint32_t eval(int p, int q) {
   }
   
   else{
-    printf("Starting checking parentheses!");
+    printf("Starting checking parentheses!\n");
     if (check_parentheses(p, q) == 1) {
       /* The expression is surrounded by a matched pair of parentheses.
       * If that is the case, just throw away the parentheses.
@@ -229,8 +229,6 @@ uint32_t eval(int p, int q) {
 }
 
 uint32_t expr(char *e, bool *success) {
-  printf("%s", e);
-  printf("make token %d", make_token(e));
   if (make_token(e)!=true) {
     printf("make token failed\n");
     *success = false;
@@ -238,7 +236,7 @@ uint32_t expr(char *e, bool *success) {
     return 0;
   }
 
-  printf("make token success");
+  printf("make token success\n");
   int p = 0;
   int q = nr_token-1;
 
@@ -335,7 +333,7 @@ Status Pop(Stack *S, SElemType *e){
 
 bool check_parentheses(int p, int q){
     Stack S;
-    printf("hi!");
+    //printf("hi!");
     int e,temp[32];
     int a = 0;
     int *m = &a;
@@ -356,7 +354,7 @@ bool check_parentheses(int p, int q){
     while(i<=q && flag){
       //printf("%d\n", e);
         switch(e){
-            case 40:   case 91:   case 123: {
+            case '(':   case '[':   case '{': {
                 if (!StackEmpty(&S)||i==p){
                     Push(&S, e);
                 }
