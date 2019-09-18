@@ -374,7 +374,7 @@ bool check_parentheses(int p, int q){
                 printf(")\n");
                 if (!StackEmpty(&S)){
                     Pop(&S, m);                  //右括号 匹配的话 出栈
-                    if (e!='(') flag=0;
+                    if (*m!='(') flag=0;
                 }
                 else if (i!=q) {
                     printf("false, bad expression");
@@ -387,7 +387,7 @@ bool check_parentheses(int p, int q){
             case ']':{
                 if(!StackEmpty(&S)){
                     Pop(&S, m);
-                    if(e!='[') flag=0;
+                    if(*m!='[') flag=0;
                 }
                 else if (i!=q) {
                     printf("false, bad expression");
@@ -400,7 +400,7 @@ bool check_parentheses(int p, int q){
             case '}':{
                 if(!StackEmpty(&S)){
                     Pop(&S, m);
-                    if(e!='{')   flag=0;
+                    if(*m!='{')   flag=0;
                 }
                 else if (i!=q) {
                     printf("false, bad expression");
