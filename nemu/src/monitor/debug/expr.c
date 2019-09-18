@@ -142,21 +142,21 @@ static bool make_token(char *e) {
           case 258: {
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
-            printf("The %d token is: %s\n", nr_token, token_str);
+            printf("The %d token is: %s\n", nr_token, tokens[nr_token].str);
             nr_token += 1; 
             break;
           }
           case 259: {
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
-            printf("The %d token is: %s\n", nr_token, token_str);
+            printf("The %d token is: %s\n", nr_token, tokens[nr_token].str);
             nr_token += 1; 
             break;
           }
           case 260: {
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
-            printf("The %d token is: %s\n", nr_token, token_str);
+            printf("The %d token is: %s\n", nr_token, tokens[nr_token].str);
             nr_token += 1;
             break;
           }
