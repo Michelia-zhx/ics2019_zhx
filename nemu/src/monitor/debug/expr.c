@@ -28,7 +28,7 @@ typedef struct{
 }Stack;
 
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_GPR, TK_HEXADECIMAL, TK_DECIMAL
+  TK_NOTYPE = 256, TK_EQ, TK_GPR, TK_HEXADECIMAL, TK_DECIMAL, TK_AND, TK_OR, TK_NOT
 
   /* TODO: Add more token types */
 
@@ -56,7 +56,10 @@ static struct rule {
   {"==", TK_EQ},        // equal
   {"\\$[e,a,b,c,d,s].*?[x,p,i,l,h]", TK_GPR},    //GPR
   {"0x[0-9]+", TK_HEXADECIMAL},  // hexadecimal numbers
-  {"[0-9]+", TK_DECIMAL}    // decimal numbers
+  {"[0-9]+", TK_DECIMAL},    // decimal numbers
+  {"&&", TK_AND},           // and
+  {"\\|\\|", TK_OR},           // or
+  {"!", TK_NOT}           // not
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -160,6 +163,9 @@ static bool make_token(char *e) {
             nr_token += 1;
             break;
           }
+          case 261: nr_token += 1; break;
+          case 262: nr_token += 1; break;
+          case 263: nr_token += 1; break;
           default: {
             printf("The token can be matched but whose type isn't here.\n");
           }
