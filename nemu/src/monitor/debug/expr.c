@@ -174,7 +174,7 @@ static bool make_token(char *e) {
     }
   }
   //printf("The last token is: %s\n", tokens[nr_token-1].str);
-  //printf("The first type is: %d\n:", tokens[0].type);
+  printf("The first type is: %d\n:", tokens[0].type);
   return true;
 }
 
