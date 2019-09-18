@@ -358,6 +358,7 @@ bool check_parentheses(int p, int q){
       //printf("%d\n", e);
         switch(e){
             case '(':   case '[':   case '{': {
+                printf("(\n");
                 if (!StackEmpty(&S)||i==p){
                     Push(&S, e);
                 }
@@ -370,6 +371,7 @@ bool check_parentheses(int p, int q){
                 break; //左括号入栈
             }
             case ')':{
+                printf(")\n");
                 if (!StackEmpty(&S)){
                     Pop(&S, m);                  //右括号 匹配的话 出栈
                     if (e!='(') flag=0;
@@ -409,17 +411,17 @@ bool check_parentheses(int p, int q){
                 break;
             }
             default:{
+              printf("default\n");
                 i++;
                 e=temp[i];
                 break;
             }
         }
     }
-
     if(!StackEmpty(&S)) flag=0;
 
     DestroyStack(&S);
-
+    printf("%d", flag);
     if(flag==1) return true;
     else  return false;
 }
