@@ -157,7 +157,7 @@ static bool make_token(char *e) {
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
             printf("The %d token is: %s\n", nr_token, token_str);
-            nr_token += 1; 
+            nr_token += 1;
             break;
           }
           default: {
@@ -174,6 +174,7 @@ static bool make_token(char *e) {
     }
   }
   printf("The first token is: %s\n", tokens[0].str);
+  printf("The first type is%d:", tokens[0].type);
   return true;
 }
 
