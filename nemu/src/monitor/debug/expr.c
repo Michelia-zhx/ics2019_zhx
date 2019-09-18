@@ -9,6 +9,9 @@
 #include <regex.h>
 #include <string.h>
 
+#define bool int
+#define true 1
+#define false 0
 #define OVERFLOW -1
 #define OK 1
 #define ERROR 0
