@@ -414,7 +414,7 @@ bool check_parentheses(int p, int q){
                 break;
             }
             default:{
-              printf("default\n");
+              //printf("default\n");
                 i++;
                 e=temp[i];
                 break;
