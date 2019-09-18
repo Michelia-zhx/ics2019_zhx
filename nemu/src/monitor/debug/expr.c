@@ -172,7 +172,7 @@ static bool make_token(char *e) {
       return false;
     }
   }
-  //printf("The first token is: %s\n", tokens[0].str);
+  printf("The first token is: %s\n", tokens[0].str);
   return true;
 }
 
@@ -220,6 +220,7 @@ uint32_t eval(int p, int q) {
 
     else {
         /* We should do more things here. */
+        TODO();
     }
   }
   return 0;
@@ -232,6 +233,7 @@ uint32_t expr(char *e, bool *success) {
 
     return 0;
   }
+
   printf("make token success");
   int p = 0;
   int q = nr_token-1;
@@ -327,7 +329,7 @@ Status Pop(Stack *S, SElemType *e){
 
  
 
-int check_parentheses(int p, int q){
+bool check_parentheses(int p, int q){
     Stack S;
     printf("hi!");
     int e,temp[32];
@@ -341,7 +343,7 @@ int check_parentheses(int p, int q){
     InitStack(&S);
     if (temp[p]!='('||temp[q]!=')'){
         printf("false, the whole expression is not surrounded by a matched pair of parentheses");
-        return 0;
+        return false;
     }
     printf("hi!!!");
     i=p;
@@ -410,6 +412,6 @@ int check_parentheses(int p, int q){
 
     DestroyStack(&S);
 
-    if(flag==1) return 1;
-    else  return 0;
+    if(flag==1) return true;
+    else  return false;
 }
