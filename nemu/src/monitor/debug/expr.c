@@ -318,8 +318,9 @@ Status Push(Stack *S, SElemType e){
         (*S).top = (*S).base + (*S).stacksize;
         (*S).stacksize += STACKINCREMENT;
     }
-    *(*S).top = e;
     (*S).top++;
+    *(*S).top = e;
+    
     return OK;
 }
 
