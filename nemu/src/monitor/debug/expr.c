@@ -28,20 +28,20 @@ typedef struct{
 }Stack;
 
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_GPR, TK_HEXADECIMAL, TK_DECIMAL, TK_AND, TK_OR, TK_NOT
-
-  /* TODO: Add more token types */
-
+  TK_NOTYPE = 256, 
+  TK_EQ,          //257
+  TK_GPR,         //258
+  TK_HEXADECIMAL, //259
+  TK_DECIMAL,     //260
+  TK_AND,         //261
+  TK_OR,          //262
+  TK_NOT          //263
 };
 
 static struct rule {
   char *regex;
   int token_type;
 } rules[] = {
-
-  /* TODO: Add more rules.
-   * Pay attention to the precedence level of different rules.
-   */
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
   {"\\-", '-'},            // minus
@@ -185,10 +185,11 @@ static bool make_token(char *e) {
 }
 
 extern int check_parentheses(int p, int q);
+extern int find_dominated_op(int p, int q);
 
 uint32_t eval(int p, int q) {
   if (p > q) {
-    printf("fatal error, the start of the sub-expression is bigger than its end.");
+    Log("fatal error, the start of the sub-expression is bigger than its end.");
     return 0;
   }
 
@@ -213,25 +214,34 @@ uint32_t eval(int p, int q) {
       //return get_gpr(tokens[p].str);
     //}
     else {
-      printf("Something wrong! The expression is illegal.");
+      Log("Something wrong! The expression is illegal.");
       return 0;
     }
   }
   
   else{
-    printf("Starting checking parentheses!\n");
+    Log("Starting checking parentheses!\n");
     if (check_parentheses(p, q) == 1) {
       printf("p:%d, q:%d\n", p, q);
       /* The expression is surrounded by a matched pair of parentheses.
       * If that is the case, just throw away the parentheses.
       */
-      printf("p+1:%d, q-1:%d\n", p+1, q-1);
       return eval(p + 1, q - 1);
     }
 
     else {
-        /* We should do more things here. */
-        TODO();
+      int op = find_dominated_op(p, q);
+      
+      int val1 = eval(p, op - 1);
+      int val2 = eval(op + 1, q);
+
+      switch (tokens[op].type) {
+        case '+': return val1 + val2;
+        case '-': return val1 - val2;
+        case '*': return val1 * val2;
+        case '/': return val1 / val2;
+        default: assert(0);
+      }
     }
   }
   return 0;
@@ -239,13 +249,12 @@ uint32_t eval(int p, int q) {
 
 uint32_t expr(char *e, bool *success) {
   if (make_token(e)!=true) {
-    printf("make token failed\n");
+    Log("make token failed\n");
     *success = false;
 
     return 0;
   }
 
-  printf("make token success\n");
   int p = 0;
   int q = nr_token-1;
 
@@ -383,11 +392,11 @@ bool check_parentheses(int p, int q){
                 if (!StackEmpty(&S)){
                     Pop(&S, m);                //右括号 匹配的话 出栈
                     printf("m:%d", *m);
-                    if (*m!='(') flag=0; //printf("failed here");
+                    if (*m!='(') flag=-1; //printf("failed here");
                 }
-                else if (i!=q) {
+                else {
                     printf("false, bad expression");
-                    flag=0;
+                    flag=-1;
                 }
                 i++;
                 e=temp[i];
@@ -396,11 +405,11 @@ bool check_parentheses(int p, int q){
             case ']':{
                 if(!StackEmpty(&S)){
                     Pop(&S, m);
-                    if(*m!='[') flag=0; //printf("failed here");
+                    if(*m!='[') flag=-1; //printf("failed here");
                 }
-                else if (i!=q) {
+                else {
                     printf("false, bad expression");
-                    flag=0;
+                    flag=-1;
                 }
                 i++;
                 e=temp[i];
@@ -409,11 +418,11 @@ bool check_parentheses(int p, int q){
             case '}':{
                 if(!StackEmpty(&S)){
                     Pop(&S, m);
-                    if(*m!='{') flag=0; //printf("failed here");
+                    if(*m!='{') flag=-1; //printf("failed here");
                 }
-                else if (i!=q) {
+                else {
                     printf("false, bad expression");
-                    flag=0;
+                    flag=-1;
                 }
                 i++;
                 e=temp[i];
@@ -427,10 +436,89 @@ bool check_parentheses(int p, int q){
             }
         }
     }
-    if(!StackEmpty(&S)) flag=0;
+    if(!StackEmpty(&S)) flag=-1;
 
     DestroyStack(&S);
     printf("%d\n", flag);
     if(flag==1) return true;
+    else if (flag==-1){
+      assert(0);
+    }
     else return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int find_dominated_op(int p, int q){
+  int op = p;
+  int position = p;
+  int op_priority = 100;
+  int cur_priority = 100;
+  int num_left_parentheses = 0;
+  while (position<=q){
+    switch (tokens[position].type)
+    {
+    case 262:{
+      if (num_left_parentheses==0) cur_priority = 0;
+      if (cur_priority <= op_priority){
+        op_priority = cur_priority;
+        op = position;
+      }
+      position += 1;
+    } break;
+
+    case 261:{
+      if (num_left_parentheses==0) cur_priority = 1;
+      if (cur_priority <= op_priority){
+        op_priority = cur_priority;
+        op = position;
+      }
+      position += 1;
+    } break;
+    
+    case '+': case '-':{
+      if (num_left_parentheses==0) cur_priority = 2;
+      if (cur_priority <= op_priority){
+        op_priority = cur_priority;
+        op = position;
+      }
+      position += 1;
+    } break;
+    case '*': case '/': {
+      if (num_left_parentheses==0) cur_priority = 3;
+      if (cur_priority <= op_priority){
+        op_priority = cur_priority;
+        op = position;
+      }
+      position += 1;
+    } break;
+    case '(': num_left_parentheses += 1; position += 1; break;
+    case ')': num_left_parentheses -= 1; position += 1; break;
+    case 263:{
+      if (num_left_parentheses==0) cur_priority = 4;
+      if (cur_priority <= op_priority){
+        op_priority = cur_priority;
+        op = position;
+      }
+      position += 1;
+    } break;
+    default: position += 1; break;
+    }
+  }
+  return op;
 }
