@@ -213,7 +213,8 @@ uint32_t eval(int p, int q) {
       return number;
     }
     else if (tokens[p].type==258){
-      printf("tokens[p].str=='$eax: %d\n", strcmp(tokens[p].str,"$eax"));
+      printf("tokens[p].str: %s\n", tokens[p].str);
+      printf("tokens[p].str==$eax: %d\n", strcmp(tokens[p].str,"$eax"));
       return 0;
     }
     else {
