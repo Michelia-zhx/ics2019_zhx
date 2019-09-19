@@ -99,7 +99,7 @@ static bool make_token(char *e) {
   nr_token = 0;
 
   while (e[position] != '\0') {
-    printf("position: %d\n", position);
+    //printf("position: %d\n", position);
     /* Try all rules one by one. */
     char token_str[32];
 
@@ -108,8 +108,8 @@ static bool make_token(char *e) {
         char *substr_start = e + position;
         //printf("%s\n", substr_start);
         int substr_len = pmatch.rm_eo;
-        printf("substr_len:%d \n", substr_len);
-        printf("token type: %d \n", rules[i].token_type);
+        //printf("substr_len:%d \n", substr_len);
+        //printf("token type: %d \n", rules[i].token_type);
 
         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
@@ -145,21 +145,21 @@ static bool make_token(char *e) {
           case 258: {
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
-            printf("The %d token is: %s\n", nr_token, tokens[nr_token].str);
+            //printf("The %d token is: %s\n", nr_token, tokens[nr_token].str);
             nr_token += 1; 
             break;
           }
           case 259: {
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
-            printf("The %d token is: %s\n", nr_token, tokens[nr_token].str);
+            //printf("The %d token is: %s\n", nr_token, tokens[nr_token].str);
             nr_token += 1; 
             break;
           }
           case 260: {
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
-            printf("The %d token is: %s\n", nr_token, tokens[nr_token].str);
+            //printf("The %d token is: %s\n", nr_token, tokens[nr_token].str);
             nr_token += 1;
             break;
           }
@@ -180,7 +180,7 @@ static bool make_token(char *e) {
     }
   }
   //printf("The last token is: %s\n", tokens[nr_token-1].str);
-  printf("The first type is: %d\n:", tokens[0].type);
+  //printf("The first type is: %d\n:", tokens[0].type);
   return true;
 }
 
@@ -194,7 +194,7 @@ uint32_t eval(int p, int q) {
   }
 
   else if (p == q) {
-    printf("p:%d, q:%d\n", p, q);
+    //printf("p:%d, q:%d\n", p, q);
     if (tokens[p].type == 259){
       int number = 0;
       for (int j=2; j<strlen(tokens[p].str); ++j){
