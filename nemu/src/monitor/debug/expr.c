@@ -55,7 +55,7 @@ static struct rule {
   {"\\}", '}'},
   {"==", TK_EQ},        // equal
   {"\\$[e,a,b,c,d,s].*?[x,p,i,l,h]", TK_GPR},    //GPR
-  {"0x[0-9]+", TK_HEXADECIMAL},  // hexadecimal numbers
+  {"0x[0-9a-f]+", TK_HEXADECIMAL},  // hexadecimal numbers
   {"[0-9]+", TK_DECIMAL},    // decimal numbers
   {"&&", TK_AND},           // and
   {"\\|\\|", TK_OR},           // or
@@ -198,7 +198,9 @@ uint32_t eval(int p, int q) {
     if (tokens[p].type == 259){
       int number = 0;
       for (int j=2; j<strlen(tokens[p].str); ++j){
-        number = number*16 + (tokens[p].str[j]-'0');
+        if (tokens[p].str[j]>='a' && tokens[p].str[j]<='f')
+          number = number*16 + (tokens[p].str[j]-'a'+10);
+        else number = number*16 + (tokens[p].str[j]-'0');
       }
       return number;
     }
@@ -251,7 +253,6 @@ uint32_t expr(char *e, bool *success) {
   if (make_token(e)!=true) {
     Log("make token failed\n");
     *success = false;
-
     return 0;
   }
 
