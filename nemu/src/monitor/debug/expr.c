@@ -212,9 +212,10 @@ uint32_t eval(int p, int q) {
       }
       return number;
     }
-    //else if (tokens[p].type==258){
-      //return get_gpr(tokens[p].str);
-    //}
+    else if (tokens[p].type==258){
+      printf("tokens[p].str=='$eax: %d\n", strcmp(tokens[p].str,"$eax"));
+      return 0;
+    }
     else {
       Log("Something wrong! The expression is illegal.");
       return 0;
@@ -263,43 +264,6 @@ uint32_t expr(char *e, bool *success) {
   //printf("Hello, %d %s\n", tokens[0].type, tokens[0].str);
   return eval(p, q);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -447,22 +411,6 @@ bool check_parentheses(int p, int q){
     }
     else return false;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 int find_dominated_op(int p, int q){

@@ -102,7 +102,7 @@ static int cmd_si(char *args){
   if (arg == NULL) i = 1;
   else i = atoi(arg);
   if (i==0) {
-    printf("Input is not a number, default i=1");
+    Log("Invalid Input");
     i = 1;
   }
   for (int j=1; j<=i; ++j){
@@ -118,6 +118,8 @@ static int cmd_info(char *args){
   if (arg==NULL){
     printf("For example: 'info r'--display the state of register; 'info w'--display the state of watchpoint.");
     return 0;
+  }
+  if (*arg=='w'){
   }
   if (*arg=='r'){
     isa_reg_display();
@@ -142,7 +144,7 @@ static int cmd_x_N(char *args){
   char *arg = strtok(NULL, " ");
   int n = atoi(arg);
   if (n<=0){
-    printf("The input N should be a positive number.");
+    Log("Invalid Input");
     return -1;
   }
   arg = strtok(NULL, " ");
