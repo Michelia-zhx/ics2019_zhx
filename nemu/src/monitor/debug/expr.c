@@ -365,7 +365,7 @@ bool check_parentheses(int p, int q){
     for (i=p; i<=q; ++i)  temp[i] = tokens[i].type;
     InitStack(&S);
     if (temp[p]!='('||temp[q]!=')'){
-        printf("false, the whole expression is not surrounded by a matched pair of parentheses");
+        //printf("false, the whole expression is not surrounded by a matched pair of parentheses");
         return false;
     }
     //printf("hi!!!");
@@ -382,7 +382,7 @@ bool check_parentheses(int p, int q){
                 }
                 else{
                     printf("false, the leftmost '(' and the rightmost ')' are not matched");
-                    flag = 0;
+                    flag = -1;
                 }
                 i++;
                 e = temp[i];
