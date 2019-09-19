@@ -474,46 +474,56 @@ int find_dominated_op(int p, int q){
     switch (tokens[position].type)
     {
     case 262:{
-      if (num_left_parentheses==0) cur_priority = 0;
-      if (cur_priority <= op_priority){
-        op_priority = cur_priority;
-        op = position;
+      if (num_left_parentheses==0){
+        cur_priority = 0;
+        if (cur_priority <= op_priority){
+          op_priority = cur_priority;
+          op = position;
+        }
       }
       position += 1;
     } break;
 
     case 261:{
-      if (num_left_parentheses==0) cur_priority = 1;
-      if (cur_priority <= op_priority){
-        op_priority = cur_priority;
-        op = position;
+      if (num_left_parentheses==0){
+        cur_priority = 1;
+        if (cur_priority <= op_priority){
+          op_priority = cur_priority;
+          op = position;
+        }
       }
       position += 1;
     } break;
     
     case '+': case '-':{
-      if (num_left_parentheses==0) cur_priority = 2;
-      if (cur_priority <= op_priority){
-        op_priority = cur_priority;
-        op = position;
+      if (num_left_parentheses==0){
+        cur_priority = 2;
+        if (cur_priority <= op_priority){
+          op_priority = cur_priority;
+          op = position;
+        }
       }
       position += 1;
     } break;
     case '*': case '/': {
-      if (num_left_parentheses==0) cur_priority = 3;
-      if (cur_priority <= op_priority){
-        op_priority = cur_priority;
-        op = position;
+      if (num_left_parentheses==0){
+        cur_priority = 3;
+        if (cur_priority <= op_priority){
+          op_priority = cur_priority;
+          op = position;
+        }
       }
       position += 1;
     } break;
     case '(': num_left_parentheses += 1; position += 1; break;
     case ')': num_left_parentheses -= 1; position += 1; break;
     case 263:{
-      if (num_left_parentheses==0) cur_priority = 4;
-      if (cur_priority <= op_priority){
-        op_priority = cur_priority;
-        op = position;
+      if (num_left_parentheses==0){
+        cur_priority = 4;
+        if (cur_priority <= op_priority){
+          op_priority = cur_priority;
+          op = position;
+        }
       }
       position += 1;
     } break;
