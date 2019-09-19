@@ -186,6 +186,7 @@ static bool make_token(char *e) {
 
 extern int check_parentheses(int p, int q);
 extern int find_dominated_op(int p, int q);
+extern int get_gpr(int p);
 
 uint32_t eval(int p, int q) {
   if (p > q) {
@@ -213,9 +214,7 @@ uint32_t eval(int p, int q) {
       return number;
     }
     else if (tokens[p].type==258){
-      printf("tokens[p].str: %s\n", tokens[p].str);
-      printf("tokens[p].str==$eax: %d\n", strcmp(tokens[p].str,"$eax"));
-      return 0;
+      return get_gpr(p);
     }
     else {
       Log("Something wrong! The expression is illegal.");
@@ -267,6 +266,37 @@ uint32_t expr(char *e, bool *success) {
 }
 
 
+
+int get_gpr(int p){
+  if (strcmp(tokens[p].str, "$eax")==0) return cpu.eax;
+  else if (strcmp(tokens[p].str, "$ecx")==0) return cpu.ecx;
+  else if (strcmp(tokens[p].str, "$edx")==0) return cpu.edx;
+  else if (strcmp(tokens[p].str, "$ebx")==0) return cpu.ebx;
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.esp;
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.ebp;
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.esi;
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.edi;
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[0]._16;
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[1]._16;
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[2]._16;
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[3]._16;
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[4]._16;
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[5]._16;
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[6]._16;
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[7]._16;
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[0]._8[0];
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[0]._8[1];
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[1]._8[0];
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[1]._8[1];
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[2]._8[0];
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[2]._8[1];
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[3]._8[0];
+  else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[3]._8[1];
+  else {
+    Log("Illegal GPR name");
+    return -1;
+  }
+}
 
 
 Status InitStack(Stack *S){
