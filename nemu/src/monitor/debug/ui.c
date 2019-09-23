@@ -132,11 +132,14 @@ static int cmd_p(char *args){
   bool suc = true;
   bool *success = &suc;
   int result = expr(args, success);
+  printf("$ %d\n", result);
+  /*
   if (suc==1){
-    printf("$ %d\n", result);
+    
     return 0;
   }
-  else return 0;
+  else */
+  return 0;
 }
 
 extern uint32_t paddr_read(paddr_t addr, int len);
