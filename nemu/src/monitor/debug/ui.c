@@ -132,7 +132,7 @@ static int cmd_p(char *args){
   bool suc = true;
   bool *success = &suc;
   int result = expr(args, success);
-  if (*success==true){
+  if (suc==1){
     printf("$ %d\n", result);
     return 0;
   }

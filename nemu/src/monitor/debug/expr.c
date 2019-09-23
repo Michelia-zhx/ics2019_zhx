@@ -249,7 +249,7 @@ uint32_t eval(int p, int q, bool *success) {
             *success = false;
             return 0;
           }
-          else return 0;//val1 / val2;
+          else return val1 / val2;
         }
         default: {
           Log("Strange operation!");
