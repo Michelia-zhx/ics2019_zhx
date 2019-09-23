@@ -251,7 +251,11 @@ uint32_t eval(int p, int q, bool *success) {
           }
           else return val1 / val2;
         }
-        default: assert(0);
+        default: {
+          Log("Strange operation!");
+          *success = false;
+          return 0;
+        }
       }
     }
   }
@@ -267,9 +271,6 @@ uint32_t expr(char *e, bool *success) {
 
   int p = 0;
   int q = nr_token-1;
-
-  /* TODO: Insert codes to evaluate the expression. */
-  //printf("Hello, %d %s\n", tokens[0].type, tokens[0].str);
   return eval(p, q, success);
 }
 
