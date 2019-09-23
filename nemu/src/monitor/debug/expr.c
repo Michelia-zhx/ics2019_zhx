@@ -3,6 +3,7 @@
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
  */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -184,11 +185,11 @@ static bool make_token(char *e) {
   return true;
 }
 
-extern int check_parentheses(int p, int q);
-extern int find_dominated_op(int p, int q);
-extern int get_gpr(int p);
+extern int check_parentheses(int p, int q, bool *success);
+extern int find_dominated_op(int p, int q, bool *success);
+extern int get_gpr(int p, bool *success);
 
-uint32_t eval(int p, int q) {
+uint32_t eval(int p, int q, bool *success) {
   if (p > q) {
     Log("fatal error, the start of the sub-expression is bigger than its end.");
     return 0;
@@ -214,7 +215,7 @@ uint32_t eval(int p, int q) {
       return number;
     }
     else if (tokens[p].type==258){
-      return get_gpr(p);
+      return get_gpr(p, success);
     }
     else {
       Log("Something wrong! The expression is illegal.");
@@ -224,25 +225,32 @@ uint32_t eval(int p, int q) {
   
   else{
     Log("Starting checking parentheses!\n");
-    if (check_parentheses(p, q) == 1) {
+    if (check_parentheses(p, q, success) == 1) {
       printf("p:%d, q:%d\n", p, q);
       /* The expression is surrounded by a matched pair of parentheses.
       * If that is the case, just throw away the parentheses.
       */
-      return eval(p + 1, q - 1);
+      return eval(p + 1, q - 1, success);
     }
 
     else {
-      int op = find_dominated_op(p, q);
+      int op = find_dominated_op(p, q, success);
       
-      int val1 = eval(p, op - 1);
-      int val2 = eval(op + 1, q);
+      int val1 = eval(p, op - 1, success);
+      int val2 = eval(op + 1, q, success);
 
       switch (tokens[op].type) {
         case '+': return val1 + val2;
         case '-': return val1 - val2;
         case '*': return val1 * val2;
-        case '/': return val1 / val2;
+        case '/': {
+          if (val2==0){
+            Log("ERROR: Division by zero");
+            *success = false;
+            return 0;
+          }
+          else return val1 / val2;
+        }
         default: assert(0);
       }
     }
@@ -262,12 +270,11 @@ uint32_t expr(char *e, bool *success) {
 
   /* TODO: Insert codes to evaluate the expression. */
   //printf("Hello, %d %s\n", tokens[0].type, tokens[0].str);
-  return eval(p, q);
+  return eval(p, q, success);
 }
 
 
-
-int get_gpr(int p){
+int get_gpr(int p, bool *success){
   if (strcmp(tokens[p].str, "$eax")==0) return cpu.eax;
   else if (strcmp(tokens[p].str, "$ecx")==0) return cpu.ecx;
   else if (strcmp(tokens[p].str, "$edx")==0) return cpu.edx;
@@ -294,7 +301,8 @@ int get_gpr(int p){
   else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[3]._8[1];
   else {
     Log("Illegal GPR name");
-    return -1;
+    *success = false;
+    return 0;
   }
 }
 
@@ -347,7 +355,7 @@ Status Pop(Stack *S, SElemType *e){
 
  
 
-bool check_parentheses(int p, int q){
+bool check_parentheses(int p, int q, bool *success){
     Stack S;
     //printf("hi!");
     int e,temp[32];
@@ -376,8 +384,8 @@ bool check_parentheses(int p, int q){
                     Push(&S, e);
                 }
                 else{
-                    printf("false, the leftmost '(' and the rightmost ')' are not matched");
-                    flag = -1;
+                    //printf("false, the leftmost '(' and the rightmost ')' are not matched");
+                    flag = 0;
                 }
                 i++;
                 e = temp[i];
@@ -386,13 +394,17 @@ bool check_parentheses(int p, int q){
             case ')':{
                 //printf(")\n");
                 if (!StackEmpty(&S)){
-                    Pop(&S, m);                //右括号 匹配的话 出栈
+                    Pop(&S, m);
                     printf("m:%d", *m);
-                    if (*m!='(') flag=-1; //printf("failed here");
+                    if (*m!='('){
+                      flag=0;
+                      *success = false;
+                    }
                 }
                 else {
-                    printf("false, bad expression");
-                    flag=-1;
+                    Log("false, bad expression");
+                    flag=0;
+                    *success = false;
                 }
                 i++;
                 e=temp[i];
@@ -401,11 +413,15 @@ bool check_parentheses(int p, int q){
             case ']':{
                 if(!StackEmpty(&S)){
                     Pop(&S, m);
-                    if(*m!='[') flag=-1; //printf("failed here");
+                    if(*m!='['){
+                      flag=0; 
+                      *success = false;
+                    }
                 }
                 else {
-                    printf("false, bad expression");
-                    flag=-1;
+                    Log("false, bad expression");
+                    flag=0;
+                    *success = false;
                 }
                 i++;
                 e=temp[i];
@@ -414,37 +430,37 @@ bool check_parentheses(int p, int q){
             case '}':{
                 if(!StackEmpty(&S)){
                     Pop(&S, m);
-                    if(*m!='{') flag=-1; //printf("failed here");
+                    if(*m!='{'){
+                      flag=0;
+                      *success = false;
+                    }
                 }
                 else {
                     printf("false, bad expression");
-                    flag=-1;
+                    flag=0;
+                    *success = false;
                 }
                 i++;
                 e=temp[i];
                 break;
             }
             default:{
-              //printf("default\n");
                 i++;
                 e=temp[i];
                 break;
             }
         }
     }
-    if(!StackEmpty(&S)) flag=-1;
+    if(!StackEmpty(&S)) flag=0;
 
     DestroyStack(&S);
     printf("%d\n", flag);
     if(flag==1) return true;
-    else if (flag==-1){
-      assert(0);
-    }
     else return false;
 }
 
 
-int find_dominated_op(int p, int q){
+int find_dominated_op(int p, int q, bool *success){
   int op = p;
   int position = p;
   int op_priority = 100;
@@ -453,61 +469,82 @@ int find_dominated_op(int p, int q){
   while (position<=q){
     switch (tokens[position].type)
     {
-    case 262:{
-      if (num_left_parentheses==0){
-        cur_priority = 0;
-        if (cur_priority <= op_priority){
-          op_priority = cur_priority;
-          op = position;
+      case 262:{
+        if (num_left_parentheses==0){
+          cur_priority = 0;
+          if (cur_priority <= op_priority){
+            op_priority = cur_priority;
+            op = position;
+          }
         }
+        position += 1;
+        break;
       }
-      position += 1;
-    } break;
 
-    case 261:{
-      if (num_left_parentheses==0){
-        cur_priority = 1;
-        if (cur_priority <= op_priority){
-          op_priority = cur_priority;
-          op = position;
+      case 261:{
+        if (num_left_parentheses==0){
+          cur_priority = 1;
+          if (cur_priority <= op_priority){
+            op_priority = cur_priority;
+            op = position;
+          }
         }
-      }
-      position += 1;
-    } break;
-    
-    case '+': case '-':{
-      if (num_left_parentheses==0){
-        cur_priority = 2;
-        if (cur_priority <= op_priority){
-          op_priority = cur_priority;
-          op = position;
+        position += 1;
+        break;
+      } 
+      
+      case '+': case '-':{
+        if (num_left_parentheses==0){
+          cur_priority = 2;
+          if (cur_priority <= op_priority){
+            op_priority = cur_priority;
+            op = position;
+          }
         }
-      }
-      position += 1;
-    } break;
-    case '*': case '/': {
-      if (num_left_parentheses==0){
-        cur_priority = 3;
-        if (cur_priority <= op_priority){
-          op_priority = cur_priority;
-          op = position;
+        position += 1;
+        break;
+      } 
+
+      case '*': case '/': {
+        if (num_left_parentheses==0){
+          cur_priority = 3;
+          if (cur_priority <= op_priority){
+            op_priority = cur_priority;
+            op = position;
+          }
         }
+        position += 1;
+        break;
       }
-      position += 1;
-    } break;
-    case '(': num_left_parentheses += 1; position += 1; break;
-    case ')': num_left_parentheses -= 1; position += 1; break;
-    case 263:{
-      if (num_left_parentheses==0){
-        cur_priority = 4;
-        if (cur_priority <= op_priority){
-          op_priority = cur_priority;
-          op = position;
+
+      case '(':{
+        num_left_parentheses += 1;
+        position += 1;
+        break;
+      }
+
+      case ')':{
+        num_left_parentheses -= 1;
+        position += 1;
+        break;
+      }
+
+      case 263:{
+        if (num_left_parentheses==0){
+          cur_priority = 4;
+          if (cur_priority <= op_priority){
+            op_priority = cur_priority;
+            op = position;
+          }
         }
+        position += 1;
+        break;
       }
-      position += 1;
-    } break;
-    default: position += 1; break;
+
+      default:{
+        position += 1;
+        break;
+      }
     }
   }
   return op;

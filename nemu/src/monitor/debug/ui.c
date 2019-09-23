@@ -132,8 +132,9 @@ static int cmd_p(char *args){
   bool suc = true;
   bool *success = &suc;
   int result = expr(args, success);
-  //printf("The token-matching is: %d \n", *success);
-  printf("$ %d\n", result);
+  if (*success){
+    printf("$ %d\n", result);
+  }
   return 0;
 }
 
