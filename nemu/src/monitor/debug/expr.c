@@ -226,7 +226,7 @@ uint32_t eval(int p, int q, bool *success) {
   else{
     Log("Starting checking parentheses!\n");
     if (check_parentheses(p, q, success) == 1) {
-      printf("p:%d, q:%d\n", p, q);
+      //printf("p:%d, q:%d\n", p, q);
       /* The expression is surrounded by a matched pair of parentheses.
       * If that is the case, just throw away the parentheses.
       */
@@ -347,7 +347,7 @@ Status Push(Stack *S, SElemType e){
 Status Pop(Stack *S, SElemType *e){
     if(S->top == S->base) return ERROR;
     else {
-        printf("top:%d\n",*(S->top));
+        //printf("top:%d\n",*(S->top));
         *e = *(S->top);
         S->top -= 1;
         return OK;
@@ -396,7 +396,7 @@ bool check_parentheses(int p, int q, bool *success){
                 //printf(")\n");
                 if (!StackEmpty(&S)){
                     Pop(&S, m);
-                    printf("m:%d", *m);
+                    //printf("m:%d", *m);
                     if (*m!='('){
                       flag=0;
                       *success = false;
@@ -455,7 +455,7 @@ bool check_parentheses(int p, int q, bool *success){
     if(!StackEmpty(&S)) flag=0;
 
     DestroyStack(&S);
-    printf("%d\n", flag);
+    //printf("%d\n", flag);
     if(flag==1) return true;
     else return false;
 }
