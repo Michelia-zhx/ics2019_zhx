@@ -128,18 +128,14 @@ static int cmd_info(char *args){
 }//打印寄存器
 
 static int cmd_p(char *args){
-  //char *arg = strtok(NULL, " ");
   bool suc = true;
   bool *success = &suc;
   int result = expr(args, success);
-  printf("$ %d\n", result);
-  /*
-  if (suc==1){
-    
+  if (*success==true){
+    printf("$ %d\n", result);
     return 0;
   }
-  else */
-  return 0;
+  else return 0;
 }
 
 extern uint32_t paddr_read(paddr_t addr, int len);
