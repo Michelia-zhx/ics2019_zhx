@@ -247,7 +247,7 @@ uint32_t eval(int p, int q, bool *success) {
           if (val2==0){
             Log("ERROR: Division by zero");
             *success = false;
-            return -1;
+            return val1 / 1;
           }
           else return val1 / val2;
         }
