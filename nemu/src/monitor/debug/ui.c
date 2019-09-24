@@ -130,15 +130,9 @@ static int cmd_info(char *args){
 static int cmd_p(char *args){
   bool *success = (bool*)malloc(sizeof(bool));
   int result = expr(args, success);
-  if (*success==true){
-    free(success);
-    printf("$ %d\n", result);
-    return 0;
-  }
-  else{
-    free(success);
-    return 0;
-  }
+  if (*success==true) printf("$ %d\n", result);
+  free(success);
+  return 0;
 }
 
 extern uint32_t paddr_read(paddr_t addr, int len);
