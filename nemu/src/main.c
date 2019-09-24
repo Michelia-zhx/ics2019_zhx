@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
 
   bool *success = (bool*)malloc(sizeof(bool));
   FILE *f = fopen("./tools/gen-expr/input", "r");
-  char exp[65535];
+  char exp[10000];
   int correct;
   for (int i=0; i<10; ++i){
     exp[0] = '\0';
