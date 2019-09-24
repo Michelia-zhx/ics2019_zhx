@@ -16,9 +16,7 @@ int main(int argc, char *argv[]) {
   int correct;
   for (int i=0; i<10; ++i){
     exp[0] = '\0';
-    if (fscanf(f, "%u %s", &correct, exp)!=1){
-      continue;
-    }
+    if (fscanf(f, "%u %s", &correct, exp)!=1) continue;
     printf("%u %u", correct, expr(exp, success));
   }
   free(success);
