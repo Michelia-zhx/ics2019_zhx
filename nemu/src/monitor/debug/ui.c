@@ -129,6 +129,7 @@ static int cmd_info(char *args){
 
 static int cmd_p(char *args){
   bool *success = (bool*)malloc(sizeof(bool));
+  *success = true;
   int result = expr(args, success);
   if (*success==true) printf("$ %d\n", result);
   free(success);
