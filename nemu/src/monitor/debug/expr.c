@@ -20,7 +20,7 @@
 #define STACKINCREMENT 10
 
 typedef int SElemType;
-typedef int  Status;
+typedef int Status;
 
 typedef struct{
     SElemType *top;
@@ -202,10 +202,10 @@ static bool make_token(char *e) {
 
 extern int check_parentheses(int p, int q, bool *success);
 extern int find_dominated_op(int p, int q, bool *success);
-extern int get_gpr(int p, bool *success);
+extern uint32_t get_gpr(int p, bool *success);
 
 uint32_t eval(int p, int q, bool *success) {
-  printf("p:%d, q:%d\n", p, q);
+  //printf("p:%d, q:%d\n", p, q);
   if (p > q) {
     Log("fatal error, the start of the sub-expression is bigger than its end.");
     return 0;
@@ -231,7 +231,7 @@ uint32_t eval(int p, int q, bool *success) {
       return number;
     }
     else if (tokens[p].type==258){
-      int gpr_value = get_gpr(p, success);
+      uint32_t gpr_value = get_gpr(p, success);
       if (*success==true) return gpr_value;
       else return 0;
     }
@@ -255,8 +255,8 @@ uint32_t eval(int p, int q, bool *success) {
       int op = find_dominated_op(p, q, success);
       
       if (tokens[op].type!=DEREF){
-        int val1 = eval(p, op - 1, success);
-        int val2 = eval(op + 1, q, success);
+        uint32_t val1 = eval(p, op - 1, success);
+        uint32_t val2 = eval(op + 1, q, success);
 
         switch (tokens[op].type) {
           case '+': return val1 + val2;
@@ -302,7 +302,7 @@ uint32_t expr(char *e, bool *success) {
 }
 
 
-int get_gpr(int p, bool *success){
+uint32_t get_gpr(int p, bool *success){
   if (strcmp(tokens[p].str, "$eax")==0) return cpu.eax;
   else if (strcmp(tokens[p].str, "$ecx")==0) return cpu.ecx;
   else if (strcmp(tokens[p].str, "$edx")==0) return cpu.edx;
