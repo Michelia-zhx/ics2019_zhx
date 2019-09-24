@@ -215,7 +215,9 @@ uint32_t eval(int p, int q, bool *success) {
       return number;
     }
     else if (tokens[p].type==258){
-      return get_gpr(p, success);
+      int gpr_value = get_gpr(p, success);
+      if (*success==true) return gpr_value;
+      else return 0;
     }
     else {
       Log("Something wrong! The expression is illegal.");
@@ -235,9 +237,12 @@ uint32_t eval(int p, int q, bool *success) {
 
     else {
       int op = find_dominated_op(p, q, success);
+      if (*success==false) return 0;
       
       int val1 = eval(p, op - 1, success);
+      if (*success==false) return 0;
       int val2 = eval(op + 1, q, success);
+      if (*success==false) return 0;
 
       switch (tokens[op].type) {
         case '+': return val1 + val2;
@@ -247,7 +252,7 @@ uint32_t eval(int p, int q, bool *success) {
           if (val2==0){
             Log("ERROR: Division by zero");
             *success = false;
-            return val1 / 1;
+            return 0;
           }
           else return val1 / val2;
         }
@@ -309,8 +314,8 @@ int get_gpr(int p, bool *success){
 
 
 Status InitStack(Stack *S){
-    (*S).base=(SElemType *)malloc(STACK_INIT_SIZE * sizeof(SElemType));     //开辟空间
-    if(!(*S).base) return(OVERFLOW);      //存储分配失败
+    (*S).base=(SElemType *)malloc(STACK_INIT_SIZE * sizeof(SElemType));
+    if(!(*S).base) return(OVERFLOW);
     else {
         (*S).top=(*S).base;
         (*S).stacksize=STACK_INIT_SIZE;
