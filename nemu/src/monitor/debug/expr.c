@@ -146,7 +146,7 @@ static bool make_token(char *e) {
           case ']': nr_token += 1; break;
           case '{': nr_token += 1; break;
           case '}': nr_token += 1; break;
-          case 256: nr_token += 1; break;
+          case 256: break;
           case 257: nr_token += 1; break;
           case 258: {
             if(substr_len > 32){
