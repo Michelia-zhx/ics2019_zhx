@@ -36,7 +36,8 @@ enum {
   TK_DECIMAL,     //260
   TK_AND,         //261
   TK_OR,          //262
-  TK_NOT          //263
+  TK_UEQ,         //263
+  DEREF          //264
 };
 
 static struct rule {
@@ -44,23 +45,23 @@ static struct rule {
   int token_type;
 } rules[] = {
   {" +", TK_NOTYPE},    // spaces
+  {"0x[0-9a-f]+", TK_HEXADECIMAL},  // hexadecimal numbers
+  {"\\$[e,a,b,c,d,s].*?[x,p,i,l,h]", TK_GPR},    //GPR
   {"\\+", '+'},         // plus
-  {"\\-", '-'},            // minus
+  {"\\-", '-'},         // minus
   {"\\*", '*'},         // times
   {"/", '/'},           //divide
-  {"\\(", '('},           // left bracket
-  {"\\)", ')'},           // right bracket
-  {"\\[", '['},           // left bracket
+  {"\\(", '('},         // left bracket
+  {"\\)", ')'},         // right bracket
+  {"\\[", '['},         // left bracket
   {"\\]", ']'},
-  {"\\{", '{'},           // left bracket
+  {"\\{", '{'},         // left bracket
   {"\\}", '}'},
-  {"==", TK_EQ},        // equal
-  {"\\$[e,a,b,c,d,s].*?[x,p,i,l,h]", TK_GPR},    //GPR
-  {"0x[0-9a-f]+", TK_HEXADECIMAL},  // hexadecimal numbers
-  {"[0-9]+", TK_DECIMAL},    // decimal numbers
+  {"==", TK_EQ},            // equal
+  {"!=", TK_UEQ},
+  {"[0-9]+", TK_DECIMAL},   // decimal numbers
   {"&&", TK_AND},           // and
-  {"\\|\\|", TK_OR},           // or
-  {"!", TK_NOT}           // not
+  {"\\|\\|", TK_OR}        // or
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -122,6 +123,10 @@ static bool make_token(char *e) {
          */
 
         tokens[nr_token].type = rules[i].token_type;
+
+        if (tokens[nr_token].type == '*' && (nr_token == 0 || tokens[nr_token-1].type == '(') ) {
+          tokens[nr_token].type = DEREF;
+        }
         
         for (int j=0; j<substr_len; ++j){
           token_str[j] = substr_start[j];
@@ -164,9 +169,10 @@ static bool make_token(char *e) {
             nr_token += 1;
             break;
           }
-          case 261: nr_token += 1; break;
-          case 262: nr_token += 1; break;
-          case 263: nr_token += 1; break;
+          case 261: nr_token += 1; break;  //AND
+          case 262: nr_token += 1; break;  //OR
+          case 263: nr_token += 1; break;  //UEQ
+          case 264: nr_token += 1; break;  //DEREF
           default: {
             printf("The token can be matched but whose type isn't here.\n");
           }
@@ -253,6 +259,10 @@ uint32_t eval(int p, int q, bool *success) {
           }
           else return val1 / val2;
         }
+        case 257: return val1 == val2;
+        case 261: return val1 && val2;
+        case 262: return val1 || val2;
+        case 263: return val1 != val2;
         default: {
           Log("Strange operation!");
           *success = false;
