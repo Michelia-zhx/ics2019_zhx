@@ -124,9 +124,6 @@ static bool make_token(char *e) {
 
         tokens[nr_token].type = rules[i].token_type;
 
-        if (tokens[nr_token].type == '*' && (nr_token == 0 || tokens[nr_token-1].type == '(') ) {
-          tokens[nr_token].type = DEREF;
-        }
         
         for (int j=0; j<substr_len; ++j){
           token_str[j] = substr_start[j];
@@ -138,7 +135,16 @@ static bool make_token(char *e) {
         switch (rules[i].token_type) {
           case '+': nr_token += 1; break;
           case '-': nr_token += 1; break;
-          case '*': nr_token += 1; break;
+          case '*': {
+            if (nr_token == 0 || tokens[nr_token-1].type == '(' \
+            || tokens[nr_token-1].type == '+' || tokens[nr_token-1].type == '-' \
+            || tokens[nr_token-1].type == '*' || tokens[nr_token-1].type == '/' \
+            || tokens[nr_token-1].type == 257 || tokens[nr_token-1].type == 263) {
+              tokens[nr_token].type = DEREF;
+            }
+            nr_token += 1;
+            break;
+          }
           case '/': nr_token += 1; break;
           case '(': nr_token += 1; break;
           case ')': nr_token += 1; break;
@@ -146,9 +152,9 @@ static bool make_token(char *e) {
           case ']': nr_token += 1; break;
           case '{': nr_token += 1; break;
           case '}': nr_token += 1; break;
-          case 256: break;
-          case 257: nr_token += 1; break;
-          case 258: {
+          case 256: break;  //空格
+          case 257: nr_token += 1; break;  // ==
+          case 258: {              // gpr
             if(substr_len > 32){
               Log("Warning : the number is too long to restore. Only 32 nums in the front are saved.");
             }
@@ -158,7 +164,7 @@ static bool make_token(char *e) {
             nr_token += 1; 
             break;
           }
-          case 259: {
+          case 259: {                  //十六进制
             if(substr_len > 32){
               Log("Warning : the number is too long to restore. Only 32 nums in the front are saved.");
             }
@@ -168,7 +174,7 @@ static bool make_token(char *e) {
             nr_token += 1; 
             break;
           }
-          case 260: {
+          case 260: {                  //十进制
             if(substr_len > 32){
               Log("Warning : the number is too long to restore. Only 32 nums in the front are saved.");
             }
@@ -181,7 +187,6 @@ static bool make_token(char *e) {
           case 261: nr_token += 1; break;  //AND
           case 262: nr_token += 1; break;  //OR
           case 263: nr_token += 1; break;  //UEQ
-          case 264: nr_token += 1; break;  //DEREF
           default: {
             printf("The token can be matched but whose type isn't here.\n");
           }
@@ -282,7 +287,8 @@ uint32_t eval(int p, int q, bool *success) {
         }
       }
       else{
-        TODO();
+        int val1 = eval(op+1, q, success);
+			  return vaddr_read(val1,4);
       }
     }
   }
@@ -328,7 +334,7 @@ uint32_t get_gpr(int p, bool *success){
   else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[3]._8[0];
   else if (strcmp(tokens[p].str, "$eax")==0) return cpu.gpr[3]._8[1];
   else {
-    Log("Illegal GPR name");
+    Log("No such register");
     *success = false;
     return 0;
   }
