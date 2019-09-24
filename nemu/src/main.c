@@ -9,7 +9,7 @@ void ui_mainloop(int);
 int main(int argc, char *argv[]) {
   /* Initialize the monitor. */
   int is_batch_mode = init_monitor(argc, argv);
-
+/*
   bool *success = (bool*)malloc(sizeof(bool));
   FILE *f = fopen("./tools/gen-expr/input", "r");
   char exp[10000];
@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
     if (*success==true) printf("%u %u", correct, result);
   }
   free(success);
-
+*/
   /* Receive commands from user. */
   ui_mainloop(is_batch_mode);
 
