@@ -205,6 +205,7 @@ extern int find_dominated_op(int p, int q, bool *success);
 extern int get_gpr(int p, bool *success);
 
 uint32_t eval(int p, int q, bool *success) {
+  printf("p:%d, q:%d\n", p, q);
   if (p > q) {
     Log("fatal error, the start of the sub-expression is bigger than its end.");
     return 0;
