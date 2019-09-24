@@ -149,6 +149,9 @@ static bool make_token(char *e) {
           case 256: nr_token += 1; break;
           case 257: nr_token += 1; break;
           case 258: {
+            if(substr_len > 32){
+              Log("Warning : the number is too long to restore. Only 32 nums in the front are saved.");
+            }
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
             //printf("The %d token is: %s\n", nr_token, tokens[nr_token].str);
@@ -156,6 +159,9 @@ static bool make_token(char *e) {
             break;
           }
           case 259: {
+            if(substr_len > 32){
+              Log("Warning : the number is too long to restore. Only 32 nums in the front are saved.");
+            }
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
             //printf("The %d token is: %s\n", nr_token, tokens[nr_token].str);
@@ -163,6 +169,9 @@ static bool make_token(char *e) {
             break;
           }
           case 260: {
+            if(substr_len > 32){
+              Log("Warning : the number is too long to restore. Only 32 nums in the front are saved.");
+            }
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
             //printf("The %d token is: %s\n", nr_token, tokens[nr_token].str);
@@ -244,30 +253,35 @@ uint32_t eval(int p, int q, bool *success) {
     else {
       int op = find_dominated_op(p, q, success);
       
-      int val1 = eval(p, op - 1, success);
-      int val2 = eval(op + 1, q, success);
+      if (tokens[op].type!=DEREF){
+        int val1 = eval(p, op - 1, success);
+        int val2 = eval(op + 1, q, success);
 
-      switch (tokens[op].type) {
-        case '+': return val1 + val2;
-        case '-': return val1 - val2;
-        case '*': return val1 * val2;
-        case '/': {
-          if (val2==0){
-            Log("ERROR: Division by zero");
+        switch (tokens[op].type) {
+          case '+': return val1 + val2;
+          case '-': return val1 - val2;
+          case '*': return val1 * val2;
+          case '/': {
+            if (val2==0){
+              Log("ERROR: Division by zero");
+              *success = false;
+              return 0;
+            }
+            else return val1 / val2;
+          }
+          case 257: return val1 == val2;
+          case 261: return val1 && val2;
+          case 262: return val1 || val2;
+          case 263: return val1 != val2;
+          default: {
+            Log("Strange operation!");
             *success = false;
             return 0;
           }
-          else return val1 / val2;
         }
-        case 257: return val1 == val2;
-        case 261: return val1 && val2;
-        case 262: return val1 || val2;
-        case 263: return val1 != val2;
-        default: {
-          Log("Strange operation!");
-          *success = false;
-          return 0;
-        }
+      }
+      else{
+        TODO();
       }
     }
   }
