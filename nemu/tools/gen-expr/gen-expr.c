@@ -7,8 +7,50 @@
 
 // this should be enough
 static char buf[65536];
+
+uint32_t choose(uint32_t n){
+  return rand()%n;
+}
+
+void gen_rand_op(){
+  switch (choose(4))
+  {
+    case 0: strcat(buf, "+"); break;
+    case 1: strcat(buf, "-"); break;
+    case 2: strcat(buf, "*"); break;
+    case 3: strcat(buf, "/"); break;
+  default: assert(0);
+  }
+}
+
 static inline void gen_rand_expr() {
-  buf[0] = '\0';
+  switch (choose(3))
+  {
+    case 0: {
+      char num[4];
+      sprintf(num, "%d", choose(100));
+      strcat(buf, num);
+      break;
+    }
+    case 1: {
+      strcat(buf, "(");
+      gen_rand_expr();
+      strcat(buf, ")");
+      break;
+    }
+    case 2: {
+      gen_rand_expr();
+      gen_rand_op();
+      gen_rand_expr();
+      break;
+    }
+    default: {
+      gen_rand_expr();
+      gen_rand_op();
+      gen_rand_expr();
+      break;
+    }
+  }
 }
 
 static char code_buf[65536];
@@ -29,6 +71,7 @@ int main(int argc, char *argv[]) {
   }
   int i;
   for (i = 0; i < loop; i ++) {
+    memset(buf, 0, sizeof(buf));
     gen_rand_expr();
 
     sprintf(code_buf, code_format, buf);

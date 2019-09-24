@@ -86,10 +86,10 @@ void init_regex() {
 
 typedef struct token {
   int type;
-  char str[32];
+  char str[65536];
 } Token;
 
-static Token tokens[32] __attribute__((used)) = {};
+static Token tokens[65536] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
 static bool make_token(char *e) {
@@ -364,7 +364,7 @@ Status Pop(Stack *S, SElemType *e){
 bool check_parentheses(int p, int q, bool *success){
     Stack S;
     //printf("hi!");
-    int e,temp[32];
+    int e,temp[65536];
     int a = 0;
     int *m = &a;
     //printf("hi!!");
