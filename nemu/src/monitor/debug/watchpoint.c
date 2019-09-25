@@ -29,7 +29,7 @@ void new_wp(char *args){
   WP *p;
   if (free_ == NULL){
     panic("No more watchpoints.");
-    }
+  }
   else {
     p = free_;
     free_ = p->next;
@@ -42,11 +42,12 @@ void new_wp(char *args){
       while (q->next!=NULL) q = q->next;
       q->next = p;
     }
+    strncpy(p->exp, args, LEN_WP_NAME);
+    bool success = true;
+    p->value = expr(args, &success);
+    Log("Watch point %d is built, exp is %s, value is %d.", p->NO, p->exp, p->value);
   }
-  strncpy(p->exp, args, LEN_WP_NAME);
-  bool success = true;
-  p->value = expr(args, &success);
-  Log("Watch point %d is built, exp is %s, value is %d.", p->NO, p->exp, p->value);
+  return;
 }
 
 void free_wp(WP *wp){
@@ -60,6 +61,7 @@ void free_wp(WP *wp){
     while (p->next!=NULL) p = p->next;
     p->next = wp;
   }
+  return;
 }
 
 void delete_wp(int num){
@@ -85,6 +87,7 @@ void delete_wp(int num){
   if (is_found == false){
     Log("Can't find watch point %d.\n", num);
   }
+  return;
 }
 
 void info_wp_display(){
