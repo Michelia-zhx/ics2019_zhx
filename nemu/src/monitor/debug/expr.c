@@ -208,6 +208,7 @@ static bool make_token(char *e) {
 extern int check_parentheses(int p, int q, bool *success);
 extern int find_dominated_op(int p, int q, bool *success);
 extern uint32_t get_gpr(int p, bool *success);
+extern int htoi(char s[]);
 
 uint32_t eval(int p, int q, bool *success) {
   //printf("p:%d, q:%d\n", p, q);
@@ -219,12 +220,7 @@ uint32_t eval(int p, int q, bool *success) {
   else if (p == q) {
     //printf("p:%d, q:%d\n", p, q);
     if (tokens[p].type == 259){
-      int number = 0;
-      for (int j=2; j<strlen(tokens[p].str); ++j){
-        if (tokens[p].str[j]>='a' && tokens[p].str[j]<='f')
-          number = number*16 + (tokens[p].str[j]-'a'+10);
-        else number = number*16 + (tokens[p].str[j]-'0');
-      }
+      int number = htoi(tokens[p].str);
       return number;
     }
     else if (tokens[p].type==260){
@@ -247,7 +243,7 @@ uint32_t eval(int p, int q, bool *success) {
   }
   
   else{
-    Log("Starting checking parentheses!\n");
+    //Log("Starting checking parentheses!\n");
     if (check_parentheses(p, q, success) == 1) {
       //printf("p:%d, q:%d\n", p, q);
       /* The expression is surrounded by a matched pair of parentheses.
@@ -269,8 +265,8 @@ uint32_t eval(int p, int q, bool *success) {
           case '*': return val1 * val2;
           case '/': {
             if (val2==0){
-              Log("ERROR: Division by zero");
               *success = false;
+              Log("ERROR: Division by zero");
               return 0;
             }
             else return val1 / val2;
@@ -583,4 +579,26 @@ int find_dominated_op(int p, int q, bool *success){
     }
   }
   return op;
+}
+
+int htoi(char s[])
+{
+	paddr_t n = 0;
+	paddr_t i = 0;
+	while (s[i] != '\0' && s[i] != '\n') {
+		if (s[i] == '0') {
+			if (s[i+1] == 'x' || s[i+1] == 'X')
+                            i+=2;
+		}
+		if (s[i] >= '0' && s[i] <= '9') {
+			n = n * 16 + (s[i] - '0');
+		} else if (s[i] >= 'a' && s[i] <= 'f') {
+			n = n * 16 + (s[i] - 'a') + 10;
+		} else if (s[i] >= 'A' && s[i] <= 'F') {
+			n = n * 16 + (s[i] - 'A') + 10;
+		} else
+			return -1;
+		++i;
+	}
+	return n;
 }

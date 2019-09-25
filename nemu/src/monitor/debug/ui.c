@@ -119,9 +119,10 @@ static int cmd_info(char *args){
     printf("For example: 'info r'--display the state of register; 'info w'--display the state of watchpoint.");
     return 0;
   }
-  if (*arg=='w'){
+  if (arg[0]=='w'){
+    info_wp_display();
   }
-  if (*arg=='r'){
+  if (arg[0]=='r'){
     isa_reg_display();
   }
   return 0;
@@ -167,10 +168,16 @@ static int cmd_x_N(char *args){
 }//扫描内存
 
 static int cmd_w(char *args){
+  new_wp(args);
   return 0;
 }
 
 static int cmd_d(char *args){
+  if(args!=NULL){
+    int num = atoi(args);
+    delete_wp(num);
+  }
+  else Log("Invalid Input");
   return 0;
 }
 
@@ -210,27 +217,4 @@ void ui_mainloop(int is_batch_mode) {
 
     if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
   }
-}
-
-int htoi(char s[])
-{
-	paddr_t n = 0;
-	paddr_t i = 0;
-	while (s[i] != '\0' && s[i] != '\n') {
-		if (s[i] == '0') {
-			if (s[i+1] == 'x' || s[i+1] == 'X')
-                            i+=2;
-		}
-		if (s[i] >= '0' && s[i] <= '9') {
-			n = n * 16 + (s[i] - '0');
-		} else if (s[i] >= 'a' && s[i] <= 'f') {
-			n = n * 16 + (s[i] - 'a') + 10;
-		} else if (s[i] >= 'A' && s[i] <= 'F') {
-			n = n * 16 + (s[i] - 'A') + 10;
-		} else
-			return -1;
-		++i;
-
-	}
-	return n;
 }
