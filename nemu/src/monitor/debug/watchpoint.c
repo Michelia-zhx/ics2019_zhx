@@ -92,7 +92,7 @@ void delete_wp(int num){
 
 void info_wp_display(){
   WP *p = head;
-  printf("NO\texpression\tcurrent value\t");
+  printf("NO\texpression\tcurrent value\t\n");
   if (head == NULL){
     printf("No watch point is in use.\n");
   }
