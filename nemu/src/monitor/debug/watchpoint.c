@@ -97,10 +97,10 @@ void info_wp_display(){
     printf("No watch point is in use.\n");
   }
   else {
-    printf("%d\t%s\t%d\t", p->NO, p->exp, p->value);
+    printf("%d\t%s\t%d\t\n", p->NO, p->exp, p->value);
     while (p->next != NULL){
       p = p->next;
-      printf("%d\t%s\t%d\t", p->NO, p->exp, p->value);
+      printf("%d\t%s\t%d\t\n", p->NO, p->exp, p->value);
     }
   }
   return;
