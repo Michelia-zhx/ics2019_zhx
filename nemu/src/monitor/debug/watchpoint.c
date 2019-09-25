@@ -83,7 +83,7 @@ void delete_wp(int num){
     }
   }
   if (is_found == false){
-    Log("Can't find watch point %d.", num);
+    Log("Can't find watch point %d.\n", num);
   }
 }
 
@@ -91,11 +91,11 @@ void info_wp_display(){
   WP *p = head;
   printf("NO\texpression\tcurrent value\n");
   if (head == NULL){
-    printf("No watch point is in use.");
+    printf("No watch point is in use.\n");
   }
   else {
     while (p->next != NULL){
-      printf("%d\t%s\t%d\t", p->NO, p->exp, p->value);
+      printf("%d\t%s\t%d\t\n", p->NO, p->exp, p->value);
       p = p->next;
     }
   }
@@ -110,7 +110,7 @@ bool check(){
     int cur_value = expr(p->exp, &success);
     if (cur_value != p->value){
       flag = true;
-      Log("Value of watch point %d has changed\nOld value: %d\nNew value: %d", p->NO, p->value, cur_value);
+      Log("Value of watch point %d has changed\nOld value: %d\nNew value: %d\n", p->NO, p->value, cur_value);
     }
     p = p->next;
   }
