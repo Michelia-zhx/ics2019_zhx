@@ -90,10 +90,16 @@ void delete_wp(int num){
 void info_wp_display(){
   WP *p = head;
   printf("NO\texpression\tcurrent value\n");
-  while (p->next != NULL){
-    printf("%d\t%s\t%d\t", p->NO, p->exp, p->value);
-    p = p->next;
+  if (head == NULL){
+    printf("No watch point is in use.");
   }
+  else {
+    while (p->next != NULL){
+      printf("%d\t%s\t%d\t", p->NO, p->exp, p->value);
+      p = p->next;
+    }
+  }
+  return;
 }
 
 bool check(){
