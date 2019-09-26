@@ -560,6 +560,18 @@ int find_dominated_op(int p, int q, bool *success){
         break;
       }
 
+      case 264: {
+        if (num_left_parentheses==0){
+          cur_priority = 5;
+          if (cur_priority <= op_priority){
+            op_priority = cur_priority;
+            op = position;
+          }
+        }
+        position += 1;
+        break;
+      }
+
       case '(':{
         num_left_parentheses += 1;
         position += 1;
