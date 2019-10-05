@@ -108,16 +108,19 @@ void info_wp_display(){
 
 bool check(){
   WP *p = head;
-  bool flag = false;
-  bool success = true;
-  while (p->next != NULL){
-    int cur_value = expr(p->exp, &success);
-    if (cur_value != p->value){
-      flag = true;
-      Log("Value of watch point %d has changed\nOld value: %d\nNew value: %d\n", p->NO, p->value, cur_value);
+  if (p != NULL){
+    bool flag = false;
+    bool success = true;
+    while (p->next != NULL){
+      int cur_value = expr(p->exp, &success);
+      if (cur_value != p->value){
+        flag = true;
+        Log("Value of watch point %d has changed\nOld value: %d\nNew value: %d\n", p->NO, p->value, cur_value);
+      }
+      p = p->next;
     }
-    p = p->next;
+    if (flag == true) return true;
+    else return false;
   }
-  if (flag == true) return true;
-  else return false;
+  return true; 
 }
