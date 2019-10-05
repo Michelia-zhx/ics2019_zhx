@@ -24,17 +24,15 @@ static inline void rtl_sr(int r, const rtlreg_t* src1, int width) {
 }
 
 static inline void rtl_push(const rtlreg_t* src1) {
-  // esp <- esp-4
-  rtl_subi(&reg_l(R_ESP), &reg_l(R_ESP), 4);
-  //M[esp] <- src1
-  rtl_sm(&reg_l(R_ESP), src1, 4);
+  // esp <- esp - 4
+  // M[esp] <- src1
+  TODO();
 }
 
-static inline void rtl_pop(rtlreg_t *dest) {
-  //dest <- M[esp]
-  rtl_lm(dest, &reg_l(R_ESP), 4);
-  // esp <- esp+4
-  rtl_addi(&reg_l(R_ESP), &reg_l(R_ESP), 4);
+static inline void rtl_pop(rtlreg_t* dest) {
+  // dest <- M[esp]
+  // esp <- esp + 4
+  TODO();
 }
 
 static inline void rtl_is_sub_overflow(rtlreg_t* dest,
@@ -76,13 +74,12 @@ make_rtl_setget_eflags(SF)
 
 static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
-  if(width == 4) cpu.eflags.ZF = (*result == 0);
-  else cpu.eflags.ZF = ( (*result & ((1 << width*8) - 1)) == 0);
+  TODO();
 }
 
 static inline void rtl_update_SF(const rtlreg_t* result, int width) {
   // eflags.SF <- is_sign(result[width * 8 - 1 .. 0])
-  cpu.eflags.SF = (*result >> (width*8 - 1) & 1 ? 1 : 0);
+  TODO();
 }
 
 static inline void rtl_update_ZFSF(const rtlreg_t* result, int width) {

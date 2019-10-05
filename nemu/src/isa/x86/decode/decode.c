@@ -1,9 +1,4 @@
 #include "cpu/exec.h"
-#include "rtl/rtl.h"
-
-DecodeInfo decoding;
-rtlreg_t t0, t1, t2, t3, at;
-const rtlreg_t tzero = 0;
 
 // decode operand helper
 #define make_DopHelper(name) void concat(decode_op_, name) (vaddr_t *pc, Operand *op, bool load_val)
@@ -33,9 +28,10 @@ static inline make_DopHelper(SI) {
   /* TODO: Use instr_fetch() to read `op->width' bytes of memory
    * pointed by 'pc'. Interpret the result as a signed immediate,
    * and assign it to op->simm.
+   *
+   op->simm = ???
    */
-  op->simm = instr_fetch(pc, op->width);
-  if (op->width==1) op->simm = (op->simm & 0x80 ? op->simm | 0xffffff00 : op->simm);
+  TODO();
 
   rtl_li(&op->val, op->simm);
 

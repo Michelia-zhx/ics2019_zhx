@@ -44,24 +44,24 @@ static struct rule {
   char *regex;
   int token_type;
 } rules[] = {
-  {" +", TK_NOTYPE},                              // spaces
-  {"0x[0-9a-f]+", TK_HEXADECIMAL},                // hexadecimal numbers
-  {"\\$[e,a,b,c,d,s].*?[x,p,i,l,h]", TK_GPR},     // GPR
-  {"\\+", '+'},                                   // plus
-  {"\\-", '-'},                                   // minus
-  {"\\*", '*'},                                   // times
-  {"/",   '/'},                                   // divide
-  {"\\(", '('},                                   // left bracket
-  {"\\)", ')'},                                   // right bracket
-  {"\\[", '['},                                   // left bracket
+  {" +", TK_NOTYPE},    // spaces
+  {"0x[0-9a-f]+", TK_HEXADECIMAL},  // hexadecimal numbers
+  {"\\$[e,a,b,c,d,s].*?[x,p,i,l,h]", TK_GPR},    //GPR
+  {"\\+", '+'},         // plus
+  {"\\-", '-'},         // minus
+  {"\\*", '*'},         // times
+  {"/", '/'},           //divide
+  {"\\(", '('},         // left bracket
+  {"\\)", ')'},         // right bracket
+  {"\\[", '['},         // left bracket
   {"\\]", ']'},
-  {"\\{", '{'},                                   // left bracket
+  {"\\{", '{'},         // left bracket
   {"\\}", '}'},
-  {"==",  TK_EQ},                                 // equal
-  {"!=",  TK_UEQ},
-  {"[0-9]+", TK_DECIMAL},                         // decimal numbers
-  {"&&",  TK_AND},                                // and
-  {"\\|\\|", TK_OR}                               // or
+  {"==", TK_EQ},            // equal
+  {"!=", TK_UEQ},
+  {"[0-9]+", TK_DECIMAL},   // decimal numbers
+  {"&&", TK_AND},           // and
+  {"\\|\\|", TK_OR}        // or
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -152,38 +152,41 @@ static bool make_token(char *e) {
           case ']': nr_token += 1; break;
           case '{': nr_token += 1; break;
           case '}': nr_token += 1; break;
-          case 261: nr_token += 1; break;  //AND
-          case 262: nr_token += 1; break;  //OR
-          case 263: nr_token += 1; break;  //UEQ
-          case 256: break;                 //空格
+          case 256: break;  //空格
           case 257: nr_token += 1; break;  // ==
-          case 258: {                      // gpr
+          case 258: {              // gpr
             if(substr_len > 32){
               Log("Warning : the number is too long to restore. Only 32 nums in the front are saved.");
             }
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
+            //printf("The %d token is: %s\n", nr_token, tokens[nr_token].str);
             nr_token += 1; 
             break;
           }
-          case 259: {                      //十六进制
+          case 259: {                  //十六进制
             if(substr_len > 32){
               Log("Warning : the number is too long to restore. Only 32 nums in the front are saved.");
             }
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
+            //printf("The %d token is: %s\n", nr_token, tokens[nr_token].str);
             nr_token += 1; 
             break;
           }
-          case 260: {                      //十进制
+          case 260: {                  //十进制
             if(substr_len > 32){
               Log("Warning : the number is too long to restore. Only 32 nums in the front are saved.");
             }
             strncpy(tokens[nr_token].str, token_str, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
+            //printf("The %d token is: %s\n", nr_token, tokens[nr_token].str);
             nr_token += 1;
             break;
           }
+          case 261: nr_token += 1; break;  //AND
+          case 262: nr_token += 1; break;  //OR
+          case 263: nr_token += 1; break;  //UEQ
           default: {
             printf("The token can be matched but whose type isn't here.\n");
           }
@@ -197,6 +200,8 @@ static bool make_token(char *e) {
       return false;
     }
   }
+  //printf("The last token is: %s\n", tokens[nr_token-1].str);
+  //printf("The first type is: %d\n:", tokens[0].type);
   return true;
 }
 
@@ -206,12 +211,14 @@ extern uint32_t get_gpr(int p, bool *success);
 extern int htoi(char s[]);
 
 uint32_t eval(int p, int q, bool *success) {
+  //printf("p:%d, q:%d\n", p, q);
   if (p > q) {
     Log("fatal error, the start of the sub-expression is bigger than its end.");
     return 0;
   }
 
   else if (p == q) {
+    //printf("p:%d, q:%d\n", p, q);
     if (tokens[p].type == 259){
       int number = htoi(tokens[p].str);
       return number;
@@ -220,6 +227,7 @@ uint32_t eval(int p, int q, bool *success) {
       int number = 0;
       for (int j=0; j<strlen(tokens[p].str); ++j){
         number = number*10 + (tokens[p].str[j]-'0');
+        //printf("%d\n", number);
       }
       return number;
     }
@@ -235,7 +243,9 @@ uint32_t eval(int p, int q, bool *success) {
   }
   
   else{
+    //Log("Starting checking parentheses!\n");
     if (check_parentheses(p, q, success) == 1) {
+      //printf("p:%d, q:%d\n", p, q);
       /* The expression is surrounded by a matched pair of parentheses.
       * If that is the case, just throw away the parentheses.
       */
@@ -253,10 +263,6 @@ uint32_t eval(int p, int q, bool *success) {
           case '+': return val1 + val2;
           case '-': return val1 - val2;
           case '*': return val1 * val2;
-          case 257: return val1 == val2;
-          case 261: return val1 && val2;
-          case 262: return val1 || val2;
-          case 263: return val1 != val2;
           case '/': {
             if (val2==0){
               *success = false;
@@ -265,6 +271,10 @@ uint32_t eval(int p, int q, bool *success) {
             }
             else return val1 / val2;
           }
+          case 257: return val1 == val2;
+          case 261: return val1 && val2;
+          case 262: return val1 || val2;
+          case 263: return val1 != val2;
           default: {
             Log("Strange operation!");
             *success = false;
@@ -295,7 +305,7 @@ uint32_t expr(char *e, bool *success) {
 
 
 uint32_t get_gpr(int p, bool *success){
-  if      (strcmp(tokens[p].str, "$eax")==0) return cpu.eax;
+  if (strcmp(tokens[p].str, "$eax")==0) return cpu.eax;
   else if (strcmp(tokens[p].str, "$ecx")==0) return cpu.ecx;
   else if (strcmp(tokens[p].str, "$edx")==0) return cpu.edx;
   else if (strcmp(tokens[p].str, "$ebx")==0) return cpu.ebx;
@@ -359,12 +369,14 @@ Status Push(Stack *S, SElemType e){
     }
     (*S).top++;
     *(*S).top = e;
+    
     return OK;
 }
 
 Status Pop(Stack *S, SElemType *e){
     if(S->top == S->base) return ERROR;
     else {
+        //printf("top:%d\n",*(S->top));
         *e = *(S->top);
         S->top -= 1;
         return OK;
@@ -375,27 +387,34 @@ Status Pop(Stack *S, SElemType *e){
 
 bool check_parentheses(int p, int q, bool *success){
     Stack S;
+    //printf("hi!");
     int e,temp[65536];
     int a = 0;
     int *m = &a;
+    //printf("hi!!");
     int i=p;
     int flag=1;
 
     for (i=p; i<=q; ++i)  temp[i] = tokens[i].type;
     InitStack(&S);
     if (temp[p]!='('||temp[q]!=')'){
+        //printf("false, the whole expression is not surrounded by a matched pair of parentheses");
         return false;
     }
+    //printf("hi!!!");
     i=p;
     e=temp[i];
 
     while(i<=q && flag){
+      //printf("%d\n", e);
         switch(e){
             case '(':   case '[':   case '{': {
+                //printf("(\n");
                 if (!StackEmpty(&S)||i==p){
                     Push(&S, e);
                 }
                 else{
+                    //printf("false, the leftmost '(' and the rightmost ')' are not matched");
                     flag = 0;
                 }
                 i++;
@@ -403,8 +422,10 @@ bool check_parentheses(int p, int q, bool *success){
                 break; //左括号入栈
             }
             case ')':{
+                //printf(")\n");
                 if (!StackEmpty(&S)){
                     Pop(&S, m);
+                    //printf("m:%d", *m);
                     if (*m!='('){
                       flag=0;
                       *success = false;
@@ -463,6 +484,7 @@ bool check_parentheses(int p, int q, bool *success){
     if(!StackEmpty(&S)) flag=0;
 
     DestroyStack(&S);
+    //printf("%d\n", flag);
     if(flag==1) return true;
     else return false;
 }
