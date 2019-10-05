@@ -6,14 +6,17 @@ make_EHelper(mov) {
 }
 
 make_EHelper(push) {
-  TODO();
+  rtl_push(&id_dest->val);
+  rtlreg_t esp1 = cpu.esp;
+  if(id_dest->type != OP_TYPE_IMM) operand_write(id_dest, &id_dest->val);
+  cpu.esp = esp1;
 
   print_asm_template1(push);
 }
 
 make_EHelper(pop) {
-  TODO();
-
+  rtl_pop(&id_dest->val);
+  if (id_dest->type != OP_TYPE_IMM) operand_write(id_dest, &id_dest->val);
   print_asm_template1(pop);
 }
 
@@ -43,7 +46,8 @@ make_EHelper(cltd) {
     TODO();
   }
 
-  print_asm(decinfo.isa.is_operand_size_16 ? "cwtl" : "cltd");
+  print_asm(decinfo.isa.is_operand_size_16 ? "cwtl" : "cltd");;
+
 }
 
 make_EHelper(cwtl) {

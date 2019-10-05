@@ -35,6 +35,21 @@ typedef struct {
 
   vaddr_t pc;
 
+  union{
+  	struct {
+      unsigned CF:1;
+      unsigned dummy:5;
+      unsigned ZF:1;
+      unsigned SF:1;
+      unsigned dummy2:1;
+      unsigned IF:1;
+      unsigned dummy3:1;
+      unsigned OF:1;
+      unsigned dummy4:20;
+  	}; 
+  	rtlreg_t val;
+  } eflags;
+
 } CPU_state;
 
 static inline int check_reg_index(int index) {
