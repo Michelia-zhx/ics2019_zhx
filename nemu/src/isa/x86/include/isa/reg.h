@@ -33,7 +33,7 @@ typedef struct {
   * in PA2 able to directly access these registers.
   */
 
-  struct{
+  union{
     struct{
       uint32_t CF: 1;
       unsigned : 5;
