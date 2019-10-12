@@ -29,6 +29,7 @@ make_EHelper(call) {
   rtl_li(&s1, decinfo.seq_pc);
   rtl_push(&s1);
   decinfo.is_jmp = 1;
+  
   print_asm("call %x", decinfo.jmp_pc);
 }
 
