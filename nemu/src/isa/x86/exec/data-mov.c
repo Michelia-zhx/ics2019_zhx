@@ -6,7 +6,10 @@ make_EHelper(mov) {
 }
 
 make_EHelper(push) {
-  TODO();
+  rtl_push(&id_dest->val);
+  rtlreg_t temp = cpu.esp;
+  if (id_dest->type != OP_TYPE_IMM) operand_write(id_dest, &id_dest->val);
+  cpu.esp = temp;
   
   print_asm_template1(push);
 }
