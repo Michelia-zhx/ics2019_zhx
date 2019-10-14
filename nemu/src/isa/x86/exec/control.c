@@ -34,7 +34,8 @@ make_EHelper(call) {
 }
 
 make_EHelper(ret) {
-  TODO();
+  rtl_pop(&id_dest->addr);
+  decinfo.seq_pc = id_dest->addr;
 
   print_asm("ret");
 }
