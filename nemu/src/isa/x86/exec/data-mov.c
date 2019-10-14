@@ -17,8 +17,11 @@ make_EHelper(push) {
 }
 
 make_EHelper(pop) {
-  TODO();
-
+  rtl_pop(&id_dest->val);
+  if (id_dest->type != OP_TYPE_IMM) operand_write(id_dest, &id_dest->val);
+  else if (id_dest->type == OP_TYPE_IMM) id_dest->imm = id_dest->val;
+  else assert(0);
+  
   print_asm_template1(pop);
 }
 
