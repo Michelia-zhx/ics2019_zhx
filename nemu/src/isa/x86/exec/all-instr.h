@@ -19,4 +19,5 @@ make_EHelper(nemu_trap);
 make_EHelper(sub);
 
 //logic.c
+make_EHelper(and);
 make_EHelper(xor);
