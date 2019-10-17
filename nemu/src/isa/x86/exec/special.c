@@ -7,7 +7,7 @@ make_EHelper(nop) {
 
 make_EHelper(inv) {
   /* invalid opcode */
-
+  printf("In make_EHelper\n");
   uint32_t temp[2];
   *pc = cpu.pc;
   temp[0] = instr_fetch(pc, 4);
