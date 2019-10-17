@@ -201,5 +201,6 @@ void isa_exec(vaddr_t *pc) {
   uint32_t opcode = instr_fetch(pc, 1);
   decinfo.opcode = opcode;
   set_width(opcode_table[opcode].width);
+  printf("In isa_exec, opcode: %d\n", opcode);
   idex(pc, &opcode_table[opcode]);
 }
