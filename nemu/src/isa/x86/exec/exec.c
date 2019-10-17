@@ -46,8 +46,8 @@ make_group(gp4,
 /* 0xff */
 //Indirect
 make_group(gp5,
-    EX(push), EX(push), EX(push), EX(push),
-    EX(push), EX(push), EX(push), EX(push))
+    EMPTY, EMPTY, EMPTY, EMPTY,
+    EMPTY, EMPTY, EX(push), EMPTY)
 
 /* 0x0f 0x01*/
 make_group(gp7,
@@ -119,7 +119,7 @@ static OpcodeEntry opcode_table [512] = {
   /* 0xf0 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xf4 */	EMPTY, EMPTY, IDEXW(E, gp3, 1), IDEX(E, gp3),
   /* 0xf8 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0xfc */	EMPTY, EMPTY, IDEXW(E, gp4, 1), IDEX(E, gp5),
+  /* 0xfc */	EMPTY, EMPTY, IDEXW(E, gp4, 1), IDEX(r, gp5),
 
 /*2 byte_opcode_table */
 
