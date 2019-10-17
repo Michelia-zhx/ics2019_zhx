@@ -7,11 +7,11 @@ make_EHelper(mov) {
 
 make_EHelper(push) {
   rtl_push(&id_dest->val);
-  //rtlreg_t esp1 = cpu.esp;
-  //if (id_dest->type != OP_TYPE_IMM) operand_write(id_dest, &id_dest->val);
+  rtlreg_t esp1 = cpu.esp;
+  if (id_dest->type != OP_TYPE_IMM) operand_write(id_dest, &id_dest->val);
   //else if (id_dest->type == OP_TYPE_IMM) id_dest->imm = id_dest->val;
   //else assert(0);
-  //cpu.esp = esp1;
+  cpu.esp = esp1;
   
   print_asm_template1(push);
 }
@@ -19,8 +19,8 @@ make_EHelper(push) {
 make_EHelper(pop) {
   rtl_pop(&id_dest->val);
   if (id_dest->type != OP_TYPE_IMM) operand_write(id_dest, &id_dest->val);
-  else if (id_dest->type == OP_TYPE_IMM) id_dest->imm = id_dest->val;
-  else assert(0);
+  //else if (id_dest->type == OP_TYPE_IMM) id_dest->imm = id_dest->val;
+  //else assert(0);
 
   print_asm_template1(pop);
 }
