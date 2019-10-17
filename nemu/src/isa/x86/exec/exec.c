@@ -16,7 +16,6 @@ static make_EHelper(2byte_esc);
     /* 0x04 */	item4, item5, item6, item7  \
   }; \
 static make_EHelper(name) { \
-  printf("decinfo.isa.ext_opcode:%d \n", decinfo.isa.ext_opcode); \
   idex(pc, &concat(opcode_table_, name)[decinfo.isa.ext_opcode]); \
 }
 
@@ -120,7 +119,7 @@ static OpcodeEntry opcode_table [512] = {
   /* 0xf0 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xf4 */	EMPTY, EMPTY, IDEXW(E, gp3, 1), IDEX(E, gp3),
   /* 0xf8 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0xfc */	EMPTY, EMPTY, IDEXW(E, gp4, 1), IDEX(E, gp5),
+  /* 0xfc */	EMPTY, EMPTY, IDEXW(E, gp4, 1), EMPTY,
 
 /*2 byte_opcode_table */
 
