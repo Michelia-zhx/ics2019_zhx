@@ -12,9 +12,6 @@ make_EHelper(operand_size);
 make_EHelper(call);
 make_EHelper(ret);
 
-make_EHelper(inv);
-make_EHelper(nemu_trap);
-
 //arith.c
 make_EHelper(sub);
 make_EHelper(cmp);
@@ -22,3 +19,6 @@ make_EHelper(cmp);
 //logic.c
 make_EHelper(and);
 make_EHelper(xor);
+
+make_EHelper(inv);
+make_EHelper(nemu_trap);
