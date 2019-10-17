@@ -114,12 +114,12 @@ static OpcodeEntry opcode_table [512] = {
   /* 0xd8 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xdc */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xe0 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0xe4 */	EMPTY, EMPTY, EMPTY, IDEX(E, gp5), //这是我瞎加的
+  /* 0xe4 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xe8 */	IDEX(J, call), EMPTY, EMPTY, EMPTY,
   /* 0xf0 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xf4 */	EMPTY, EMPTY, IDEXW(E, gp3, 1), IDEX(E, gp3),
   /* 0xf8 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0xfc */	EMPTY, EMPTY, IDEXW(E, gp4, 1), EMPTY,
+  /* 0xfc */	EMPTY, EMPTY, IDEXW(E, gp4, 1), IDEX(E, gp5),
 
 /*2 byte_opcode_table */
 
