@@ -47,8 +47,8 @@ static inline void idex(vaddr_t *pc, OpcodeEntry *e) {
   }
   printf("here in execute(pc)\n");
   e->execute(pc);
-  printf("here in execute(pc)\n");
-  printf("In idex (exec.h)\n");
+  printf("here in execute(pc)2\n");
+  printf("In idex (exec.h)2\n");
 }
 
 static inline void update_pc(void) {
