@@ -171,7 +171,6 @@ make_DHelper(r) {
 
 make_DHelper(E) {
   decode_op_rm(pc, id_dest, true, NULL, false);
-  printf("hi\n");
 }
 
 make_DHelper(setcc_E) {
