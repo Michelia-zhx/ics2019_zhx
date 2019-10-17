@@ -20,5 +20,7 @@ make_EHelper(cmp);
 make_EHelper(and);
 make_EHelper(xor);
 
+//special.c
+make_EHelper(nop);
 make_EHelper(inv);
 make_EHelper(nemu_trap);
