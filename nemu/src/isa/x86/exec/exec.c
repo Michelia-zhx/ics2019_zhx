@@ -194,7 +194,7 @@ static make_EHelper(2byte_esc) {
   uint32_t opcode = instr_fetch(pc, 1) | 0x100;
   decinfo.opcode = opcode;
   set_width(opcode_table[opcode].width);
-  printf("In make_EHelper, opcode: %d\n", opcode);
+  //printf("In make_EHelper, opcode: %d\n", opcode);
   idex(pc, &opcode_table[opcode]);
 }
 
@@ -202,7 +202,7 @@ void isa_exec(vaddr_t *pc) {
   uint32_t opcode = instr_fetch(pc, 1);
   decinfo.opcode = opcode;
   set_width(opcode_table[opcode].width);
-  printf("In isa_exec, opcode: %d\n", opcode);
-  if(!((&opcode_table[opcode])->decode)) printf("false\n");
+  //printf("In isa_exec, opcode: %d\n", opcode);
+  //if(!((&opcode_table[opcode])->decode)) printf("false\n");
   idex(pc, &opcode_table[opcode]);
 }
