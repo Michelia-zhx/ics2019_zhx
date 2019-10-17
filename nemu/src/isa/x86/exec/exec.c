@@ -119,7 +119,7 @@ static OpcodeEntry opcode_table [512] = {
   /* 0xf0 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xf4 */	EMPTY, EMPTY, IDEXW(E, gp3, 1), IDEX(E, gp3),
   /* 0xf8 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0xfc */	EMPTY, EMPTY, IDEXW(E, gp4, 1), IDEX(E, push),
+  /* 0xfc */	EMPTY, EMPTY, IDEXW(E, gp4, 1), IDEX(E, gp5),
 
 /*2 byte_opcode_table */
 
@@ -186,7 +186,7 @@ static OpcodeEntry opcode_table [512] = {
   /* 0xf0 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xf4 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xf8 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0xfc */	EMPTY, EMPTY, EMPTY, EMPTY
+  /* 0xfc */	EMPTY, EMPTY, EMPTY, IDEX(E, gp5)
 };
 
 static make_EHelper(2byte_esc) {
