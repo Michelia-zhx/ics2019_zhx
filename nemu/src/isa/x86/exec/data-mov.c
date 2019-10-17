@@ -7,11 +7,11 @@ make_EHelper(mov) {
 
 make_EHelper(push) {
   rtl_push(&id_dest->val);
-  rtlreg_t temp = cpu.esp;
-  if (id_dest->type != OP_TYPE_IMM) operand_write(id_dest, &id_dest->val);
+  //rtlreg_t esp1 = cpu.esp;
+  //if (id_dest->type != OP_TYPE_IMM) operand_write(id_dest, &id_dest->val);
   //else if (id_dest->type == OP_TYPE_IMM) id_dest->imm = id_dest->val;
   //else assert(0);
-  cpu.esp = temp;
+  //cpu.esp = esp1;
   
   print_asm_template1(push);
 }
