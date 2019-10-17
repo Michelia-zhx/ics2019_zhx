@@ -20,29 +20,34 @@ static make_EHelper(name) { \
 }
 
 /* 0x80, 0x81, 0x83 */
+//Immidiate
 make_group(gp1,
     EMPTY, EMPTY, EMPTY, EMPTY,
     EX(and), EX(sub), EX(xor), EMPTY)
 
 /* 0xc0, 0xc1, 0xd0, 0xd1, 0xd2, 0xd3 */
+//Shift
 make_group(gp2,
     EMPTY, EMPTY, EMPTY, EMPTY,
     EMPTY, EMPTY, EMPTY, EMPTY)
 
 /* 0xf6, 0xf7 */
+//Unary
 make_group(gp3,
     EMPTY, EMPTY, EMPTY, EMPTY,
     EMPTY, EMPTY, EMPTY, EMPTY)
 
 /* 0xfe */
+//INC/DEC
 make_group(gp4,
     EMPTY, EMPTY, EMPTY, EMPTY,
     EMPTY, EMPTY, EMPTY, EMPTY)
 
 /* 0xff */
+//Indirect
 make_group(gp5,
     EMPTY, EMPTY, EMPTY, EMPTY,
-    EMPTY, EMPTY, EMPTY, EMPTY)
+    EMPTY, EMPTY, EX(push), EMPTY)
 
 /* 0x0f 0x01*/
 make_group(gp7,
