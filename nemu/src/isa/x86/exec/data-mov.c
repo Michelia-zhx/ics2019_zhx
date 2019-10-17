@@ -8,6 +8,7 @@ make_EHelper(mov) {
 make_EHelper(push) {
   rtl_push(&id_dest->val);
   rtlreg_t esp1 = cpu.esp;
+  printf("%d\n", id_dest->type);
   if (id_dest->type != OP_TYPE_IMM) operand_write(id_dest, &id_dest->val);
   //else if (id_dest->type == OP_TYPE_IMM) id_dest->imm = id_dest->val;
   //else assert(0);
