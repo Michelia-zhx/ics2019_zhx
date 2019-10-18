@@ -20,6 +20,7 @@ make_EHelper(cmp);
 //logic.c
 make_EHelper(and);
 make_EHelper(xor);
+make_EHelper(setcc);
 
 //special.c
 make_EHelper(nop);

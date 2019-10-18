@@ -57,7 +57,7 @@ make_group(gp7,
 /* TODO: Add more instructions!!! */
 
 static OpcodeEntry opcode_table [512] = {
-  /* 0x00 */	IDEXW(G2E, add, 1), IDEX(G2E, gp1), EMPTY, EMPTY,
+  /* 0x00 */	IDEXW(G2E, add, 1), IDEX(G2E, add), EMPTY, EMPTY,
   /* 0x04 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x08 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x0c */	EMPTY, EMPTY, EMPTY, EX(2byte_esc),
@@ -194,7 +194,7 @@ static make_EHelper(2byte_esc) {
   uint32_t opcode = instr_fetch(pc, 1) | 0x100;
   decinfo.opcode = opcode;
   set_width(opcode_table[opcode].width);
-  //printf("In make_EHelper, opcode: %d\n", opcode);
+  printf("In make_EHelper, opcode: %d\n", opcode);
   idex(pc, &opcode_table[opcode]);
 }
 
