@@ -115,7 +115,7 @@ static OpcodeEntry opcode_table [512] = {
   /* 0xdc */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xe0 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xe4 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0xe8 */	IDEX(J, call), EMPTY, EMPTY, EMPTY,
+  /* 0xe8 */	IDEXW(J, call, 1), EMPTY, EMPTY, EMPTY,
   /* 0xec */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xf0 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xf4 */	EMPTY, EMPTY, IDEXW(E, gp3, 1), IDEX(E, gp3),
@@ -192,11 +192,11 @@ static OpcodeEntry opcode_table [512] = {
 
 static make_EHelper(2byte_esc) {
   uint32_t a = instr_fetch(pc, 1);
-  printf("%x\n", a);
+  //printf("%x\n", a);
   uint32_t opcode = a | 0x100; // 例：0x94|0x100 = 0x194，就到了2byte opcode table
   decinfo.opcode = opcode;
   set_width(opcode_table[opcode].width);
-  printf("In make_EHelper, opcode: %x\n", opcode);
+  //printf("In make_EHelper, opcode: %x\n", opcode);
   idex(pc, &opcode_table[opcode]);
 }
 
