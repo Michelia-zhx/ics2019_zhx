@@ -12,6 +12,7 @@ make_EHelper(operand_size);
 
 //control.c
 make_EHelper(call);
+make_EHelper(jcc);
 make_EHelper(ret);
 
 //arith.c
