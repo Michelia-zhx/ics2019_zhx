@@ -192,7 +192,7 @@ static OpcodeEntry opcode_table [512] = {
 
 static make_EHelper(2byte_esc) {
   uint32_t a = instr_fetch(pc, 1);
-  printf("%d\n", a);
+  printf("%x\n", a);
   uint32_t opcode = a | 0x100;
   decinfo.opcode = opcode;
   set_width(opcode_table[opcode].width);
