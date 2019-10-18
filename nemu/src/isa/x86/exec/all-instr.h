@@ -13,6 +13,7 @@ make_EHelper(call);
 make_EHelper(ret);
 
 //arith.c
+make_EHelper(add);
 make_EHelper(sub);
 make_EHelper(cmp);
 
