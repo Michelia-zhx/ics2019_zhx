@@ -16,10 +16,10 @@ void reg_test() {
   for (i = R_EAX; i <= R_EDI; i ++) {
     sample[i] = rand();
     reg_l(i) = sample[i];
-    assert(reg_w(i) == (sample[i] & 0xffff));
+    assert(reg_w(i) == (sample[i] & 0xffff)); //(cpu.gpr[index]._16)[i] == (sample[i] & 0xffff) 32位的变了16位的要跟着变
   }
 
-  assert(reg_b(R_AL) == (sample[R_EAX] & 0xff));
+  assert(reg_b(R_AL) == (sample[R_EAX] & 0xff)); //(cpu.gpr[index & 0x3]._8[index >> 2]) == (sample[R_EAX] & 0xff) 8位的变了eax等要跟着变
   assert(reg_b(R_AH) == ((sample[R_EAX] >> 8) & 0xff));
   assert(reg_b(R_BL) == (sample[R_EBX] & 0xff));
   assert(reg_b(R_BH) == ((sample[R_EBX] >> 8) & 0xff));
