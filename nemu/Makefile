@@ -62,7 +62,7 @@ override ARGS ?= -l $(BUILD_DIR)/nemu-log.txt
 override ARGS += -d $(QEMU_SO)
 
 # Command to execute NEMU
-IMG :=~/ics2019/nexus-am/tests/cputest/build/shuixianhua-x86-nemu.bin
+IMG :=~/ics2019/nexus-am/tests/cputest/build/quick-sort-x86-nemu.bin
 NEMU_EXEC := $(BINARY) $(ARGS) $(IMG)
 
 $(BINARY): $(OBJS)
