@@ -40,13 +40,13 @@ make_group(gp3,
 /* 0xfe */
 //INC/DEC
 make_group(gp4,
-    EMPTY, EMPTY, EMPTY, EMPTY,
+    EMPTY, EX(dec), EMPTY, EMPTY,
     EMPTY, EMPTY, EMPTY, EMPTY)
 
 /* 0xff */
 //Indirect
 make_group(gp5,
-    EMPTY, EX(dec), EMPTY, EMPTY,
+    EMPTY, EMPTY, EMPTY, EMPTY,
     EMPTY, EMPTY, EX(push), EMPTY)
 
 /* 0x0f 0x01*/
