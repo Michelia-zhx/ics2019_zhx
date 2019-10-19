@@ -20,6 +20,7 @@ make_EHelper(ret);
 //arith.c
 make_EHelper(add);
 make_EHelper(sub);
+make_EHelper(adc);
 make_EHelper(cmp);
 make_EHelper(inc);
 make_EHelper(dec);
