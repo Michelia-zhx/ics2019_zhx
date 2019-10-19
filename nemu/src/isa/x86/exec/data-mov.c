@@ -49,10 +49,14 @@ make_EHelper(leave) {
 
 make_EHelper(cltd) {
   if (decinfo.isa.is_operand_size_16) {
-    TODO();
+    bool msb = (reg_w(R_EAX) >> 15) & 1;
+    if (msb) rtl_ori(&reg_l(R_EDX), &reg_l(R_EDX), 0xffff);
+    else rtl_andi(&reg_l(R_EDX), &reg_l(R_EDX), 0xffff0000);
   }
   else {
-    TODO();
+    bool msb = (reg_l(R_EAX) >> 31) & 1;
+    if (msb) rtl_li(&reg_l(R_EDX), 0xffffffff);
+    else rtl_li(&reg_l(R_EDX), 0);
   }
 
   print_asm(decinfo.isa.is_operand_size_16 ? "cwtl" : "cltd");
