@@ -13,10 +13,11 @@ make_EHelper(operand_size);
 
 //control.c
 make_EHelper(call);
+make_EHelper(call_rm);
 make_EHelper(jmp);
+make_EHelper(jmp_rm);
 make_EHelper(jcc);
 make_EHelper(ret);
-make_EHelper(call_rm);
 
 //arith.c
 make_EHelper(add);
