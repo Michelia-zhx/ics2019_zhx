@@ -40,12 +40,14 @@ make_EHelper(or) {
 }
 
 make_EHelper(sar) {
+  /*
   if (id_dest->width == 1){
     id_dest->val = (int8_t)id_dest->val;
   }
   else if (id_dest->width == 2){
     id_dest->val = (int16_t)id_dest->val;
   }
+  */
   rtl_sar(&id_dest->val, &id_dest->val, &id_src->val);
   rtl_update_ZFSF(&id_dest->val, id_dest->width);
   operand_write(id_dest, &id_dest->val);
