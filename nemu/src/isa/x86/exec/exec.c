@@ -192,11 +192,11 @@ static OpcodeEntry opcode_table [512] = {
 
 static make_EHelper(2byte_esc) {
   uint32_t a = instr_fetch(pc, 1);
-  printf("%x\n", a);
+  //printf("%x\n", a);
   uint32_t opcode = a | 0x100; // 例：0x94|0x100 = 0x194，就到了2byte opcode table
   decinfo.opcode = opcode;
   set_width(opcode_table[opcode].width);
-  printf("In make_EHelper, opcode: %x\n", opcode);
+  //printf("In make_EHelper, opcode: %x\n", opcode);
   idex(pc, &opcode_table[opcode]);
 }
 
@@ -204,7 +204,7 @@ void isa_exec(vaddr_t *pc) {
   uint32_t opcode = instr_fetch(pc, 1);
   decinfo.opcode = opcode;
   set_width(opcode_table[opcode].width);
-  printf("In isa_exec, opcode: %d\n", opcode);
-  printf("decinfo.isa.ext_opcode: %d\n", decinfo.isa.ext_opcode);
+  //printf("In isa_exec, opcode: %d\n", opcode);
+  //printf("decinfo.isa.ext_opcode: %d\n", decinfo.isa.ext_opcode);
   idex(pc, &opcode_table[opcode]);
 }
