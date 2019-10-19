@@ -34,8 +34,8 @@ make_group(gp2,
 /* 0xf6, 0xf7 */
 //Unary
 make_group(gp3,
-    EMPTY, EMPTY, EMPTY, EMPTY,
-    EMPTY, EMPTY, EMPTY, EX(idiv))
+    EX(test), EX(test), EX(test), EX(test),
+    EX(test), EX(test), EX(test), EX(idiv))
 
 /* 0xfe */
 //INC/DEC
