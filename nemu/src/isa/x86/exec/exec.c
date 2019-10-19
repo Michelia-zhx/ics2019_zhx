@@ -28,8 +28,8 @@ make_group(gp1,
 /* 0xc0, 0xc1, 0xd0, 0xd1, 0xd2, 0xd3 */
 //Shift
 make_group(gp2,
-    EMPTY, EMPTY, EMPTY, EMPTY,
-    EMPTY, EX(shr), EX(sar), EMPTY)
+    EX(sar), EX(sar), EX(sar), EX(sar),
+    EX(sar), EX(shr), EX(sar), EX(sar))
 
 /* 0xf6, 0xf7 */
 //Unary
