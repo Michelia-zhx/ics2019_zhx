@@ -46,7 +46,7 @@ make_group(gp4,
 /* 0xff */
 //Indirect
 make_group(gp5,
-    EX(inc), EMPTY, EMPTY, EMPTY,
+    EX(inc), EX(call), EX(call), EX(call),
     EMPTY, EMPTY, EX(push), EMPTY)
 
 /* 0x0f 0x01*/
