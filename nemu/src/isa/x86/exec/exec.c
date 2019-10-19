@@ -29,7 +29,7 @@ make_group(gp1,
 //Shift
 make_group(gp2,
     EMPTY, EMPTY, EMPTY, EMPTY,
-    EMPTY, EMPTY, EMPTY, EMPTY)
+    EMPTY, EX(shr), EMPTY, EMPTY)
 
 /* 0xf6, 0xf7 */
 //Unary
