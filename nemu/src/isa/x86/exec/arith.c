@@ -149,7 +149,7 @@ make_EHelper(sbb) {
   rtl_sub(&s0, &id_dest->val, &id_src->val);
   // s1 = s0 - CF
   rtl_get_CF(&s1);
-  rtl_sub(&s1, &s0, &s1);
+  rtl_sub(&s1, &s0, &s1); //s1 = dest-src-CF
 
   operand_write(id_dest, &s1);
 
@@ -157,12 +157,12 @@ make_EHelper(sbb) {
     rtl_andi(&s1, &s1, 0xffffffffu >> ((4 - id_dest->width) * 8));
   }
 
-  rtl_update_ZFSF(&s1, id_dest->width);
+  rtl_update_ZFSF(&s1, id_dest->width); //判断是否为0和符号
 
   // update CF
-  rtl_is_sub_carry(&s1, &s1, &s0);
-  rtl_is_sub_carry(&s0, &s0, &id_dest->val);
-  rtl_or(&s0, &s0, &s1);
+  rtl_is_sub_carry(&s1, &s1, &s0); // 根据s0(dest-src)和s1(dest-src-CF)判断是否借位
+  rtl_is_sub_carry(&s0, &s0, &id_dest->val); //根据s0(dest-src)和dest判断是否借位
+  rtl_or(&s0, &s0, &s1); //只要有一个判断出借位了就设置CF为1
   rtl_set_CF(&s0);
 
   // update OF
