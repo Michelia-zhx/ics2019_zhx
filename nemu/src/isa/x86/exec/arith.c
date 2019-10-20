@@ -47,6 +47,7 @@ make_EHelper(cmp) {
   rtl_setrelop(RELOP_LTU, &s1, &id_dest->val, &s0);
   
   rtl_update_ZFSF(&s0, id_dest->width);
+  
   rtl_setrelop(RELOP_LTU, &t0, &id_dest->val, &s0);
   rtl_or(&t0, &s1, &t0);
   rtl_set_CF(&t0);
