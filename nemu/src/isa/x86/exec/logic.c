@@ -83,6 +83,7 @@ make_EHelper(setcc) {
   uint32_t cc = decinfo.opcode & 0xf;
 
   rtl_setcc(&s0, cc);
+  Log("%x",s0);
   if (s0)
   {
     operand_write(id_dest, &s0);
