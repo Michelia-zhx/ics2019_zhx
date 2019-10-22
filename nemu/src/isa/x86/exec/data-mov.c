@@ -73,8 +73,8 @@ make_EHelper(cwtl) {
 
 make_EHelper(movsx) {
   //Log("%x", id_src->val);
-  id_dest->width = decinfo.isa.is_operand_size_16 ? 2 : 4;
-  int width = decinfo.isa.is_operand_size_16 ? 1 : 2;
+  id_dest->width = decinfo.isa.is_operand_size_16 ? 2 : 1;
+  int width = decinfo.isa.is_operand_size_16 ? 2 : 1;
   s0=id_src->val;
   rtl_sext(&s0, &id_src->val, width);
   //Log("%x", s0);
