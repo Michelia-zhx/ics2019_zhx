@@ -55,7 +55,6 @@ static inline void rtl_is_sub_carry(rtlreg_t* dest,
   //printf("In is_sub_carry\n");
   if (*res > *src1) *dest = 1;
   else *dest = 0;
-  //rtl_setrelop(RELOP_GTU, dest, res, src1);
   return;
 }
 
