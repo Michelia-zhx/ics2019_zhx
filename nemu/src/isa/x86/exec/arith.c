@@ -43,12 +43,12 @@ make_EHelper(sub) {
 }
 
 make_EHelper(cmp) {
-  Log("%x %x",id_dest->val,id_src->val);
+  //Log("%x %x",id_dest->val,id_src->val);
   rtl_sub(&s0, &id_dest->val, &id_src->val);
   rtl_setrelop(RELOP_LTU, &s1, &id_dest->val, &s0);
   
   rtl_update_ZFSF(&s0, id_dest->width);
-  Log("%x", cpu.eflags.ZF);
+  //Log("%x", cpu.eflags.ZF);
   
   rtl_setrelop(RELOP_LTU, &t0, &id_dest->val, &s0);
   rtl_or(&t0, &s1, &t0);
