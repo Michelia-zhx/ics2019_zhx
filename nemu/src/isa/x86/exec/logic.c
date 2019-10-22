@@ -84,10 +84,12 @@ make_EHelper(setcc) {
 
   rtl_setcc(&s0, cc);
   Log("%x",s0);
+  Log("%x",cpu.eax);
   if (s0)
   {
     operand_write(id_dest, &s0);
   }
+  Log("%x",cpu.eax);
 
   print_asm("set%s %s", get_cc_name(cc), id_dest->str);
 }
