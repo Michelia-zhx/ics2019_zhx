@@ -74,9 +74,10 @@ make_EHelper(cwtl) {
 make_EHelper(movsx) {
   Log("%x", id_src->val);
   id_dest->width = decinfo.isa.is_operand_size_16 ? 2 : 4;
+  int width = decinfo.isa.is_operand_size_16 ? 1 : 2;
   s0=id_src->val;
   // Log("%x", s0);
-  // rtl_sext(&s0, &id_src->val, id_src->width);
+  rtl_sext(&s0, &id_src->val, width);
   operand_write(id_dest, &s0);
   // Log("%x", id_dest->val);
   print_asm_template2(movsx);
