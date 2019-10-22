@@ -26,14 +26,11 @@ make_EHelper(sub) {
   rtl_sub(&s0, &id_dest->val, &id_src->val);
   if (id_dest->val < s0) s1 = 1;
   else s1 = 0;
-  //rtl_setrelop(RELOP_LTU, &s1, &id_dest->val, &s0);
-
   operand_write(id_dest, &s0);
 
   rtl_update_ZFSF(&s0, id_dest->width);
   if (id_dest->val < s0) t0 = 1;
   else t1 = 0;
-  //rtl_setrelop(RELOP_LTU, &t0, &id_dest->val, &s0);
   rtl_or(&t0, &s1, &t0);
   rtl_set_CF(&t0);
   
@@ -49,12 +46,13 @@ make_EHelper(sub) {
 make_EHelper(cmp) {
   //Log("%x %x",id_dest->val,id_src->val);
   rtl_sub(&s0, &id_dest->val, &id_src->val);
-  rtl_setrelop(RELOP_LTU, &s1, &id_dest->val, &s0);
+  if (id_dest->val < s0) s1 = 1;
+  else s1 = 0;
   
   rtl_update_ZFSF(&s0, id_dest->width);
   //Log("%x", cpu.eflags.ZF);
-  
-  rtl_setrelop(RELOP_LTU, &t0, &id_dest->val, &s0);
+  if (id_dest->val < s0) t0 = 1;
+  else t1 = 0;
   rtl_or(&t0, &s1, &t0);
   rtl_set_CF(&t0);
   
@@ -69,12 +67,16 @@ make_EHelper(cmp) {
 
 make_EHelper(inc) {
   rtl_addi(&s0, &id_dest->val, 1);
-  rtl_setrelop(RELOP_LTU, &s1, &s0, &id_dest->val);
+  if (s0 < id_dest->val) s1 = 1;
+  else s1 = 0;
+  //rtl_setrelop(RELOP_LTU, &s1, &s0, &id_dest->val);
 
   operand_write(id_dest, &s0);
 
   rtl_update_ZFSF(&s0, id_dest->width);
-  rtl_setrelop(RELOP_LTU, &t0, &s0, &id_dest->val);
+  if (s0 < id_dest->val) t0 = 1;
+  else t0 = 0;
+  //rtl_setrelop(RELOP_LTU, &t0, &s0, &id_dest->val);
   rtl_or(&t0, &s1, &t0);
   rtl_set_CF(&t0);
 
