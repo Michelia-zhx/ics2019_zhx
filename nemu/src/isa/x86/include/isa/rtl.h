@@ -75,7 +75,9 @@ static inline void rtl_is_add_carry(rtlreg_t* dest,
     const rtlreg_t* res, const rtlreg_t* src1) {
   // dest <- is_carry(src1 + src2)
   //printf("In is_add_carry\n");
-  rtl_setrelop(RELOP_LTU, dest, res, src1);
+  if (*res < *src1) *dest = 1;
+  else *dest = 0;
+  //rtl_setrelop(RELOP_LTU, dest, res, src1);
   return;
 }
 
