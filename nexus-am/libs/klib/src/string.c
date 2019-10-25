@@ -132,6 +132,7 @@ void* memset(void* v,int c,size_t n) {
 }
 
 void* memcpy(void* out, const void* in, size_t n) {
+  /*
   void *origin = out;
   char *p = (char *)out;
   char *q = (char *)in;
@@ -141,6 +142,12 @@ void* memcpy(void* out, const void* in, size_t n) {
     q += 1;
     n--;
   }
+  return origin;
+  */
+ void* origin = out;
+  char* outc = (char*) out;
+  char* inc = (char*) in;
+  while(n--) *outc++ = *inc++;
   return origin;
 }
 
