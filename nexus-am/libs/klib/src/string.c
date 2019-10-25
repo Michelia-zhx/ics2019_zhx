@@ -67,7 +67,7 @@ int strcmp(const char* s1, const char* s2) {
     printf("error in atrcmp");
     assert(0);
   }
-  return -1;
+  return result;
 }
 
 int strncmp(const char* s1, const char* s2, size_t n) {
