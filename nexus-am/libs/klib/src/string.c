@@ -15,7 +15,7 @@ size_t strlen(const char *s) {
 char *strcpy(char* dst,const char* src) {
   char *p = dst;
   while(*src){
-   // *p = *src;
+    *p = *src;
     src += 1;
     p += 1;
   }
@@ -67,7 +67,7 @@ int strcmp(const char* s1, const char* s2) {
     printf("error in atrcmp");
     assert(0);
   }
-  return result;
+  return -1;
 }
 
 int strncmp(const char* s1, const char* s2, size_t n) {
