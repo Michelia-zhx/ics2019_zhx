@@ -65,6 +65,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 }
 
 int sprintf(char *out, const char *fmt, ...) {
+  /*
   printf("hello, 2");
   int iReturn ;
   va_list pArgs ;
@@ -72,6 +73,12 @@ int sprintf(char *out, const char *fmt, ...) {
   iReturn = vsprintf (out, fmt, pArgs) ;
   va_end (pArgs) ;
   return iReturn ;
+  */
+  va_list aptr;
+  va_start(aptr, fmt);
+  int ret = vsprintf(out, fmt, aptr);
+  va_end(aptr);
+  return ret;
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
