@@ -8,7 +8,7 @@ int printf(const char *fmt, ...) {
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
-  /*
+  
   int ret = 0;
   int count, num;
   char *p;
@@ -58,11 +58,18 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
      
       default:
         break;
-     }
+      }
+      fmt += 1;
+    }
+    else {
+            *out++ = *fmt++;
+            ret++;
     }
   }
+  *out = '\0';
   return 0;
-  */
+  
+ /*
  int ret = 0;
     int cnt,num;
     char a[100];
@@ -114,17 +121,16 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
                 	num = va_arg(ap,int);
                 	char result[100];
                 	int step = 0; 
-					 do
-   					 {
-      					 result[step]="0123456789abcdef"[num%16];
-     					 num/=16;
-     					 step++;
-   					 }while(num);
-   					 result[step] = '\0';
-             		while(step){
-                        *out++ = result[step-1];
-                        step--;
-                        ret++;
+                  do{
+                        result[step]="0123456789abcdef"[num%16];
+                      num/=16;
+                      step++;
+                  }while(num);
+                  result[step] = '\0';
+                  while(step){
+                                *out++ = result[step-1];
+                                step--;
+                                ret++;
                     }
              		break;
                 default:break;
@@ -138,6 +144,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
     }
     *out = '\0';
     return ret;
+    */
 }
 
 int sprintf(char *out, const char *fmt, ...) {
