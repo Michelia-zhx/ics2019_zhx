@@ -152,7 +152,7 @@ void* memcpy(void* out, const void* in, size_t n) {
 }
 
 int memcmp(const void* s1, const void* s2, size_t n){
-  /*
+  
   int result = 0;
   char *p1 = (char *)s1;
   char *p2 = (char *)s2;
@@ -169,7 +169,7 @@ int memcmp(const void* s1, const void* s2, size_t n){
   else if (*p1 < *p2) result = -1;
   else result = 0;
   return result;
-  */
+  /*
  char* temps1 = (char*) s1;
 	char* temps2 = (char*) s2;
 	n-=1;
@@ -179,7 +179,7 @@ int memcmp(const void* s1, const void* s2, size_t n){
 	}
 	if(*temps1 > *temps2) return 1;
 	else if (*temps1 < *temps2)return -1;
-	else return 0;
+	else return 0;*/
 }
 
 #endif
