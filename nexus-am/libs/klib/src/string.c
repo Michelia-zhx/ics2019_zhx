@@ -67,7 +67,7 @@ char* strcat(char* dst, const char* src) {
 }
 
 int strcmp(const char* s1, const char* s2) {
-  /*
+  
   int result = 0;
   while (*s1 && *s2 && (*s1 == *s2)){
     s1 += 1;
@@ -83,7 +83,7 @@ int strcmp(const char* s1, const char* s2) {
     assert(0);
   }
   return result;
-  */
+  /*
  while(*s1 && *s2 && (*s1 == *s2)){
     s1++;
 	s2++;
@@ -91,6 +91,7 @@ int strcmp(const char* s1, const char* s2) {
   if(*s1 > *s2) return 1;
   else if(*s1 < *s2) return -1;
   else return 0;
+  */
 }
 
 int strncmp(const char* s1, const char* s2, size_t n) {
@@ -123,13 +124,6 @@ void* memset(void* v,int c,size_t n) {
     p += 1;
   }
   return v;
-  /*
- char* temp = (char*) v;
-	for(int i = 0;i < n;++i){
-		*temp++ = c;
-	}
-  return v;
-  */
 }
 
 void* memcpy(void* out, const void* in, size_t n) {
