@@ -65,6 +65,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 }
 
 int sprintf(char *out, const char *fmt, ...) {
+  printf("hello, 2");
   int iReturn ;
   va_list pArgs ;
   va_start (pArgs, fmt) ;
