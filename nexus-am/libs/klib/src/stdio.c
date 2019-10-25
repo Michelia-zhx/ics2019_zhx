@@ -11,6 +11,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
   int ret = 0;
   int count, num;
   char *p;
+  printf("hello, 1");
   char numstr[100];
   while (*fmt){
     if (*fmt == '%'){
