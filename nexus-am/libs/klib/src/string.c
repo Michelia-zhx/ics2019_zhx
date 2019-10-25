@@ -4,10 +4,9 @@
 
 size_t strlen(const char *s) {
   size_t length = 0;
-  char *p = s;
-  while(*p){
+  while(*s){
     length += 1;
-    p =+ 1;
+    s += 1;
   }
   return length;
 }
@@ -71,6 +70,7 @@ int strcmp(const char* s1, const char* s2) {
 }
 
 int strncmp(const char* s1, const char* s2, size_t n) {
+  /*
   int result = 0;
   char *p1 = s1;
   char *p2 = s2;
@@ -87,6 +87,8 @@ int strncmp(const char* s1, const char* s2, size_t n) {
   else if (*p1 < *p2) result = -1;
   else result = 0;
   return result;
+  */
+ return 0;
 }
 
 void* memset(void* v,int c,size_t n) {
@@ -112,6 +114,7 @@ void* memcpy(void* out, const void* in, size_t n) {
 }
 
 int memcmp(const void* s1, const void* s2, size_t n){
+  /*
   int result = 0;
   char *p1 = (char *)s1;
   char *p2 = (char *)s2;
@@ -128,6 +131,8 @@ int memcmp(const void* s1, const void* s2, size_t n){
   else if (*p1 < *p2) result = -1;
   else result = 0;
   return result;
+  */
+ return 0;
 }
 
 #endif
