@@ -42,6 +42,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           *out = numstr[count-1];
           count -= 1;
           ret += 1;
+          out += 1;
         }
         break;
       case 's':
