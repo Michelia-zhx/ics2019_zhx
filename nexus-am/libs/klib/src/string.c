@@ -21,12 +21,6 @@ char *strcpy(char* dst,const char* src) {
   }
   *p = '\0';
   return dst;
-  /*
-  char* temp = dst;
-	while(*src) *dst++ = *src++; 
-	*dst = '\0';
-	return temp;
-  */
 }
 
 char* strncpy(char* dst, const char* src, size_t n) {
@@ -57,13 +51,6 @@ char* strcat(char* dst, const char* src) {
   }
   *p = '\0';
   return dst;
-  /*
- char* temp = dst;
-	while(*dst) dst++;
-	while(*src) *dst++ = *src++;
-	*dst = '\0';
-	return temp;
- */ 
 }
 
 int strcmp(const char* s1, const char* s2) {
@@ -83,15 +70,6 @@ int strcmp(const char* s1, const char* s2) {
     assert(0);
   }
   return result;
-  /*
- while(*s1 && *s2 && (*s1 == *s2)){
-    s1++;
-	s2++;
-  }
-  if(*s1 > *s2) return 1;
-  else if(*s1 < *s2) return -1;
-  else return 0;
-  */
 }
 
 int strncmp(const char* s1, const char* s2, size_t n) {
