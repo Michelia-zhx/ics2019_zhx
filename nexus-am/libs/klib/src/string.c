@@ -132,7 +132,7 @@ void* memset(void* v,int c,size_t n) {
 }
 
 void* memcpy(void* out, const void* in, size_t n) {
-  /*
+  
   void *origin = out;
   char *p = (char *)out;
   char *q = (char *)in;
@@ -143,12 +143,13 @@ void* memcpy(void* out, const void* in, size_t n) {
     n--;
   }
   return origin;
-  */
+  /*
  void* origin = out;
   char* outc = (char*) out;
   char* inc = (char*) in;
   while(n--) *outc++ = *inc++;
   return origin;
+  */
 }
 
 int memcmp(const void* s1, const void* s2, size_t n){
@@ -169,17 +170,6 @@ int memcmp(const void* s1, const void* s2, size_t n){
   else if (*p1 < *p2) result = -1;
   else result = 0;
   return result;
-  /*
- char* temps1 = (char*) s1;
-	char* temps2 = (char*) s2;
-	n-=1;
-	while(*temps1 && *temps2 && (n--) && (*temps1 == *temps2)){
-		temps1++;
-		temps2++;
-	}
-	if(*temps1 > *temps2) return 1;
-	else if (*temps1 < *temps2)return -1;
-	else return 0;*/
 }
 
 #endif
