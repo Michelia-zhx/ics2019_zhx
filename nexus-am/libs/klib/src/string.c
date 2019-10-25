@@ -170,7 +170,16 @@ int memcmp(const void* s1, const void* s2, size_t n){
   else result = 0;
   return result;
   */
- return 0;
+ char* temps1 = (char*) s1;
+	char* temps2 = (char*) s2;
+	n-=1;
+	while(*temps1 && *temps2 && (n--) && (*temps1 == *temps2)){
+		temps1++;
+		temps2++;
+	}
+	if(*temps1 > *temps2) return 1;
+	else if (*temps1 < *temps2)return -1;
+	else return 0;
 }
 
 #endif
