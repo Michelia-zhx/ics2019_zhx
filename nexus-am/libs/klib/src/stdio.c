@@ -24,6 +24,11 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           *out = '-';
           out += 1;
           num = 0-num;
+          while (num != 0){
+            numstr[count] = num % 10 + '0';
+            count += 1;
+            num /= 10;
+        }
         }
         else if (num == 0) *out = '0';
         else {
@@ -32,11 +37,6 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             count += 1;
             num /= 10;
           }
-        }
-        while (num != 0){
-            numstr[count] = num % 10 + '0';
-            count += 1;
-            num /= 10;
         }
         while (count != 0){
           *out = numstr[count-1];
