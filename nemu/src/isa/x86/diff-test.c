@@ -10,6 +10,7 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   printf("1\n");
   if ((*ref_r).ebx != cpu.ebx) return false;
   if ((*ref_r).esp != cpu.esp) return false;
+  printf("7\n");
   if ((*ref_r).ebp != cpu.ebp) return false;
   if ((*ref_r).esi != cpu.esi) return false;
   printf("2\n");
