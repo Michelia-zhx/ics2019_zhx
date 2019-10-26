@@ -3,10 +3,10 @@
 #include "nemu.h"
 #include "monitor/monitor.h"
 
-void (*ref_difftest_memcpy_from_dut)(paddr_t dest, void *src, size_t n) = NULL;
-void (*ref_difftest_getregs)(void *c) = NULL;
-void (*ref_difftest_setregs)(const void *c) = NULL;
-void (*ref_difftest_exec)(uint64_t n) = NULL;
+void (*ref_difftest_memcpy_from_dut)(paddr_t dest, void *src, size_t n);
+void (*ref_difftest_getregs)(void *c);
+void (*ref_difftest_setregs)(const void *c);
+void (*ref_difftest_exec)(uint64_t n);
 
 static bool is_skip_ref = false;
 static int skip_dut_nr_instr = 0;
