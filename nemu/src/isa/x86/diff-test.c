@@ -2,6 +2,8 @@
 #include "monitor/diff-test.h"
 
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
+  printf("ref_r.eax: %x, cpu.eax: %x", (*ref_r).eax, cpu.eax);
+  /*
   if ((*ref_r).eax != cpu.eax) return false;
   if ((*ref_r).ecx != cpu.ecx) return false;
   if ((*ref_r).edx != cpu.edx) return false;
@@ -26,7 +28,8 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   if ((*ref_r).gpr[2]._8[1] != cpu.gpr[2]._8[1]) return false;
   if ((*ref_r).gpr[3]._8[0] != cpu.gpr[3]._8[0]) return false;
   if ((*ref_r).gpr[3]._8[1] != cpu.gpr[3]._8[1]) return false;
-  return true;
+  */
+  return false;
 }
 
 void isa_difftest_attach(void) {
