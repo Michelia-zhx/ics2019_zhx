@@ -71,10 +71,10 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 
 int sprintf(char *out, const char *fmt, ...) {
   int iReturn ;
-  va_list pArgs ;
-  va_start (pArgs, fmt) ;
-  iReturn = vsprintf (out, fmt, pArgs) ;
-  va_end (pArgs) ;
+  va_list ap ;
+  va_start (ap, fmt) ;
+  iReturn = vsprintf (out, fmt, ap) ;
+  va_end (ap) ;
   return iReturn ;
 }
 
