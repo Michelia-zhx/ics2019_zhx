@@ -43,7 +43,7 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   if ((*ref_r).gpr[3]._8[1] != cpu.gpr[3]._8[1]) return false;
   printf("6\n");
   
-  return false;
+  return true;
 }
 
 void isa_difftest_attach(void) {
