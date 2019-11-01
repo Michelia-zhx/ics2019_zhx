@@ -42,32 +42,24 @@ void pio_write_w(ioaddr_t, uint32_t);
 void pio_write_b(ioaddr_t, uint32_t);
 
 make_EHelper(in) {
-  switch(id_src->width){	
-    case 4:
-      t0 = pio_read_l(id_src->val);
-      break;
-    case 2:
-      t0 = pio_read_w(id_src->val);
-      break;
-    case 1:
-      t0 = pio_read_b(id_src->val);
-      break;
-  }      
-  operand_write(id_dest, &t0);
+  if (id_src->width == 4) id_dest->val = pio_read_l((ioaddr_t)id_src->val);
+  else if (id_src->width == 2) id_dest->val = pio_read_w((ioaddr_t)id_src->val);
+  else if (id_src->width == 1) id_dest->val = pio_read_b((ioaddr_t)id_src->val);
+  else {
+    printf("should not reach here.");
+    assert(0);
+  }
+
   print_asm_template2(in);
 }
 
 make_EHelper(out) {
-  switch(id_src->width){
-    case 4:
-      pio_write_l(id_dest->val, id_src->val);
-      break;
-    case 2:
-      pio_write_w(id_dest->val, id_src->val);
-      break;
-    case 1:
-      pio_write_b(id_dest->val, id_src->val);
-      break;
+  if (id_src->width == 4) pio_write_l((ioaddr_t)id_dest->val, id_src->val);
+  else if (id_src->width == 2) pio_write_w((ioaddr_t)id_dest->val, id_src->val);
+  else if (id_src->width == 1) pio_write_b((ioaddr_t)id_dest->val, id_src->val);
+  else {
+    printf("should not reach here.");
+    assert(0);
   }
   print_asm_template2(out);
 }
