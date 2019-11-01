@@ -5,17 +5,51 @@
 #include <assert.h>
 #include <string.h>
 
-extern uint32_t choose(uint32_t n);
-extern void gen_rand_op();
-extern void gen_num();
-
 // this should be enough
 static char buf[65536];
-static inline void gen_rand_expr(int sign) {
-    switch (choose(3)) {
-      case 0: gen_num(); break;
-      case 1: strcat(buf, "("); gen_rand_expr(0); strcat(buf, ")"); break;
-      default: gen_rand_expr(0); gen_rand_op(); gen_rand_expr(0); break;
+
+uint32_t choose(uint32_t n){
+  return rand()%n;
+}
+
+void gen_rand_op(){
+  switch (choose(4))
+  {
+    case 0: strcat(buf, "+"); break;
+    case 1: strcat(buf, "-"); break;
+    case 2: strcat(buf, "*"); break;
+    case 3: strcat(buf, "/"); break;
+  default: assert(0);
+  }
+}
+
+static inline void gen_rand_expr() {
+  switch (choose(3))
+  {
+    case 0: {
+      char num[4];
+      sprintf(num, "%d", choose(100));
+      strcat(buf, num);
+      break;
+    }
+    case 1: {
+      strcat(buf, "(");
+      gen_rand_expr();
+      strcat(buf, ")");
+      break;
+    }
+    case 2: {
+      gen_rand_expr();
+      gen_rand_op();
+      gen_rand_expr();
+      break;
+    }
+    default: {
+      gen_rand_expr();
+      gen_rand_op();
+      gen_rand_expr();
+      break;
+    }
   }
 }
 
@@ -28,30 +62,6 @@ static char *code_format =
 "  return 0; "
 "}";
 
-uint32_t choose(uint32_t n)
-{ uint32_t a = rand() % n;
-  return a;
-}
-
-void gen_rand_op()
-{  switch(choose(4)) {
-     case 0: strcat(buf, "+"); break;
-     case 1: strcat(buf, "-"); break;
-     case 2: strcat(buf, "*"); break;
-     case 3: strcat(buf, "/"); break;
-     default: assert(0);
-     }
-}
-
-void gen_num()
-{ 
-  uint32_t num = rand() % 10;
-  char n[100];
-  sprintf(n, "%d", num);
-  strcat(buf, n);
-}
-
-
 int main(int argc, char *argv[]) {
   int seed = time(0);
   srand(seed);
@@ -61,8 +71,9 @@ int main(int argc, char *argv[]) {
   }
   int i;
   for (i = 0; i < loop; i ++) {
-    buf[0] = '\0';
-    gen_rand_expr(1);
+    memset(buf, 0, sizeof(buf));
+    gen_rand_expr();
+
     sprintf(code_buf, code_format, buf);
 
     FILE *fp = fopen("/tmp/.code.c", "w");
@@ -75,10 +86,11 @@ int main(int argc, char *argv[]) {
 
     fp = popen("/tmp/.expr", "r");
     assert(fp != NULL);
+
     int result;
-    int return_value __attribute__((unused));
-    return_value = fscanf(fp, "%d", &result);
+    fscanf(fp, "%d", &result);
     pclose(fp);
+
     printf("%u %s\n", result, buf);
   }
   return 0;
