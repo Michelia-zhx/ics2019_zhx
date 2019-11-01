@@ -34,7 +34,6 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           op = *fmt;
         }
       }
-      if (min_width) assert(0);
       switch (op) {
         case 'd':
           num = va_arg(ap, int);
@@ -53,6 +52,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             count += 1;
             num /= 10;
           }
+          /*
           if (min_width != 0){
             if (min_width > count){
               for (int k=0; k<(min_width-count); ++k){
@@ -61,7 +61,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
               }
             }
           }
-          
+          */
           while (count != 0){
             *out = numstr[count-1];
             count -= 1;
