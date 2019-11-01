@@ -43,7 +43,10 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             num /= 10;
         }
         }
-        else if (num == 0) *out = '0';
+        else if (num == 0) {
+          *out = '0';
+          out += 0;
+        }
         else {
           while (num != 0){
             numstr[count] = num % 10 + '0';
