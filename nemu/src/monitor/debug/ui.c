@@ -2,18 +2,13 @@
 #include "monitor/expr.h"
 #include "monitor/watchpoint.h"
 #include "nemu.h"
-#include "string.h"
 
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <string.h>
 
-
-void cpu_exec(uint64_t n);
-uint32_t paddr_read(paddr_t addr, int len);
-WP *new_wp(char *);
-void free_wp(char *);
-void wp_display();
+void cpu_exec(uint64_t);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -43,15 +38,19 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_help(char *args);
+
 static int cmd_si(char *args);
+
 static int cmd_info(char *args);
-static int cmd_x(char *args);
+
 static int cmd_p(char *args);
-static int cmd_test_expr();
+
+static int cmd_x_N(char *args);
+
 static int cmd_w(char *args);
+
 static int cmd_d(char *args);
 
-extern void isa_reg_display(void);
 
 static struct {
   char *name;
@@ -61,14 +60,12 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "si", "Let the program step through N instructions and then suspend execution", cmd_si },
-  { "info", "Print register status", cmd_info },
-  { "x", "Scan memory", cmd_x},
-  { "p", "Evaluation of expression", cmd_p},
-  { "t", "Test expr.c", cmd_test_expr},
-  { "w", "Set watchpoints", cmd_w},
-  { "d", "Delete watchpoints", cmd_d},
-  /* TODO: Add more commands */
+  { "si", "Step through the program to run N orders and then pause, default N=1", cmd_si},
+  { "info", "Display the state of the program", cmd_info},
+  { "p", "Calculate the value of expression EXPR", cmd_p},
+  { "x", "Calculate the value of expression EXPR and set as the starting memory address, print successive N 4 bytes in hexadecimal form", cmd_x_N},
+  { "w", "When the value of EXPR changes, pause the program", cmd_w},
+  { "d", "Delete the watchpoint of index N", cmd_d}
 
 };
 
@@ -78,6 +75,7 @@ static int cmd_help(char *args) {
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
   int i;
+  printf("%s", arg);
 
   if (arg == NULL) {
     /* no argument given */
@@ -97,105 +95,89 @@ static int cmd_help(char *args) {
   return 0;
 }
 
-static int cmd_si(char *args)
-{   char *arg = strtok(NULL, " ");
-    int n = 0;
-
-    if (arg == NULL) 
-    {
-      cpu_exec(1);
-      return 0;
-    }
-    else {
-     for (int j = 0; j < strlen(arg); j++)
-       n = n*10 + arg[j] -'0';
-     for (int i = 0;i < n; i++)
-       cpu_exec(1);
-     }
-   return 0;
-}
-
-static int cmd_info(char *args)
-{   char *arg = strtok(NULL, " ");
-     if (strcmp(arg, "r") == 0)
-       isa_reg_display();
-     else if (strcmp(arg, "w") == 0)
-       wp_display();
-     else printf("Unknown command '%s'\n", arg);
-     return 0;
-}
-
-static int cmd_w(char *args)
-{ char *expr = strtok(NULL, " ");
-  WP *n_wp __attribute__((unused))= new_wp(expr);
+static int cmd_si(char *args){
+  /* extract the first argument */
+  char *arg = strtok(NULL, " ");
+  int i=0;
+  if (arg == NULL) i = 1;
+  else i = atoi(arg);
+  if (i==0) {
+    Log("Invalid Input");
+    i = 1;
+  }
+  for (int j=1; j<=i; ++j){
+    cpu_exec(1);
+  }
   return 0;
-}
+}//单步执行
 
-static int cmd_d(char *args)
-{ char *arg = strtok(NULL, " ");
-  free_wp(arg);
-  return 0;
-}
+extern void isa_reg_display();
 
-static int cmd_x(char *args)
-{   char *arg = strtok(NULL, " ");
-    int n = 0;
-
-    for (int j = 0; j < strlen(arg); j++)
-       n = n*10 + arg[j] -'0';
-
-    char *addr = strtok(NULL, " ");
-    paddr_t m;
-    sscanf(addr, "%x", &m);
-    for (int i = 0; i < n; i++, m++)
-       printf("%u\n", paddr_read(m, 4));
+static int cmd_info(char *args){
+  char *arg = strtok(NULL, " ");
+  if (arg==NULL){
+    printf("For example: 'info r'--display the state of register; 'info w'--display the state of watchpoint.");
     return 0;
+  }
+  if (arg[0]=='w'){
+    info_wp_display();
+  }
+  if (arg[0]=='r'){
+    isa_reg_display();
+  }
+  return 0;
+}//打印寄存器
+
+static int cmd_p(char *args){
+  bool *success = (bool*)malloc(sizeof(bool));
+  *success = true;
+  int result = expr(args, success);
+  if (*success==true) printf("$ %d\n", result);
+  free(success);
+  return 0;
 }
 
-static int cmd_p(char *args)
-{  /*char *arg = strtok(NULL, " ");*/
-   bool s = 1;
-   bool *success = &s;
-   uint32_t result;
-   result = expr(args, success);
-   if(*success == true)
-     printf("result:%d\n",result);
-   else
-     printf("Error!\n");
-   return 0;
+extern uint32_t paddr_read(paddr_t addr, int len);
+extern int htoi(char s[]);
+
+static int cmd_x_N(char *args){
+  char *arg = strtok(NULL, " ");
+  int n = atoi(arg);
+  if (n<=0){
+    Log("Invalid Input");
+    return -1;
+  }
+  arg = strtok(NULL, " ");
+  char addr[15];
+  strcpy(addr, arg);
+  paddr_t address = htoi(addr);
+  printf("the address is:%x\n", address);
+  paddr_t four = 0x4;
+  for (int i=0; i<n; ++i){
+    if (i%4==0){
+      printf("0x%-14x:", address);
+    }
+    printf("0x%-14x", paddr_read(address, 4));
+    address = address + four;
+    if ((i+1)%4==0){
+      printf("\n");
+    }
+  }
+  printf("\n");
+  return 0;
+}//扫描内存
+
+static int cmd_w(char *args){
+  new_wp(args);
+  return 0;
 }
 
- //test expr.c
-static int cmd_test_expr()
-{ 
-  FILE *f;
-  char buf[65536];
-  char *result;
-  char *exp;
-  bool s = 0;
-  bool *success = &s;
-  int count = 0;
-  char *return_ __attribute__((unused)) ;
-
-  f = fopen("/home/yyc/ics2019/nemu/tools/gen-expr/input", "r");
-  return_ = fgets(buf, 65536, f);
-  for(int i = 0; i < 100; i++)
-  {  
-     int len_1 = strlen(buf);
-     buf[len_1-1] = '\0';
-     result = strtok(buf, " ");
-     exp = strtok(NULL,  " ");
-     uint32_t a = expr(exp, success);
-     if(a == atol(result))
-        { count++; //right number
-          printf("Success!");
-        }
-     else
-        printf("5555");
-     return_ = fgets(buf, 65536, f);
-   }
-  printf("right number is:%d\n", count);
-  fclose(f);
+static int cmd_d(char *args){
+  if(args!=NULL){
+    int num = atoi(args);
+    delete_wp(num);
+  }
+  else Log("Invalid Input");
   return 0;
 }
 
