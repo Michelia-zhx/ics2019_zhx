@@ -25,6 +25,10 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
     if (*fmt == '%'){
       fmt += 1;
       char op = *fmt;
+      while ('0'<=op && op<='9') {
+        fmt += 1;
+        op = *fmt;
+      }
       switch (op) {
       case 'd':
         num = va_arg(ap, int);
