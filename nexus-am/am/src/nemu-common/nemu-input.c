@@ -7,9 +7,10 @@
 size_t __am_input_read(uintptr_t reg, void *buf, size_t size) {
   switch (reg) {
     case _DEVREG_INPUT_KBD: {
+      int code = inl(0x60);
       _DEV_INPUT_KBD_t *kbd = (_DEV_INPUT_KBD_t *)buf;
-      kbd->keydown = 0;
-      kbd->keycode = _KEY_NONE;
+      kbd->keydown = ((code >> 15) & 1);
+      kbd->keycode = code & 0x7fff;
       return sizeof(_DEV_INPUT_KBD_t);
     }
   }
