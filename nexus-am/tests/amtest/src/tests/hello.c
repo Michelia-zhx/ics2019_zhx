@@ -5,7 +5,7 @@ static inline void putstr(const char *s) {
 }
 
 void hello() {
-  for (int i = 0; i < 7; i ++) {
+  for (int i = 0; i < 8; i ++) {
     putstr("Hello, AM World @ " __ISA__ "\n");
   }
 }
