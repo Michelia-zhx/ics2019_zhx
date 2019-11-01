@@ -12,7 +12,7 @@ size_t __am_timer_read(uintptr_t reg, void *buf, size_t size) {
     }
     case _DEVREG_TIMER_DATE: {
       _DEV_TIMER_DATE_t *rtc = (_DEV_TIMER_DATE_t *)buf;
-      rtc->second = 1;
+      rtc->second = 0;
       rtc->minute = 54;
       rtc->hour   = 18;
       rtc->day    = 1;
