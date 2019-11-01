@@ -28,7 +28,8 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
       char op = *fmt;
       if ('0'<=op && op<='9'){
         while ('0'<=op && op<='9') {
-          min_width = min_width*10 + (op-'0');
+          int dif = op-'0';
+          min_width = min_width*10 + dif;
           fmt += 1;
           op = *fmt;
         }
