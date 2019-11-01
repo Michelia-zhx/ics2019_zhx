@@ -6,7 +6,7 @@
 #include "rtl/relop.h"
 #include "rtl/rtl-wrapper.h"
 
-extern rtlreg_t s0, s1, t0, t1, t2, ir;
+extern rtlreg_t s0, s1, t0, t1, ir;
 
 void decinfo_set_jmp(bool is_jmp);
 bool interpret_relop(uint32_t relop, const rtlreg_t src1, const rtlreg_t src2);
@@ -132,27 +132,25 @@ void interpret_rtl_exit(int state, vaddr_t halt_pc, uint32_t halt_ret);
 
 static inline void rtl_not(rtlreg_t *dest, const rtlreg_t* src1) {
   // dest <- ~src1
-  *dest = ~(*src1);
+  *dest = ~*src1;
 }
 
 static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- signext(src1[(width * 8 - 1) .. 0])
-  int32_t temp = (int32_t)* src1;
-  switch (width) {
-    case 1: 
-      temp = temp << 24;
-      temp = temp >> 24;
-      break;
-    case 2: 
-      temp = temp << 16;
-      temp = temp >> 16;
-      break;
-    case 4: 
-      break;
-    default:
-      assert(0);
+  bool msb = (*src1 >> (width*8 - 1)) & 1;
+  if (!msb) {
+    if (width == 4) *dest = *src1;
+    else if (width == 2) *dest = (*src1 & 0x0000ffff);
+    else if (width == 1) *dest = (*src1 & 0x000000ff);
+    else assert(0);
   }
-  *dest = temp;
+  else {
+    if (width == 4) *dest = *src1;
+    else if (width == 2) *dest = (*src1 | 0xffff0000);
+    else if (width == 1) *dest = (*src1 | 0xffffff00);
+    else assert(0);
+  }
+  return;
 }
 
 static inline void rtl_setrelopi(uint32_t relop, rtlreg_t *dest,
@@ -163,8 +161,7 @@ static inline void rtl_setrelopi(uint32_t relop, rtlreg_t *dest,
 
 static inline void rtl_msb(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- src1[width * 8 - 1]
-  *dest = (*src1 >> (width * 8 - 1)) & 0x1;
-  //*dest = src1[width * 8 - 1];
+  *dest = (*src1 >> (width*8 - 1)) & 1;
 }
 
 static inline void rtl_mux(rtlreg_t* dest, const rtlreg_t* cond, const rtlreg_t* src1, const rtlreg_t* src2) {
