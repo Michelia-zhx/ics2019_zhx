@@ -34,7 +34,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           op = *fmt;
         }
       }
-      printf("min_width: %d\n", min_width);
+      if (min_width) assert(0);
       switch (op) {
         case 'd':
           num = va_arg(ap, int);
