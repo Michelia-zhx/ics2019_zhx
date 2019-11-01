@@ -63,7 +63,7 @@ int strcmp(const char* s1, const char* s2) {
   else if (*s1 < *s2) result = -1;
   else if (*s1 > *s2) result = 1;
   else {
-    printf("error in atrcmp");
+    printf("error in strcmp");
     assert(0);
   }
   return result;
