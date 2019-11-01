@@ -51,6 +51,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             count += 1;
             num /= 10;
           }
+          printf("%d\n", min_width);
           /*
           if (min_width != 0){
             if (min_width > count){
