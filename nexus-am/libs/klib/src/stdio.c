@@ -41,11 +41,11 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
               numstr[count] = num % 10 + '0';
               count += 1;
               num /= 10;
-          }
+            }
           }
           else if (num == 0) {
             *out = '0';
-            out += 0;
+            out += 1;
           }
           else {
             while (num != 0){
