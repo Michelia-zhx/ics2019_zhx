@@ -6,4 +6,4 @@ include $(AM_HOME)/Makefile.app
 
 .PHONY: rom
 rom: $(ROMS)
-	@cd src/roms && python3 build-roms.py
+		@cd src/roms && python3 build-roms.py
