@@ -19,15 +19,19 @@ int printf(const char *fmt, ...) {
 int vsprintf(char *out, const char *fmt, va_list ap) {
   int ret = 0;
   int count, num;
+  int min_width = 0;
   char *p;
   char numstr[100];
   while (*fmt){
     if (*fmt == '%'){
       fmt += 1;
       char op = *fmt;
-      while ('0'<=op && op<='9') {
-        fmt += 1;
-        op = *fmt;
+      if ('0'<=op && op<='9'){
+        while ('0'<=op && op<='9') {
+          min_width = min_width*10 + op-'0';
+          fmt += 1;
+          op = *fmt;
+        }
       }
       switch (op) {
         case 'd':
@@ -37,22 +41,15 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             *out = '-';
             out += 1;
             num = 0-num;
-            while (num != 0){
-              numstr[count] = num % 10 + '0';
-              count += 1;
-              num /= 10;
-            }
           }
           else if (num == 0) {
             *out = '0';
             out += 1;
           }
-          else {
-            while (num != 0){
-              numstr[count] = num % 10 + '0';
-              count += 1;
-              num /= 10;
-            }
+          while (num != 0){
+            numstr[count] = num % 10 + '0';
+            count += 1;
+            num /= 10;
           }
           while (count != 0){
             *out = numstr[count-1];
