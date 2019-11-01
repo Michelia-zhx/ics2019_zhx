@@ -3,10 +3,10 @@
 #include "nemu.h"
 #include "monitor/monitor.h"
 
-void (*ref_difftest_memcpy_from_dut)(paddr_t dest, void *src, size_t n) = NULL;
-void (*ref_difftest_getregs)(void *c) = NULL;
-void (*ref_difftest_setregs)(const void *c) = NULL;
-void (*ref_difftest_exec)(uint64_t n) = NULL;
+void (*ref_difftest_memcpy_from_dut)(paddr_t dest, void *src, size_t n);
+void (*ref_difftest_getregs)(void *c);
+void (*ref_difftest_setregs)(const void *c);
+void (*ref_difftest_exec)(uint64_t n);
 
 static bool is_skip_ref = false;
 static int skip_dut_nr_instr = 0;
@@ -16,7 +16,7 @@ static bool is_detach = false;
 // can not produce consistent behavior with NEMU
 void difftest_skip_ref() {
   is_skip_ref = true;
-  // If such an instruction is one of the instruction packing in QEMU
+    // If such an instruction is one of the instruction packing in QEMU
   // (see below), we end the process of catching up with QEMU's pc to
   // keep the consistent behavior in our best.
   // Note that this is still not perfect: if the packed instructions
@@ -68,7 +68,7 @@ void init_difftest(char *ref_so_file, long img_size) {
 
   void (*ref_difftest_init)(void) = dlsym(handle, "difftest_init");
   assert(ref_difftest_init);
-
+  
   Log("Differential testing: \33[1;32m%s\33[0m", "ON");
   Log("The result of every instruction will be compared with %s. "
       "This will help you a lot for debugging, but also significantly reduce the performance. "
