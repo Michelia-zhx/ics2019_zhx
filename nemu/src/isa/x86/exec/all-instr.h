@@ -1,5 +1,7 @@
 #include "cpu/exec.h"
 
+make_EHelper(operand_size);
+
 //data-mov.c
 make_EHelper(mov);
 make_EHelper(push);
@@ -9,8 +11,7 @@ make_EHelper(cltd);
 make_EHelper(lea);
 make_EHelper(movsx);
 make_EHelper(movzx);
-
-make_EHelper(operand_size);
+make_EHelper(cwtl);
 
 //control.c
 make_EHelper(call);
