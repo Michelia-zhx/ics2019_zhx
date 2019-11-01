@@ -60,10 +60,14 @@ make_EHelper(cltd) {
 
 make_EHelper(cwtl) {
   if (decinfo.isa.is_operand_size_16) {
-    TODO();
+    bool msb = (cpu.eax >> 7) & 1;
+    if (msb) cpu.eax = cpu.eax | 0xff00;
+    else cpu.eax = cpu.eax & 0x00ff;
   }
   else {
-    TODO();
+    bool msb = (cpu.eax >> 15) & 1;
+    if (msb) cpu.eax = cpu.eax | 0xffff0000;
+    else cpu.eax = cpu.eax & 0x0000ffff;
   }
 
   print_asm(decinfo.isa.is_operand_size_16 ? "cbtw" : "cwtl");
