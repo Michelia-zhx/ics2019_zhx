@@ -30,49 +30,49 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         op = *fmt;
       }
       switch (op) {
-      case 'd':
-        num = va_arg(ap, int);
-        count = 0;
-        if (num < 0){
-          *out = '-';
-          out += 1;
-          num = 0-num;
-          while (num != 0){
-            numstr[count] = num % 10 + '0';
-            count += 1;
-            num /= 10;
-        }
-        }
-        else if (num == 0) {
-          *out = '0';
-          out += 0;
-        }
-        else {
-          while (num != 0){
-            numstr[count] = num % 10 + '0';
-            count += 1;
-            num /= 10;
+        case 'd':
+          num = va_arg(ap, int);
+          count = 0;
+          if (num < 0){
+            *out = '-';
+            out += 1;
+            num = 0-num;
+            while (num != 0){
+              numstr[count] = num % 10 + '0';
+              count += 1;
+              num /= 10;
           }
-        }
-        while (count != 0){
-          *out = numstr[count-1];
-          count -= 1;
-          ret += 1;
-          out += 1;
-        }
-        break;
-      case 's':
-        p = va_arg(ap, char*);
-        while (*p) {
-          *out = *p;
-          out += 1;
-          p += 1;
-          ret += 1;
-        }
-        break;
-     
-      default:
-        break;
+          }
+          else if (num == 0) {
+            *out = '0';
+            out += 0;
+          }
+          else {
+            while (num != 0){
+              numstr[count] = num % 10 + '0';
+              count += 1;
+              num /= 10;
+            }
+          }
+          while (count != 0){
+            *out = numstr[count-1];
+            count -= 1;
+            ret += 1;
+            out += 1;
+          }
+          break;
+        case 's':
+          p = va_arg(ap, char*);
+          while (*p) {
+            *out = *p;
+            out += 1;
+            p += 1;
+            ret += 1;
+          }
+          break;
+      
+        default:
+          break;
       }
       fmt += 1;
     }
