@@ -51,8 +51,6 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             count += 1;
             num /= 10;
           }
-          printf("%d\n", min_width);
-          /*
           if (min_width != 0){
             if (min_width > count){
               for (int k=0; k<(min_width-count); ++k){
@@ -60,8 +58,8 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
                 out += 1;
               }
             }
+            else ;
           }
-          */
           while (count != 0){
             *out = numstr[count-1];
             count -= 1;
