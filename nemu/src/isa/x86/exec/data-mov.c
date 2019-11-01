@@ -6,21 +6,13 @@ make_EHelper(mov) {
 }
 
 make_EHelper(push) {
-  //printf("here\n");
   rtl_push(&id_dest->val);
-  if (id_dest->type != OP_TYPE_IMM) operand_write(id_dest, &id_dest->val);
-  //else if (id_dest->type == OP_TYPE_IMM) id_dest->imm = id_dest->val;
-  //else assert(0);
-  
   print_asm_template1(push);
 }
 
 make_EHelper(pop) {
   rtl_pop(&id_dest->val);
-  if (id_dest->type != OP_TYPE_IMM) operand_write(id_dest, &id_dest->val);
-  //else if (id_dest->type == OP_TYPE_IMM) id_dest->imm = id_dest->val;
-  //else assert(0);
-
+  operand_write(id_dest, &id_dest->val);
   print_asm_template1(pop);
 }
 
@@ -39,20 +31,21 @@ make_EHelper(popa) {
 make_EHelper(leave) {
   rtl_mv(&reg_l(R_ESP), &reg_l(R_EBP));
   rtl_pop(&reg_l(R_EBP));
-
   print_asm("leave");
 }
 
 make_EHelper(cltd) {
   if (decinfo.isa.is_operand_size_16) {
-    bool msb = (reg_w(R_EAX) >> 15) & 1;
-    if (msb) rtl_ori(&reg_l(R_EDX), &reg_l(R_EDX), 0xffff);
-    else rtl_andi(&reg_l(R_EDX), &reg_l(R_EDX), 0xffff0000);
+    if(reg_w(R_AX) < 0)
+      reg_w(R_DX) = 0x0ffff;
+    else
+      reg_w(R_DX) = 0;    
   }
   else {
-    bool msb = (reg_l(R_EAX) >> 31) & 1;
-    if (msb) rtl_li(&reg_l(R_EDX), 0xffffffff);
-    else rtl_li(&reg_l(R_EDX), 0);
+    if(reg_l(R_EAX) < 0)
+      reg_l(R_EDX) = 0x0ffffffff;
+    else
+      reg_l(R_EDX) = 0;
   }
 
   print_asm(decinfo.isa.is_operand_size_16 ? "cwtl" : "cltd");
@@ -70,30 +63,15 @@ make_EHelper(cwtl) {
 }
 
 make_EHelper(movsx) {
-  //Log("%x", id_src->val);
   id_dest->width = decinfo.isa.is_operand_size_16 ? 2 : 4;
-  if (id_src->width == 4){
-    rtl_li(&s1, id_src->val & 0x0000ffff);
-    id_src->width = 2;
-  }
-  else rtl_li(&s1, id_src->val);
-  rtl_sext(&s0, &s1, id_src->width);
-  //Log("%x", s0);
+  rtl_sext(&s0, &id_src->val, id_src->width);
   operand_write(id_dest, &s0);
-  // Log("%x", id_dest->val);
   print_asm_template2(movsx);
 }
 
 make_EHelper(movzx) {
   id_dest->width = decinfo.isa.is_operand_size_16 ? 2 : 4;
-  if(id_dest->width == 4) {
-  	if(id_src->width == 1) rtl_li(&id_dest->val, id_src->val & 0x000000ff);
-  	else rtl_li(&id_dest->val, id_src->val & 0x0000ffff);
-  }
-  else{
-	  rtl_li(&id_dest->val,id_src->val & 0xffff00ff);
-  }
-  operand_write(id_dest, &id_dest->val);
+  operand_write(id_dest, &id_src->val);
   print_asm_template2(movzx);
 }
 
