@@ -2,6 +2,7 @@
 #include "monitor/monitor.h"
 #include "monitor/watchpoint.h"
 
+bool check_wp();
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
  * This is useful when you use the `si' command.
@@ -58,8 +59,10 @@ void cpu_exec(uint64_t n) {
               "To capture more trace, you can modify the LOG_MAX macro in %s\n\n", __FILE__);
   }
 
+  bool sign = check_wp();
+  if(sign == true)
+    nemu_state.state = NEMU_STOP;
     /* TODO: check watchpoints here. */
-    //if (check()) nemu_state.state = NEMU_STOP;
 
 #endif
 
