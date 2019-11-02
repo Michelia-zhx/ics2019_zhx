@@ -31,7 +31,7 @@ size_t __am_video_write(uintptr_t reg, void *buf, size_t size) {
         //count ++;
       }
       if (ctl->sync) {
-        outl(SYNC_ADDR, 0);
+        //outl(SYNC_ADDR, 0);
       }
       return size;
     }
