@@ -25,9 +25,9 @@ size_t __am_video_write(uintptr_t reg, void *buf, size_t size) {
       int count = 0;
       for (int i=0; i<ctl->h; ++i){
         for (int j=0; j<ctl->w; ++j){
-          for (int k=0; k<11; ++k){
-            fb[(i+ctl->y)*screen_width()+(ctl->x+j)+k] = *(ctl->pixels + count);
-          }
+          //for (int k=0; k<11; ++k){
+            fb[(i+ctl->y)*screen_width()+(ctl->x+j)] = *(ctl->pixels + count);
+          //}
           count ++;
         }
         //count ++;
