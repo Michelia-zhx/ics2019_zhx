@@ -28,7 +28,7 @@ size_t __am_video_write(uintptr_t reg, void *buf, size_t size) {
           fb[(i+ctl->y)*screen_width()+(ctl->x+i)] = *(ctl->pixels + count);
           //count ++;
         }
-        count ++;
+        //count ++;
       }
       if (ctl->sync) {
         outl(SYNC_ADDR, 0);
