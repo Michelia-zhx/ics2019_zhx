@@ -26,7 +26,7 @@ size_t __am_video_write(uintptr_t reg, void *buf, size_t size) {
       for (int i=0; i<ctl->h; ++i){
         for (int j=0; j<ctl->w; ++j){
           fb[(i+ctl->y)*screen_width()+(ctl->x+i)] = *(ctl->pixels + count);
-          //count ++;
+          count ++;
         }
         //count ++;
       }
@@ -34,7 +34,7 @@ size_t __am_video_write(uintptr_t reg, void *buf, size_t size) {
         outl(SYNC_ADDR, 0);
       }
       //return size;
-      return sizeof(_DEV_VIDEO_INFO_t);
+      return size;
     }
   }
   return 0;
