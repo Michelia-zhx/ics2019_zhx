@@ -45,6 +45,7 @@ OBJS = $(SRCS:src/%.c=$(OBJ_DIR)/%.o)
 
 # Compilation patterns
 $(OBJ_DIR)/%.o: src/%.c
+	@$(CC) $(CFLAGS) $(SO_CFLAGS) -E $< | grep -ve '^#' | indent - > $(basename $@).i
 	@echo + CC $<
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(SO_CFLAGS) -c -o $@ $<

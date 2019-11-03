@@ -6,7 +6,6 @@
 #include <assert.h>
 #include "monitor/log.h"
 
-//volatile static int dummy;
 
 
 #define Log(format, ...) \
