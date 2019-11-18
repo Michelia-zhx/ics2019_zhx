@@ -47,8 +47,13 @@ typedef struct {
     };
     uint32_t value;
   }eflags;
+
+  struct{
+    unsigned limit: 16;
+    unsigned base: 32;
+  } idtr;
   
-  vaddr_t pc;
+  vaddr_t pc, CS;
 
 } CPU_state;
 
