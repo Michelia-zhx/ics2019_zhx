@@ -21,8 +21,10 @@ make_EHelper(mov_cr2r) {
   difftest_skip_ref();
 }
 
+extern void raise_intr(uint32_t NO, vaddr_t ret_addr);
+
 make_EHelper(int) {
-  TODO();
+  raise_intr(id_dest->val, cpu.pc+2);
 
   print_asm("int %s", id_dest->str);
 
