@@ -47,16 +47,23 @@ make_EHelper(pusha) {
     rtl_push(&t1);
   }
   else{
+    printf("esp:%d\n", reg_l(R_ESP));
     rtl_mv(&t0, &reg_l(R_ESP));
     printf("eax:%d\n", reg_l(R_EAX));
     rtl_push(&reg_l(R_EAX));
     printf("ecx:%d\n", reg_l(R_ECX));
     rtl_push(&reg_l(R_ECX));
+    printf("edx:%d\n", reg_l(R_EDX));
     rtl_push(&reg_l(R_EDX));
+    printf("ebx:%d\n", reg_l(R_EBX));
     rtl_push(&reg_l(R_EBX));
+    printf("t0:%d\n", t0);
     rtl_push(&t0);
+    printf("ebp:%d\n", reg_l(R_EBP));
     rtl_push(&reg_l(R_EBP));
+    printf("esi:%d\n", reg_l(R_ESI));
     rtl_push(&reg_l(R_ESI));
+    printf("edi:%d\n", reg_l(R_EDI));
     rtl_push(&reg_l(R_EDI));
   }
 
