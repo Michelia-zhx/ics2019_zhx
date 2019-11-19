@@ -50,6 +50,7 @@ make_EHelper(pusha) {
     rtl_mv(&t0, &reg_l(R_ESP));
     printf("eax:%d\n", reg_l(R_EAX));
     rtl_push(&reg_l(R_EAX));
+    printf("ecx:%d\n", reg_l(R_ECX));
     rtl_push(&reg_l(R_ECX));
     rtl_push(&reg_l(R_EDX));
     rtl_push(&reg_l(R_EBX));
