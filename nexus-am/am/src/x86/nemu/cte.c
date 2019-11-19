@@ -11,18 +11,18 @@ void __am_vecnull();
 
 _Context* __am_irq_handle(_Context *c) {
   _Context *next = c;
-  printf("c.eflags = %x\n",c->eflags);
-  printf("c.cs = %x\n",c->cs);
-  printf("c.eip = %x\n",c->eip);
-  printf("c.irq = %x\n",c->irq);
-  printf("c.eax = %x\n",c->eax); 
-  printf("c.ecx = %x\n",c->ecx);
-  printf("c.edx = %x\n",c->edx);
-  printf("c.ebx = %x\n",c->ebx);
-  printf("c.esp = %x\n",c->esp);
-  printf("c.ebp = %x\n",c->ebp);
-  printf("c.esi = %x\n",c->esi);
-  printf("c.edi = %x\n",c->edi);
+  printf("c.eflags = %d\n",c->eflags);
+  printf("c.cs = %d\n",c->cs);
+  printf("c.eip = %d\n",c->eip);
+  printf("c.irq = %d\n",c->irq);
+  printf("c.eax = %d\n",c->eax); 
+  printf("c.ecx = %d\n",c->ecx);
+  printf("c.edx = %d\n",c->edx);
+  printf("c.ebx = %d\n",c->ebx);
+  printf("c.esp = %d\n",c->esp);
+  printf("c.ebp = %d\n",c->ebp);
+  printf("c.esi = %d\n",c->esi);
+  printf("c.edi = %d\n",c->edi);
   if (user_handler) {
     _Event ev = {0};
     switch (c->irq) {
