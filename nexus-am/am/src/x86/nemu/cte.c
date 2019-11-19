@@ -11,9 +11,6 @@ void __am_vecnull();
 
 _Context* __am_irq_handle(_Context *c) {
   _Context *next = c;
-  printf("c.eflags = %d\n",c->eflags);
-  printf("c.cs = %d\n",c->cs);
-  printf("c.eip = %d\n",c->eip);
   printf("c.irq = %d\n",c->irq);
   printf("c.eax = %d\n",c->eax); 
   printf("c.ecx = %d\n",c->ecx);
