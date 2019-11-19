@@ -30,7 +30,7 @@ _Context* __am_irq_handle(_Context *c) {
       	ev.event = _EVENT_SYSCALL;break;
       case 32:
       	ev.event = _EVENT_IRQ_TIMER;break;
-      default: ev.event = _EVENT_ERROR; break;
+      default: ev.event = _EVENT_YIELD; break;
     }
 
     next = user_handler(ev, c);
