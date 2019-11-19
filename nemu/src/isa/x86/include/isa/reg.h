@@ -53,7 +53,7 @@ typedef struct {
     unsigned base: 32;
   } idtr;
   
-  vaddr_t pc, CS;
+  vaddr_t pc, cs;
 
 } CPU_state;
 

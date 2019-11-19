@@ -5,7 +5,7 @@ void raise_intr(uint32_t NO, vaddr_t ret_addr) {
    * That is, use ``NO'' to index the IDT.
    */
   rtl_push(&cpu.eflags.value);
-  rtl_push(&cpu.CS);
+  rtl_push(&cpu.cs);
   rtl_push(&ret_addr);                  // 1
 
   uint32_t addr = cpu.idtr.base + NO*8; // 2
