@@ -9,7 +9,7 @@ void raise_intr(uint32_t NO, vaddr_t ret_addr) {
 
   uint32_t low = vaddr_read(addr, 2);
   uint32_t high = vaddr_read(addr+6, 2);
-  vaddr_t offset = (high << 16) | low; // 3
+  uint32_t offset = (high << 16) | low; // 3
 
   rtl_push(&cpu.eflags.value);
   rtl_push(&cpu.cs);
