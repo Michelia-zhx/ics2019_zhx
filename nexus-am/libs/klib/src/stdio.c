@@ -69,6 +69,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             out += 1;
           }
           break;
+
         case 's':
           p = va_arg(ap, char*);
           while (*p) {
@@ -78,7 +79,24 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             ret += 1;
           }
           break;
-      
+
+        case 'p':
+          num = va_arg(ap,int);
+        	char result[100];
+          int step = 0; 
+				  do{
+      			result[step]="0123456789abcdef"[num%16];
+     				num/=16;
+     				step++;
+   					}while(num);
+   					result[step] = '\0';
+            while(step){
+              *out++ = result[step-1];
+              step--;
+              ret++;
+            }
+          break;
+        
         default:
           break;
       }
