@@ -1,4 +1,5 @@
 #include "cpu/exec.h"
+// #include <klib.h>
 
 make_EHelper(mov) {
   operand_write(id_dest, &id_src->val);
@@ -25,6 +26,7 @@ make_EHelper(pop) {
 }
 
 make_EHelper(pusha) {
+  printf("in pusha\n");
   if (decinfo.isa.is_operand_size_16)
   {
     rtl_li(&t0, reg_w(R_SP));
