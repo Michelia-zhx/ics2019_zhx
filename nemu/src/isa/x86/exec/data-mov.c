@@ -9,16 +9,16 @@ make_EHelper(mov) {
 make_EHelper(push) {
   //printf("here\n");
   rtl_push(&id_dest->val);
+  rtlreg_t esp1 = cpu.esp;
   if (id_dest->type != OP_TYPE_IMM) operand_write(id_dest, &id_dest->val);
   //else if (id_dest->type == OP_TYPE_IMM) id_dest->imm = id_dest->val;
   //else assert(0);
-  
+  cpu.esp = esp1;
   print_asm_template1(push);
 }
 
 make_EHelper(pop) {
   rtl_pop(&id_dest->val);
-  if (id_dest->type != OP_TYPE_IMM) operand_write(id_dest, &id_dest->val);
   //else if (id_dest->type == OP_TYPE_IMM) id_dest->imm = id_dest->val;
   //else assert(0);
 
@@ -26,6 +26,7 @@ make_EHelper(pop) {
 }
 
 make_EHelper(pusha) {
+  /*
   printf("in pusha\n");
   if (decinfo.isa.is_operand_size_16)
   {
@@ -75,12 +76,56 @@ make_EHelper(pusha) {
     rtl_push(&reg_l(R_EDI));
     printf("esp->(edi):%d\n", paddr_read(cpu.esp, 4));
   }
-
+  */
+ if (decinfo.isa.is_operand_size_16) {
+    rtl_li(&t0,reg_w(R_SP));
+    rtl_li(&t1,reg_w(R_AX));
+    rtl_push(&t1);
+    rtl_li(&t1,reg_w(R_CX));
+    rtl_push(&t1);
+    rtl_li(&t1,reg_w(R_DX));
+    rtl_push(&t1);
+    rtl_li(&t1,reg_w(R_BX));
+    rtl_push(&t1);
+    rtl_push(&t0);
+    rtl_li(&t1,reg_w(R_BP));
+    rtl_push(&t1);
+    rtl_li(&t1,reg_w(R_SI));
+    rtl_push(&t1);
+    rtl_li(&t1,reg_w(R_DI));
+    rtl_push(&t1);
+  }
+  else{
+    rtl_mv(&t0,&reg_l(R_ESP));
+    rtl_push(&reg_l(R_EAX));
+    rtl_push(&reg_l(R_ECX));
+    rtl_push(&reg_l(R_EDX));
+    rtl_push(&reg_l(R_EBX));
+    rtl_push(&t0);
+    rtl_push(&reg_l(R_EBP));
+    rtl_push(&reg_l(R_ESI));
+    rtl_push(&reg_l(R_EDI));
+  }
+  
   print_asm("pusha");
 }
 
 make_EHelper(popa) {
-  TODO();
+  rtl_pop(&t0);
+  rtl_mv(&reg_l(R_EDI),&t0);
+  rtl_pop(&t0);
+  rtl_mv(&reg_l(R_ESI),&t0);
+  rtl_pop(&t0);
+  rtl_mv(&reg_l(R_EBP),&t0);
+  rtl_pop(&t0);
+  rtl_pop(&t0);
+  rtl_mv(&reg_l(R_EBX),&t0);
+  rtl_pop(&t0);
+  rtl_mv(&reg_l(R_EDX),&t0);
+  rtl_pop(&t0);
+  rtl_mv(&reg_l(R_ECX),&t0);
+  rtl_pop(&t0);
+  rtl_mv(&reg_l(R_EAX),&t0);
 
   print_asm("popa");
 }
@@ -108,6 +153,7 @@ make_EHelper(cltd) {
 }
 
 make_EHelper(cwtl) {
+  /*
   if (decinfo.isa.is_operand_size_16) {
     bool msb = (cpu.eax >> 7) & 1;
     if (msb) cpu.eax = cpu.eax | 0xff00;
@@ -118,7 +164,23 @@ make_EHelper(cwtl) {
     if (msb) cpu.eax = cpu.eax | 0xffff0000;
     else cpu.eax = cpu.eax & 0x0000ffff;
   }
-
+  */
+  if (decinfo.isa.is_operand_size_16) {
+    /*bool msb = (reg_l(R_EAX) >> 7) & 1;
+    if(msb) rtl_ori(&reg_l(R_EAX),&reg_l(R_EAX),0xff00);
+    else rtl_andi(&reg_l(R_EAX),&reg_l(R_EAX),0x00ff);*/
+    rtl_lr(&t0,R_AL,1);
+    t0 = (int16_t)(int8_t)t0;
+    rtl_sr(R_AX,&t0,2);
+  }
+  else {
+    /*bool msb = (reg_l(R_EAX) >> 15) & 1;
+    if(msb) rtl_ori(&reg_l(R_EAX),&reg_l(R_EAX),0xffff0000);
+    else rtl_andi(&reg_l(R_EAX),&reg_l(R_EAX),0x0000ffff);*/
+    rtl_lr(&t0,R_AX,2);
+    t0 = (int32_t)(int16_t)t0;
+    rtl_sr(R_EAX,&t0,4);
+  }
   print_asm(decinfo.isa.is_operand_size_16 ? "cbtw" : "cwtl");
 }
 
