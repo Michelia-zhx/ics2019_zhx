@@ -54,6 +54,7 @@ make_EHelper(pusha) {
     printf("esp->(eax):%d\n", paddr_read(cpu.esp, 4));
     printf("ecx:%d\n", reg_l(R_ECX));
     rtl_push(&reg_l(R_ECX));
+    printf("esp = &(c->eax) = %d\n", cpu.esp);
     printf("esp->(ecx):%d\n", paddr_read(cpu.esp, 4));
     printf("edx:%d\n", reg_l(R_EDX));
     rtl_push(&reg_l(R_EDX));

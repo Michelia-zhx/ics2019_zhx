@@ -14,7 +14,7 @@ _Context* __am_irq_handle(_Context *c) {
   _Context *next = c;
   printf("c.irq = %d\n",c->irq);
   printf("c.eax = %d\n",c->eax); 
-  printf("c.ecx = %d\n",c->ecx);
+  printf("&c.ecx = %d\n",&(c->ecx));
   printf("c.edx = %d\n",c->edx);
   printf("c.ebx = %d\n",c->ebx);
   printf("c.esp = %d\n",c->esp);
