@@ -51,21 +51,28 @@ make_EHelper(pusha) {
     rtl_mv(&t0, &reg_l(R_ESP));
     printf("eax:%d\n", reg_l(R_EAX));
     rtl_push(&reg_l(R_EAX));
+    printf("esp->(eax):%d\n", paddr_read(cpu.esp, 4));
     printf("ecx:%d\n", reg_l(R_ECX));
     rtl_push(&reg_l(R_ECX));
-    printf("esp->:%d\n", paddr_read(cpu.esp, 4));
+    printf("esp->(ecx):%d\n", paddr_read(cpu.esp, 4));
     printf("edx:%d\n", reg_l(R_EDX));
     rtl_push(&reg_l(R_EDX));
+    printf("esp->(edx):%d\n", paddr_read(cpu.esp, 4));
     printf("ebx:%d\n", reg_l(R_EBX));
     rtl_push(&reg_l(R_EBX));
+    printf("esp->(ebx):%d\n", paddr_read(cpu.esp, 4));
     printf("t0:%d\n", t0);
     rtl_push(&t0);
+    printf("esp->(esp):%d\n", paddr_read(cpu.esp, 4));
     printf("ebp:%d\n", reg_l(R_EBP));
     rtl_push(&reg_l(R_EBP));
+    printf("esp->(ebp):%d\n", paddr_read(cpu.esp, 4));
     printf("esi:%d\n", reg_l(R_ESI));
     rtl_push(&reg_l(R_ESI));
+    printf("esp->(esi):%d\n", paddr_read(cpu.esp, 4));
     printf("edi:%d\n", reg_l(R_EDI));
     rtl_push(&reg_l(R_EDI));
+    printf("esp->(edi):%d\n", paddr_read(cpu.esp, 4));
   }
 
   print_asm("pusha");
