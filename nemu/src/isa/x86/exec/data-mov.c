@@ -27,7 +27,7 @@ make_EHelper(pop) {
 
 make_EHelper(pusha) {
   
-  printf("in pusha\n");
+  // printf("in pusha\n");
   if (decinfo.isa.is_operand_size_16)
   {
     rtl_li(&t0, reg_w(R_SP));
@@ -48,65 +48,34 @@ make_EHelper(pusha) {
     rtl_push(&t1);
   }
   else{
-    printf("esp:%d\n", reg_l(R_ESP));
+    // printf("esp:%d\n", reg_l(R_ESP));
     rtl_mv(&t0, &reg_l(R_ESP));
-    printf("eax:%d\n", reg_l(R_EAX));
+    // printf("eax:%d\n", reg_l(R_EAX));
     rtl_push(&reg_l(R_EAX));
-    printf("esp->(eax):%d\n", paddr_read(cpu.esp, 4));
-    printf("ecx:%d\n", reg_l(R_ECX));
+    // printf("esp->(eax):%d\n", paddr_read(cpu.esp, 4));
+    // printf("ecx:%d\n", reg_l(R_ECX));
     rtl_push(&reg_l(R_ECX));
-    printf("esp = &(c->ecx) = %d\n", cpu.esp);
-    printf("esp->(ecx):%d\n", paddr_read(cpu.esp, 4));
-    printf("edx:%d\n", reg_l(R_EDX));
+    // printf("esp = &(c->ecx) = %d\n", cpu.esp);
+    // printf("esp->(ecx):%d\n", paddr_read(cpu.esp, 4));
+    // printf("edx:%d\n", reg_l(R_EDX));
     rtl_push(&reg_l(R_EDX));
-    printf("esp->(edx):%d\n", paddr_read(cpu.esp, 4));
-    printf("ebx:%d\n", reg_l(R_EBX));
+    // printf("esp->(edx):%d\n", paddr_read(cpu.esp, 4));
+    // printf("ebx:%d\n", reg_l(R_EBX));
     rtl_push(&reg_l(R_EBX));
-    printf("esp->(ebx):%d\n", paddr_read(cpu.esp, 4));
-    printf("t0:%d\n", t0);
+    // printf("esp->(ebx):%d\n", paddr_read(cpu.esp, 4));
+    // printf("t0:%d\n", t0);
     rtl_push(&t0);
-    printf("esp->(esp):%d\n", paddr_read(cpu.esp, 4));
-    printf("ebp:%d\n", reg_l(R_EBP));
+    // printf("esp->(esp):%d\n", paddr_read(cpu.esp, 4));
+    // printf("ebp:%d\n", reg_l(R_EBP));
     rtl_push(&reg_l(R_EBP));
-    printf("esp->(ebp):%d\n", paddr_read(cpu.esp, 4));
-    printf("esi:%d\n", reg_l(R_ESI));
+    // printf("esp->(ebp):%d\n", paddr_read(cpu.esp, 4));
+    // printf("esi:%d\n", reg_l(R_ESI));
     rtl_push(&reg_l(R_ESI));
-    printf("esp->(esi):%d\n", paddr_read(cpu.esp, 4));
-    printf("edi:%d\n", reg_l(R_EDI));
+    // printf("esp->(esi):%d\n", paddr_read(cpu.esp, 4));
+    // printf("edi:%d\n", reg_l(R_EDI));
     rtl_push(&reg_l(R_EDI));
-    printf("esp->(edi):%d\n", paddr_read(cpu.esp, 4));
+    // printf("esp->(edi):%d\n", paddr_read(cpu.esp, 4));
   }
-  /*
- if (decinfo.isa.is_operand_size_16) {
-    rtl_li(&t0,reg_w(R_SP));
-    rtl_li(&t1,reg_w(R_AX));
-    rtl_push(&t1);
-    rtl_li(&t1,reg_w(R_CX));
-    rtl_push(&t1);
-    rtl_li(&t1,reg_w(R_DX));
-    rtl_push(&t1);
-    rtl_li(&t1,reg_w(R_BX));
-    rtl_push(&t1);
-    rtl_push(&t0);
-    rtl_li(&t1,reg_w(R_BP));
-    rtl_push(&t1);
-    rtl_li(&t1,reg_w(R_SI));
-    rtl_push(&t1);
-    rtl_li(&t1,reg_w(R_DI));
-    rtl_push(&t1);
-  }
-  else{
-    rtl_mv(&t0,&reg_l(R_ESP));
-    rtl_push(&reg_l(R_EAX));
-    rtl_push(&reg_l(R_ECX));
-    rtl_push(&reg_l(R_EDX));
-    rtl_push(&reg_l(R_EBX));
-    rtl_push(&t0);
-    rtl_push(&reg_l(R_EBP));
-    rtl_push(&reg_l(R_ESI));
-    rtl_push(&reg_l(R_EDI));
-  }
-  */
   print_asm("pusha");
 }
 
