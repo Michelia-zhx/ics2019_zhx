@@ -9,11 +9,13 @@ void __am_vecsys();
 void __am_vectrap();
 void __am_vecnull();
 
+
 _Context* __am_irq_handle(_Context *c) {
   printf("address of c:%d\n", &c);
+  // printf("data at the address of c: %d\n", paddr_read(&c, 4));
   printf("in am_irq_handle\n");
   _Context *next = c;
-  printf("c.irq = %d\n",c->irq);
+  printf("&c.irq = %d\n",&(c->irq));
   printf("c.eax = %d\n",c->eax); 
   printf("&c.ecx = %d\n",&(c->ecx));
   printf("c.edx = %d\n",c->edx);
