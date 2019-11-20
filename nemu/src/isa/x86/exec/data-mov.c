@@ -10,7 +10,7 @@ make_EHelper(push) {
   //printf("here\n");
   rtl_push(&id_dest->val);
   rtlreg_t esp1 = cpu.esp;
-  if (id_dest->type != OP_TYPE_IMM) operand_write(id_dest, &id_dest->val);
+  // if (id_dest->type != OP_TYPE_IMM) operand_write(id_dest, &id_dest->val);
   //else if (id_dest->type == OP_TYPE_IMM) id_dest->imm = id_dest->val;
   //else assert(0);
   cpu.esp = esp1;
@@ -19,6 +19,7 @@ make_EHelper(push) {
 
 make_EHelper(pop) {
   rtl_pop(&id_dest->val);
+  operand_write(id_dest, &id_dest->val);
   //else if (id_dest->type == OP_TYPE_IMM) id_dest->imm = id_dest->val;
   //else assert(0);
 
