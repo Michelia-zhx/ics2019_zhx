@@ -11,18 +11,14 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   printf("ref_r.esi: %x, cpu.esi: %x\n", (*ref_r).esi, cpu.esi);
   printf("ref_r.edi: %x, cpu.edi: %x\n", (*ref_r).edi, cpu.edi);
   /*
-  if (ref_r->pc != cpu.pc) return false;
-  for (int i=0; i<8; ++i){
-    if (ref_r->gpr[i]._32 != cpu.gpr[i]._32) return false;
-  }
-  */
   if (ref_r->eax != cpu.eax) return false;
   if (ref_r->ecx != cpu.ecx) return false;
   if (ref_r->edx != cpu.edx) return false;
   if (ref_r->ebx != cpu.ebx) return false;
-  // if (ref_r->esp != cpu.esp) return false;
+  if (ref_r->esp != cpu.esp) return false;
   if (ref_r->esi != cpu.esi) return false;
   if (ref_r->edi != cpu.edi) return false;
+  */
   return true;
 }
 
