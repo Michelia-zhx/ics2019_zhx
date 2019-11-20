@@ -4,8 +4,8 @@ void raise_intr(uint32_t NO, vaddr_t ret_addr) {
   /* TODO: Trigger an interrupt/exception with ``NO''.
    * That is, use ``NO'' to index the IDT.
    */
-  printf("in raise_intr.c\n");
-  printf("NO: %x, %d\n", NO, NO);
+  // printf("in raise_intr.c\n");
+  // printf("NO: %x, %d\n", NO, NO);
   uint32_t addr = cpu.idtr.base + NO*8; // 2
 
   uint32_t low = vaddr_read(addr, 2);

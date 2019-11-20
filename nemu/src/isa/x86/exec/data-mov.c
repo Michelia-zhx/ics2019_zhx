@@ -26,7 +26,7 @@ make_EHelper(pop) {
 }
 
 make_EHelper(pusha) {
-  /*
+  
   printf("in pusha\n");
   if (decinfo.isa.is_operand_size_16)
   {
@@ -76,7 +76,7 @@ make_EHelper(pusha) {
     rtl_push(&reg_l(R_EDI));
     printf("esp->(edi):%d\n", paddr_read(cpu.esp, 4));
   }
-  */
+  /*
  if (decinfo.isa.is_operand_size_16) {
     rtl_li(&t0,reg_w(R_SP));
     rtl_li(&t1,reg_w(R_AX));
@@ -106,7 +106,7 @@ make_EHelper(pusha) {
     rtl_push(&reg_l(R_ESI));
     rtl_push(&reg_l(R_EDI));
   }
-  
+  */
   print_asm("pusha");
 }
 
