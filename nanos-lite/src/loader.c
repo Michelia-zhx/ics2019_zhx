@@ -21,7 +21,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Ehdr ehdr;
   size_t len = ramdisk_read(&ehdr, 0, sizeof(Elf_Ehdr));
   printf("len %d\n", len);
-  // printf("ehdr.type:%x\n", ehdr->e_type);
+  printf("ehdr.type:%x\n", ehdr.e_type);
   return 0;
 }
 
