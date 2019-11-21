@@ -9,10 +9,10 @@ make_EHelper(mov) {
 make_EHelper(push) {
   //printf("here\n");
   rtl_push(&id_dest->val);
-  rtlreg_t esp1 = cpu.esp;
+  // rtlreg_t esp1 = cpu.esp;
   //else if (id_dest->type == OP_TYPE_IMM) id_dest->imm = id_dest->val;
   //else assert(0);
-  cpu.esp = esp1;
+  // cpu.esp = esp1;
   print_asm_template1(push);
 }
 
@@ -122,7 +122,7 @@ make_EHelper(cltd) {
 }
 
 make_EHelper(cwtl) {
-  /*
+  
   if (decinfo.isa.is_operand_size_16) {
     bool msb = (cpu.eax >> 7) & 1;
     if (msb) cpu.eax = cpu.eax | 0xff00;
@@ -133,23 +133,24 @@ make_EHelper(cwtl) {
     if (msb) cpu.eax = cpu.eax | 0xffff0000;
     else cpu.eax = cpu.eax & 0x0000ffff;
   }
-  */
+  /*
   if (decinfo.isa.is_operand_size_16) {
-    /*bool msb = (reg_l(R_EAX) >> 7) & 1;
-    if(msb) rtl_ori(&reg_l(R_EAX),&reg_l(R_EAX),0xff00);
-    else rtl_andi(&reg_l(R_EAX),&reg_l(R_EAX),0x00ff);*/
+    // bool msb = (reg_l(R_EAX) >> 7) & 1;
+    // if(msb) rtl_ori(&reg_l(R_EAX),&reg_l(R_EAX),0xff00);
+    // else rtl_andi(&reg_l(R_EAX),&reg_l(R_EAX),0x00ff);
     rtl_lr(&t0,R_AL,1);
     t0 = (int16_t)(int8_t)t0;
     rtl_sr(R_AX,&t0,2);
   }
   else {
-    /*bool msb = (reg_l(R_EAX) >> 15) & 1;
-    if(msb) rtl_ori(&reg_l(R_EAX),&reg_l(R_EAX),0xffff0000);
-    else rtl_andi(&reg_l(R_EAX),&reg_l(R_EAX),0x0000ffff);*/
+    // bool msb = (reg_l(R_EAX) >> 15) & 1;
+    // if(msb) rtl_ori(&reg_l(R_EAX),&reg_l(R_EAX),0xffff0000);
+    // else rtl_andi(&reg_l(R_EAX),&reg_l(R_EAX),0x0000ffff);
     rtl_lr(&t0,R_AX,2);
     t0 = (int32_t)(int16_t)t0;
     rtl_sr(R_EAX,&t0,4);
   }
+  */
   print_asm(decinfo.isa.is_operand_size_16 ? "cbtw" : "cwtl");
 }
 
