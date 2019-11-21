@@ -1,6 +1,6 @@
-#include <stdlib.h>
 #include "proc.h"
 #include <elf.h>
+#include <klib.h>
 
 #ifdef __ISA_AM_NATIVE__
 # define Elf_Ehdr Elf64_Ehdr
@@ -18,9 +18,9 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   printf("In loader.c\n");
   size_t ramdisk_size = get_ramdisk_size();
   printf("ramdisk_size:%d\n", ramdisk_size);
-  // Elf_Ehdr *ehdr = (Elf_Ehdr*)malloc(sizeof(Elf_Ehdr));
-  // size_t len = ramdisk_read(ehdr, 0, sizeof(Elf_Ehdr));
-  // printf("len %d\n", len);
+  Elf_Ehdr ehdr;
+  size_t len = ramdisk_read(&ehdr, 0, sizeof(Elf_Ehdr));
+  printf("len %d\n", len);
   // printf("ehdr.type:%x\n", ehdr->e_type);
   return 0;
 }
