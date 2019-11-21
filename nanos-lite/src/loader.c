@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "proc.h"
 #include <elf.h>
 
@@ -9,9 +10,18 @@
 # define Elf_Phdr Elf32_Phdr
 #endif
 
+size_t get_ramdisk_size();
+size_t ramdisk_read(void *buf, size_t offset, size_t len);
+size_t ramdisk_write(const void *buf, size_t offset, size_t len);
+
 static uintptr_t loader(PCB *pcb, const char *filename) {
   printf("In loader.c\n");
-  TODO();
+  size_t ramdisk_size = get_ramdisk_size();
+  printf("ramdisk_size:%d\n", ramdisk_size);
+  // Elf_Ehdr *ehdr = (Elf_Ehdr*)malloc(sizeof(Elf_Ehdr));
+  // size_t len = ramdisk_read(ehdr, 0, sizeof(Elf_Ehdr));
+  // printf("len %d\n", len);
+  // printf("ehdr.type:%x\n", ehdr->e_type);
   return 0;
 }
 
