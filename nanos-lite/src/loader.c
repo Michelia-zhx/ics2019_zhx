@@ -49,7 +49,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     printf("p_offset: %d\n", phdr.p_offset);
     printf("p_filesize: %d\n", phdr.p_filesz);
     printf("p_memsize: %d\n", phdr.p_memsz);
-    
+    /*
     switch (phdr.p_type) {
       case PT_LOAD: {
         ramdisk_write((void *)(phdr.p_vaddr), phdr.p_offset, phdr.p_filesz);
@@ -60,6 +60,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       default:
         break;
     }
+    */
   }
   printf("ehdr.e_entry: %d\n", ehdr.e_entry);
   return ehdr.e_entry;
