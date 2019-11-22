@@ -56,7 +56,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     printf("p_memsize: %d\n", phdr.p_memsz);
     switch (phdr.p_type) {
       case PT_LOAD: {
-        ramdisk_write((void *)(phdr.p_vaddr-(Elf_Addr)&ramdisk_start), phdr.p_offset, phdr.p_filesz);
+        /* write `len' bytes starting from `buf' into the `offset' of ramdisk */
+        ramdisk_write((void *)((Elf_Addr)(&ramdisk_start)+phdr.p_offset), (phdr.p_vaddr-(Elf_Addr)(&ramdisk_start)), phdr.p_filesz);
         memset((void *)(phdr.p_vaddr+phdr.p_filesz), 0, phdr.p_memsz-phdr.p_filesz);
         printf("hello\n");
         break;
@@ -68,6 +69,17 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   printf("ehdr.e_entry: %d\n", ehdr.e_entry);
   return ehdr.e_entry;
 }
+
+/*p_offset  This  member holds the offset from the beginning of
+the file at which the first byte of the segment resides.
+p_vaddr   This member holds the  virtual  address  at  which
+the first byte of the segment resides in memory.
+其中相对文件偏移Offset指出相应segment的内容从ELF文件的第Offset字节开始,
+在文件中的大小为FileSiz, 它需要被分配到以VirtAddr为首地址的虚拟内存位置,
+在内存中它占用大小为MemSiz. 也就是说, 这个segment使用的内存就是
+[VirtAddr, VirtAddr + MemSiz)这一连续区间, 然后将segment的内容从ELF文
+件中读入到这一内存区间, 并将[VirtAddr + FileSiz, VirtAddr + MemSiz)对
+应的物理区间清零.*/
 
 void naive_uload(PCB *pcb, const char *filename) {
   uintptr_t entry = loader(pcb, filename);
