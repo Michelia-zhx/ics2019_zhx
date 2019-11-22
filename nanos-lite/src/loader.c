@@ -36,15 +36,17 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   // Elf_Half shdr_num = ehdr.e_shnum;
   Elf_Phdr phdr;
   for (int i=0; i<phdr_num; ++i) {
+    printf("i: %d\n", i);
     len = ramdisk_read(&phdr, phdr_offset+i*phdr_size, phdr_size);
+    printf("phdr.type: %d\n", phdr.p_type);
     if (phdr.p_type != PT_LOAD) continue;
     Elf_off p_offset = phdr.p_offset;
     Elf_Word p_filesize = phdr.p_filesz;
     Elf_Word p_memsize = phdr.p_memsz;
     printf("i: %d, p_offset: %d, p_filesize: %d, p_memsize: %d\n", i, p_offset, p_filesize, p_memsize);
-    memcpy((void *)phdr.p_vaddr, (void *)phdr.p_offset, phdr.p_filesz);
-    printf("hello\n");
+    ramdisk_write((void *)(phdr.p_vaddr), phdr.p_offset, phdr.p_filesz);
     memset((void *)(phdr.p_vaddr+phdr.p_filesz), 0, (phdr.p_memsz-phdr.p_filesz));
+    printf("hello\n");
   }
   return ehdr.e_entry;
 }
