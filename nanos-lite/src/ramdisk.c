@@ -18,11 +18,17 @@ size_t ramdisk_read(void *buf, size_t offset, size_t len) {
 
 /* write `len' bytes starting from `buf' into the `offset' of ramdisk */
 size_t ramdisk_write(const void *buf, size_t offset, size_t len) {
-  printf("in ramdisk_write, ram_start: %d\n", &ramdisk_start);
+  // printf("in ramdisk_write, ram_start: %d\n", &ramdisk_start);
   assert(offset + len <= RAMDISK_SIZE);
   memcpy(&ramdisk_start + offset, buf, len);
   printf("in ramdisk_write, len: %d\n", len);
   return len;
+}
+
+void segment_write(void *dest, size_t offset, size_t len) {
+  memcpy(dest, (void *)(&ramdisk_start+offset), len);
+  printf("in segment_write, len: %d\n", len);
+  return;
 }
 
 void init_ramdisk() {
