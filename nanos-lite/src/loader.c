@@ -29,13 +29,12 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   printf("len %d\n", len);
   Elf_off phdr_offset = ehdr.e_phoff;
   printf("phdr_offset: %d\n", phdr_offset);
-  // Elf_off shdr_offset = ehdr.e_shoff;
   Elf_Half phdr_size = ehdr.e_phentsize;
-  // Elf_Half shdr_size = ehdr.e_shentsize;
+  printf("phdr_size: %d\n", phdr_size);
   Elf_Half phdr_num = ehdr.e_phnum;
-  // Elf_Half shdr_num = ehdr.e_shnum;
-  Elf_Phdr phdr;
   printf("phdr_num: %d\n", phdr_num);
+  assert(phdr_num == 3);
+  Elf_Phdr phdr;
   for (int i=0; i<phdr_num; ++i) {
     printf("i: %d\n", i);
     len = ramdisk_read(&phdr, phdr_offset+i*phdr_size, phdr_size);
