@@ -93,9 +93,8 @@ int strncmp(const char* s1, const char* s2, size_t n) {
 
 void* memset(void* v,int c,size_t n) {
   char *p = (char *)v;
-  for (int i=0; i < n; ++i) {
-    *p = c;
-    p += 1;
+  for (int i=0; i < n; i ++) {
+    p[i] = c;
   }
   return v;
 }
