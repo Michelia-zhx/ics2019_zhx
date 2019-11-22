@@ -37,8 +37,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   printf("phdr_num: %d\n", phdr_num);
   // assert(phdr_num == 3);
 
-  Elf_Phdr phdr;
   for (int i=0; i<phdr_num; ++i) {
+    Elf_Phdr phdr;
     printf("i: %d\n", i);
     len = ramdisk_read(&phdr, phdr_offset+i*phdr_size, phdr_size);
     printf("phdr.type: %d\n", phdr.p_type);
