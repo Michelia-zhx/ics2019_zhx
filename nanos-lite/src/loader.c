@@ -56,6 +56,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     printf("p_memsize: %d\n", phdr.p_memsz);
     switch (phdr.p_type) {
       case PT_LOAD: {
+        printf("ram_start: %d\n", (Elf_Addr)(&ramdisk_start));
         /* write `len' bytes starting from `buf' into the `offset' of ramdisk */
         ramdisk_write((void *)((Elf_Addr)(&ramdisk_start)+phdr.p_offset), (phdr.p_vaddr), phdr.p_filesz);
         memset((void *)(phdr.p_vaddr+phdr.p_filesz), 0, phdr.p_memsz-phdr.p_filesz);
