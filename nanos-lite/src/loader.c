@@ -8,13 +8,18 @@
 # define Elf_off Elf64_Off
 # define Elf_Half Elf64_Half
 # define Elf_Word Elf64_Word
+# define Elf_Addr Elf64_Addr
 #else
 # define Elf_Ehdr Elf32_Ehdr
 # define Elf_Phdr Elf32_Phdr
 # define Elf_off Elf32_Off
 # define Elf_Half Elf32_Half
 # define Elf_Word Elf32_Word
+# define Elf_Addr Elf32_Addr
 #endif
+
+extern uint8_t ramdisk_start;
+extern uint8_t ramdisk_end;
 
 size_t get_ramdisk_size();
 size_t ramdisk_read(void *buf, size_t offset, size_t len);
@@ -51,8 +56,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     printf("p_memsize: %d\n", phdr.p_memsz);
     switch (phdr.p_type) {
       case PT_LOAD: {
-        ramdisk_write((void *)(phdr.p_vaddr), phdr.p_offset, phdr.p_filesz);
-        memset((void*)(phdr.p_vaddr+phdr.p_filesz), 0, phdr.p_memsz-phdr.p_filesz);
+        ramdisk_write((void *)(phdr.p_vaddr-(Elf_Addr)&ramdisk_start), phdr.p_offset, phdr.p_filesz);
+        memset((void *)(phdr.p_vaddr+phdr.p_filesz), 0, phdr.p_memsz-phdr.p_filesz);
         printf("hello\n");
         break;
       }
