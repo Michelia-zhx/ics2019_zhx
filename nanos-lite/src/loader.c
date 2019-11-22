@@ -37,7 +37,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   printf("phdr_num: %d\n", phdr_num);
   // assert(phdr_num == 3);
 
-  for (int i=0; i<phdr_num; ++i) {
+  for (int i=1; i<phdr_num; i ++) {
     Elf_Phdr phdr;
     printf("i: %d\n", i);
     printf("phdr_offset+i*phdr_size: %d\n", phdr_offset+i*phdr_size);
