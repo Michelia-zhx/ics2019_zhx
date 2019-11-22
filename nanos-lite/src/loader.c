@@ -28,6 +28,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   size_t len = ramdisk_read(&ehdr, 0, sizeof(Elf_Ehdr));
   printf("len %d\n", len);
   Elf_off phdr_offset = ehdr.e_phoff;
+  printf("phdr_offset: %d\n", phdr_offset);
   // Elf_off shdr_offset = ehdr.e_shoff;
   Elf_Half phdr_size = ehdr.e_phentsize;
   // Elf_Half shdr_size = ehdr.e_shentsize;
@@ -42,6 +43,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     Elf_Word p_memsize = phdr.p_memsz;
     printf("i: %d, p_offset: %d, p_filesize: %d, p_memsize: %d\n", i, p_offset, p_filesize, p_memsize);
     memcpy((void *)phdr.p_vaddr, (void *)phdr.p_offset, phdr.p_filesz);
+    printf("hello\n");
     memset((void *)(phdr.p_vaddr+phdr.p_filesz), 0, (phdr.p_memsz-phdr.p_filesz));
   }
   return ehdr.e_entry;
