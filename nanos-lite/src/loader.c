@@ -27,6 +27,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Ehdr ehdr;
   size_t len = ramdisk_read(&ehdr, 0, sizeof(Elf_Ehdr));
   printf("len %d\n", len);
+  printf("phdr_offset: %d, shdr_offset: %d\n", ehdr.e_phoff, ehdr.e_shoff);
   Elf_off phdr_offset = ehdr.e_phoff;
   Elf_off shdr_offset = ehdr.e_shoff;
   printf("phdr_offset: %d, shdr_offset: %d\n", phdr_offset, shdr_offset);
