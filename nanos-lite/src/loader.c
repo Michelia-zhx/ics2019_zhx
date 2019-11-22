@@ -41,6 +41,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     Elf_Word p_filesize = phdr.p_filesz;
     Elf_Word p_memsize = phdr.p_memsz;
     printf("i: %d, p_offset: %d, p_filesize: %d, p_memsize: %d\n", i, p_offset, p_filesize, p_memsize);
+    memcpy((void *)phdr.p_vaddr, (void *)phdr.p_offset, phdr.p_filesz);
+    memset((void *)(phdr.p_vaddr+phdr.p_filesz), 0, (phdr.p_memsz-phdr.p_filesz));
   }
   return 0;
 }
