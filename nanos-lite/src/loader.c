@@ -40,7 +40,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   for (int i=0; i<phdr_num; ++i) {
     Elf_Phdr phdr;
     printf("i: %d\n", i);
-    len = ramdisk_read((void *)(&phdr), phdr_offset+i*phdr_size, phdr_size);
+    printf("phdr_offset+i*phdr_size: %d\n", phdr_offset+i*phdr_size);
+    len = ramdisk_read(&phdr, phdr_offset+i*phdr_size, phdr_size);
     printf("phdr.type: %d\n", phdr.p_type);
     // Elf_off p_offset = phdr.p_offset;
     // Elf_Word p_filesize = phdr.p_filesz;
