@@ -42,12 +42,12 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     printf("i: %d\n", i);
     len = ramdisk_read((void *)(&phdr), phdr_offset+i*phdr_size, phdr_size);
     printf("phdr.type: %d\n", phdr.p_type);
-    Elf_off p_offset = phdr.p_offset;
-    Elf_Word p_filesize = phdr.p_filesz;
-    Elf_Word p_memsize = phdr.p_memsz;
-    printf("p_offset: %d\n", p_offset);
-    printf("p_filesize: %d\n", p_filesize);
-    printf("p_memsize: %d\n", p_memsize);
+    // Elf_off p_offset = phdr.p_offset;
+    // Elf_Word p_filesize = phdr.p_filesz;
+    // Elf_Word p_memsize = phdr.p_memsz;
+    printf("p_offset: %d\n", phdr.p_offset);
+    printf("p_filesize: %d\n", phdr.p_filesz);
+    printf("p_memsize: %d\n", phdr.p_memsz);
     
     switch (phdr.p_type) {
       case PT_LOAD: {
