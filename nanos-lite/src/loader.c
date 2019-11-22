@@ -35,6 +35,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Half phdr_num = ehdr.e_phnum;
   // Elf_Half shdr_num = ehdr.e_shnum;
   Elf_Phdr phdr;
+  printf("phdr_num: %d\n", phdr_num);
   for (int i=0; i<phdr_num; ++i) {
     printf("i: %d\n", i);
     len = ramdisk_read(&phdr, phdr_offset+i*phdr_size, phdr_size);
