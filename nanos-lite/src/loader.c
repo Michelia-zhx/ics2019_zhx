@@ -24,32 +24,41 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   printf("In loader.c\n");
   size_t ramdisk_size = get_ramdisk_size();
   printf("ramdisk_size:%d\n", ramdisk_size);
+
   Elf_Ehdr ehdr;
   size_t len = ramdisk_read(&ehdr, 0, sizeof(Elf_Ehdr));
   printf("len %d\n", len);
-  printf("phdr_offset: %d, shdr_offset: %d\n", ehdr.e_phoff, ehdr.e_shoff);
+
   Elf_off phdr_offset = ehdr.e_phoff;
-  Elf_off shdr_offset = ehdr.e_shoff;
-  printf("phdr_offset: %d, shdr_offset: %d\n", phdr_offset, shdr_offset);
+  printf("phdr_offset: %d\n", phdr_offset);
   Elf_Half phdr_size = ehdr.e_phentsize;
   printf("phdr_size: %d\n", phdr_size);
   Elf_Half phdr_num = ehdr.e_phnum;
   printf("phdr_num: %d\n", phdr_num);
-  assert(phdr_num == 3);
+  // assert(phdr_num == 3);
+
   Elf_Phdr phdr;
   for (int i=0; i<phdr_num; ++i) {
     printf("i: %d\n", i);
     len = ramdisk_read(&phdr, phdr_offset+i*phdr_size, phdr_size);
     printf("phdr.type: %d\n", phdr.p_type);
-    if (phdr.p_type != PT_LOAD) continue;
     Elf_off p_offset = phdr.p_offset;
     Elf_Word p_filesize = phdr.p_filesz;
     Elf_Word p_memsize = phdr.p_memsz;
     printf("i: %d, p_offset: %d, p_filesize: %d, p_memsize: %d\n", i, p_offset, p_filesize, p_memsize);
-    ramdisk_write((void *)(phdr.p_vaddr), phdr.p_offset, phdr.p_filesz);
-    memset((void *)(phdr.p_vaddr+phdr.p_filesz), 0, (phdr.p_memsz-phdr.p_filesz));
-    printf("hello\n");
+    
+    switch (phdr.p_type) {
+      case PT_LOAD: {
+        ramdisk_write((void *)(phdr.p_vaddr), phdr.p_offset, phdr.p_filesz);
+        memset((void *)(phdr.p_vaddr+phdr.p_filesz), 0, (phdr.p_memsz-phdr.p_filesz));
+        printf("hello\n");
+        break;
+      }
+      default:
+        break;
+    }
   }
+  printf("ehdr.e_entry: %d\n", ehdr.e_entry);
   return ehdr.e_entry;
 }
 

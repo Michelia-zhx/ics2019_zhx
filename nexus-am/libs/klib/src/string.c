@@ -101,20 +101,6 @@ void* memset(void* v,int c,size_t n) {
 }
 
 void* memcpy(void* out, const void* in, size_t n) {
-  /*
-  printf("n: %d\n", n);
-  void *origin = out;
-  char *p = (char *)out;
-  char *q = (char *)in;
-  while (n > 0){
-    printf("in loop, n = %d\n", n);
-    *p = *q;
-    p += 1;
-    q += 1;
-    n--;
-  }
-  return origin;
-  */
   char *csrc = (char*)in, *cdest = (char*)out;
   for (int i = 0; i < n; i ++) {
     cdest[i] = csrc[i];
