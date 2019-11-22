@@ -45,7 +45,9 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     Elf_off p_offset = phdr.p_offset;
     Elf_Word p_filesize = phdr.p_filesz;
     Elf_Word p_memsize = phdr.p_memsz;
-    printf("i: %d, p_offset: %d, p_filesize: %d, p_memsize: %d\n", i, p_offset, p_filesize, p_memsize);
+    printf("p_offset: %d\n", p_offset);
+    printf("p_filesize: %d\n", p_filesize);
+    printf("p_memsize: %d\n", p_memsize);
     
     switch (phdr.p_type) {
       case PT_LOAD: {
