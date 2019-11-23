@@ -35,9 +35,7 @@ _Context* do_syscall(_Context *c) {
       break;
 
     case SYS_brk:
-      if (mm_brk((uintptr_t)a[1], (uintptr_t)a[2]))
-        c->GPRx = 0;
-      else c->GPRx = -1;
+      c->GPRx = mm_brk((uintptr_t)a[1], (uintptr_t)a[2]);
       break;
     
     default: panic("Unhandled syscall ID = %d", a[0]);
