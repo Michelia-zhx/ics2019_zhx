@@ -18,6 +18,7 @@ _Context* do_syscall(_Context *c) {
       break;
 
     case SYS_write:
+    Log("SYS_write");
       if (a[1]==1 || a[1]==2){  // a[1] = fd
         char *addr = (char *)(a[2]);  // a[2] = (intptr_t)buf
         uintptr_t count = a[3];  // a[3] = count
