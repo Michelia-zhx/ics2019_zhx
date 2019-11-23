@@ -27,49 +27,42 @@ size_t ramdisk_write(const void *buf, size_t offset, size_t len);
 void segment_write(void *dest, size_t offset, size_t len);
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  printf("In loader.c\n");
-  size_t ramdisk_size = get_ramdisk_size();
-  printf("ramdisk_size:%d\n", ramdisk_size);
+  // printf("In loader.c\n");
+  // size_t ramdisk_size = get_ramdisk_size();
+  // printf("ramdisk_size:%d\n", ramdisk_size);
 
   Elf_Ehdr ehdr;
-  size_t len = ramdisk_read(&ehdr, 0, sizeof(Elf_Ehdr));
-  printf("len %d\n", len);
+  ramdisk_read(&ehdr, 0, sizeof(Elf_Ehdr));
 
   Elf_off phdr_offset = ehdr.e_phoff;
-  printf("phdr_offset: %d\n", phdr_offset);
+  // printf("phdr_offset: %d\n", phdr_offset);
   Elf_Half phdr_size = ehdr.e_phentsize;
-  printf("phdr_size: %d\n", phdr_size);
+  // printf("phdr_size: %d\n", phdr_size);
   Elf_Half phdr_num = ehdr.e_phnum;
-  printf("phdr_num: %d\n", phdr_num);
+  // printf("phdr_num: %d\n", phdr_num);
   // assert(phdr_num == 3);
 
   for (int i=0; i<phdr_num; i ++) {
     Elf_Phdr phdr;
-    printf("i: %d\n", i);
-    printf("phdr_offset+i*phdr_size: %d\n", phdr_offset+i*phdr_size);
-    len = ramdisk_read(&phdr, phdr_offset+i*phdr_size, phdr_size);
-    printf("phdr.type: %d\n", phdr.p_type);
-    // Elf_off p_offset = phdr.p_offset;
-    // Elf_Word p_filesize = phdr.p_filesz;
-    // Elf_Word p_memsize = phdr.p_memsz;
-    printf("p_offset: %d\n", phdr.p_offset);
-    printf("p_filesize: %d\n", phdr.p_filesz);
-    printf("p_memsize: %d\n", phdr.p_memsz);
+    // printf("i: %d\n", i);
+    // printf("phdr_offset+i*phdr_size: %d\n", phdr_offset+i*phdr_size);
+    ramdisk_read(&phdr, phdr_offset+i*phdr_size, phdr_size);
+    // printf("phdr.type: %d\n", phdr.p_type);
+    // printf("p_offset: %d\n", phdr.p_offset);
+    // printf("p_filesize: %d\n", phdr.p_filesz);
+    // printf("p_memsize: %d\n", phdr.p_memsz);
     switch (phdr.p_type) {
       case PT_LOAD: {
-        // printf("ram_start: %d\n", (Elf_Addr)(&ramdisk_start));
-        /* write `len' bytes starting from `buf' into the `offset' of ramdisk */
-        
         segment_write((void *)(phdr.p_vaddr), phdr.p_offset, phdr.p_filesz);
         memset((void *)(phdr.p_vaddr+phdr.p_filesz), 0, phdr.p_memsz-phdr.p_filesz);
-        printf("hello\n");
+        // printf("hello\n");
         break;
       }
       default:
         break;
     }
   }
-  printf("ehdr.e_entry: %d\n", ehdr.e_entry);
+  // printf("ehdr.e_entry: %d\n", ehdr.e_entry);
   return ehdr.e_entry;
 }
 
