@@ -273,7 +273,7 @@ list_head *core_list_init(ee_u32 blksize, list_head *memblock, ee_s16 seed) {
 	info - data for the cell.
 	memblock - pointer for the list header
 	datablock - pointer for the list data
-	memblock_end - end of region for list headers
+	memblock_end - of region for list headers
 	datablock_end - end of region for list data
 
 	Returns:

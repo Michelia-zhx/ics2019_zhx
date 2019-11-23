@@ -1,5 +1,8 @@
 #include "common.h"
 #include "syscall.h"
+#include "proc.h"
+
+int mm_brk(uintptr_t brk, intptr_t increment);
 
 _Context* do_syscall(_Context *c) {
   uintptr_t a[4];
@@ -18,7 +21,7 @@ _Context* do_syscall(_Context *c) {
       break;
 
     case SYS_write:
-    // Log("SYS_write");
+    Log("SYS_write");
       if (a[1]==1 || a[1]==2){  // a[1] = fd
         char *addr = (char *)(a[2]);  // a[2] = (intptr_t)buf
         uintptr_t count = a[3];  // a[3] = count
@@ -29,6 +32,12 @@ _Context* do_syscall(_Context *c) {
         }
       }
       c->GPRx = a[3]; // On success, the number of bytes written  is  returned
+      break;
+
+    case SYS_brk:
+      if (mm_brk((uintptr_t)a[1], (uintptr_t)a[2]))
+        c->GPRx = 0;
+      else c->GPRx = -1;
       break;
     
     default: panic("Unhandled syscall ID = %d", a[0]);
