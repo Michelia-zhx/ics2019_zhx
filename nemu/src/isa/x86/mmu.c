@@ -1,7 +1,7 @@
 #include "nemu.h"
 
 uint32_t isa_vaddr_read(vaddr_t addr, int len) {
-  Log("in isa_vaddr_read");
+  // Log("in isa_vaddr_read");
   return paddr_read(addr, len);
 }
 
