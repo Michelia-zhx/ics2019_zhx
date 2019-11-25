@@ -22,10 +22,6 @@
 extern uint8_t ramdisk_start;
 extern uint8_t ramdisk_end;
 
-size_t get_ramdisk_size();
-size_t ramdisk_read(void *buf, size_t offset, size_t len);
-size_t ramdisk_write(const void *buf, size_t offset, size_t len);
-void segment_write(void *dest, size_t offset, size_t len);
 int fs_open(const char *pathname, int flags, int mode);
 size_t fs_read(int fd, void *buf, size_t len);
 size_t fs_lseek(int fd, size_t offset, int whence);
@@ -62,7 +58,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     // printf("p_memsize: %d\n", phdr.p_memsz);
     switch (phdr.p_type) {
       case PT_LOAD: {
-        segment_write((void *)(phdr.p_vaddr), phdr.p_offset, phdr.p_filesz);
+        fs_lseek(file_index, phdr.p_offset, SEEK_SET);
+        fs_read(file_index, (void *)phdr.p_vaddr, phdr.p_filesz);
         memset((void *)(phdr.p_vaddr+phdr.p_filesz), 0, phdr.p_memsz-phdr.p_filesz);
         // printf("hello\n");
         break;
