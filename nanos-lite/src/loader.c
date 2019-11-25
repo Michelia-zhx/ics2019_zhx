@@ -1,6 +1,7 @@
 #include "proc.h"
 #include <elf.h>
 #include <klib.h>
+#include "fs.h"
 
 #ifdef __ISA_AM_NATIVE__
 # define Elf_Ehdr Elf64_Ehdr
@@ -25,14 +26,21 @@ size_t get_ramdisk_size();
 size_t ramdisk_read(void *buf, size_t offset, size_t len);
 size_t ramdisk_write(const void *buf, size_t offset, size_t len);
 void segment_write(void *dest, size_t offset, size_t len);
+int fs_open(const char *pathname, int flags, int mode);
+size_t fs_read(int fd, void *buf, size_t len);
+size_t fs_lseek(int fd, size_t offset, int whence);
+int fs_close(int fd);
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
   // printf("In loader.c\n");
   // size_t ramdisk_size = get_ramdisk_size();
   // printf("ramdisk_size:%d\n", ramdisk_size);
+  int file_index;
+  if (filename == NULL) file_index = 23;
+  else file_index = fs_open(filename, 0, 0);
 
   Elf_Ehdr ehdr;
-  ramdisk_read(&ehdr, 0, sizeof(Elf_Ehdr));
+  fs_read(file_index, &ehdr, sizeof(Elf_Ehdr));
 
   Elf_off phdr_offset = ehdr.e_phoff;
   // printf("phdr_offset: %d\n", phdr_offset);
@@ -46,7 +54,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     Elf_Phdr phdr;
     // printf("i: %d\n", i);
     // printf("phdr_offset+i*phdr_size: %d\n", phdr_offset+i*phdr_size);
-    ramdisk_read(&phdr, phdr_offset+i*phdr_size, phdr_size);
+    fs_lseek(file_index, phdr_offset + i*phdr_size, SEEK_SET);
+    fs_read(file_index, &phdr, phdr_size);
     // printf("phdr.type: %d\n", phdr.p_type);
     // printf("p_offset: %d\n", phdr.p_offset);
     // printf("p_filesize: %d\n", phdr.p_filesz);
@@ -62,6 +71,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         break;
     }
   }
+  fs_close(file_index);
   // printf("ehdr.e_entry: %d\n", ehdr.e_entry);
   return ehdr.e_entry;
 }
