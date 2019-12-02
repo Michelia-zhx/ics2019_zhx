@@ -29,8 +29,6 @@ int fs_close(int fd);
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
   // printf("In loader.c\n");
-  // size_t ramdisk_size = get_ramdisk_size();
-  // printf("ramdisk_size:%d\n", ramdisk_size);
   int file_index;
   if (filename == NULL) file_index = 23;
   else file_index = fs_open(filename, 0, 0);
@@ -44,11 +42,9 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   // printf("phdr_size: %d\n", phdr_size);
   Elf_Half phdr_num = ehdr.e_phnum;
   // printf("phdr_num: %d\n", phdr_num);
-  // assert(phdr_num == 3);
 
   for (int i=0; i<phdr_num; i ++) {
     Elf_Phdr phdr;
-    // printf("i: %d\n", i);
     // printf("phdr_offset+i*phdr_size: %d\n", phdr_offset+i*phdr_size);
     fs_lseek(file_index, phdr_offset + i*phdr_size, SEEK_SET);
     fs_read(file_index, &phdr, phdr_size);
@@ -61,7 +57,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         fs_lseek(file_index, phdr.p_offset, SEEK_SET);
         fs_read(file_index, (void *)phdr.p_vaddr, phdr.p_filesz);
         memset((void *)(phdr.p_vaddr+phdr.p_filesz), 0, phdr.p_memsz-phdr.p_filesz);
-        // printf("hello\n");
         break;
       }
       default:
@@ -69,7 +64,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     }
   }
   fs_close(file_index);
-  // printf("ehdr.e_entry: %d\n", ehdr.e_entry);
   return ehdr.e_entry;
 }
 
