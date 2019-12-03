@@ -35,13 +35,13 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   printf("file_index: %d\n", file_index);
   Elf_Ehdr ehdr;
   fs_read(file_index, &ehdr, sizeof(Elf_Ehdr));
-  //at this time, file_table[fd].read_offset = 0
+  // at this time, file_table[fd].read_offset = 0
   Elf_off phdr_offset = ehdr.e_phoff;
-  // printf("phdr_offset: %d\n", phdr_offset);
+  printf("phdr_offset: %d\n", phdr_offset);
   Elf_Half phdr_size = ehdr.e_phentsize;
-  // printf("phdr_size: %d\n", phdr_size);
+  printf("phdr_size: %d\n", phdr_size);
   Elf_Half phdr_num = ehdr.e_phnum;
-  // printf("phdr_num: %d\n", phdr_num);
+  printf("phdr_num: %d\n", phdr_num);
 
   for (int i=0; i<phdr_num; i ++) {
     Elf_Phdr phdr;
