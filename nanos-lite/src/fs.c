@@ -70,6 +70,7 @@ size_t fs_filesz(int fd){
 
 size_t fs_read(int fd, void *buf, size_t len){
   if (file_table[fd].read == NULL){
+    printf("file_table[fd].read == NULL");
     size_t read_len = len;
     if (file_table[fd].read_offset + len > file_table[fd].size)
       read_len = file_table[fd].size - file_table[fd].read_offset;
