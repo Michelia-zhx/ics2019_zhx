@@ -2,7 +2,13 @@
 #include <amdev.h>
 
 size_t serial_write(const void *buf, size_t offset, size_t len) {
-  return 0;
+  size_t remain_len = len;
+  while (remain_len){
+    _putc(*((char *)buf));
+    buf ++;
+    remain_len --;
+  }
+  return len;
 }
 
 #define NAME(key) \
@@ -14,6 +20,19 @@ static const char *keyname[256] __attribute__((used)) = {
 };
 
 size_t events_read(void *buf, size_t offset, size_t len) {
+  /*
+  int key = read_key();
+  int down = 0;
+  if (key & 0x8000) down = 1;
+  else down = 0;
+  key = key & 0x7fff;
+  if (key != _KEY_NONE) {
+
+  }
+  else {
+
+  }
+  */
   return 0;
 }
 

@@ -22,8 +22,6 @@ _Context* do_syscall(_Context *c) {
       break;
 
     case SYS_write:
-    // Log("SYS_write");
-    
       if (a[1]==1 || a[1]==2){  // a[1] = fd
         char *addr = (char *)(a[2]);  // a[2] = (intptr_t)buf
         uintptr_t count = a[3];  // a[3] = count
@@ -34,7 +32,6 @@ _Context* do_syscall(_Context *c) {
         }
       }
       c->GPRx = a[3]; // On success, the number of bytes written  is  returned
-      
       // c->GPRx = fs_write(a[1], (void *)a[2], a[3]);
       break;
 
