@@ -45,7 +45,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
   for (int i=0; i<phdr_num; i ++) {
     Elf_Phdr phdr;
-    // printf("phdr_offset+i*phdr_size: %d\n", phdr_offset+i*phdr_size);
+    printf("phdr_offset+i*phdr_size: %d\n", phdr_offset+i*phdr_size);
     fs_lseek(file_index, phdr_offset + i*phdr_size, SEEK_SET);
     //the read_offset should be the offset contrast to the head of the file
     fs_read(file_index, &phdr, phdr_size);
