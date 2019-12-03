@@ -49,10 +49,10 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     fs_lseek(file_index, phdr_offset + i*phdr_size, SEEK_SET);
     printf("phdr_offset+i*phdr_size: %d\n", phdr_offset+i*phdr_size);
     fs_read(file_index, &phdr, phdr_size);
-    // printf("phdr.type: %d\n", phdr.p_type);
-    // printf("p_offset: %d\n", phdr.p_offset);
-    // printf("p_filesize: %d\n", phdr.p_filesz);
-    // printf("p_memsize: %d\n", phdr.p_memsz);
+    printf("phdr.type: %d\n", phdr.p_type);
+    printf("p_offset: %d\n", phdr.p_offset);
+    printf("p_filesize: %d\n", phdr.p_filesz);
+    printf("p_memsize: %d\n", phdr.p_memsz);
     switch (phdr.p_type) {
       case PT_LOAD: {
         fs_lseek(file_index, phdr.p_offset, SEEK_SET);
