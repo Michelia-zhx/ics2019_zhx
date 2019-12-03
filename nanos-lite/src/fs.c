@@ -75,7 +75,7 @@ size_t fs_read(int fd, void *buf, size_t len){
     printf("len: %d, file_table[%d].size: %d, file_table[fd].read_offset: %d.\n", len, fd, file_table[fd].size, file_table[fd].read_offset);
     // if (file_table[fd].read_offset + len > file_table[fd].size)
       // read_len = file_table[fd].size - file_table[fd].read_offset;
-    ramdisk_read(buf, file_table[fd].read_offset, len);
+    ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].read_offset, len);
     printf("have done ramdisk_read.\n");
     file_table[fd].read_offset += len;
     return len;
@@ -99,7 +99,7 @@ size_t fs_write(int fd, const void *buf, size_t len){
 size_t fs_lseek(int fd, size_t offset, int whence){
   switch (whence) {
     case SEEK_SET:
-      file_table[fd].read_offset = offset;
+      file_table[fd].read_offset = offset-file_table[fd].disk_offset;
       break;
     case SEEK_CUR:
       file_table[fd].read_offset += offset;
