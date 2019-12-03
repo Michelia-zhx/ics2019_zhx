@@ -72,7 +72,7 @@ size_t fs_read(int fd, void *buf, size_t len){
   if (file_table[fd].read == NULL){
     printf("file_table[%d].read == NULL\n", fd);
     size_t read_len = len;
-    printf("len: %d.\n", len);
+    printf("len: %d, file_table[%d].size: %d, file_table[fd].read_offset: %d.\n", len, fd, file_table[fd].size, file_table[fd].read_offset);
     if (file_table[fd].read_offset + len > file_table[fd].size)
       read_len = file_table[fd].size - file_table[fd].read_offset;
     printf("have computed read_len = %d\n", read_len);
