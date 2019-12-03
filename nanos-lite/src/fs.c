@@ -46,6 +46,7 @@ void init_fs() {
 }
 
 int fs_close(int fd){
+  file_table[fd].read_offset = 0;
   return 0;
 }
 

@@ -50,7 +50,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     //the read_offset should be the offset contrast to the head of the file
     fs_read(file_index, &phdr, phdr_size);
     // printf("phdr.type: %d\n", phdr.p_type);
-    // printf("p_offset: %d\n", phdr.p_offset);
+    printf("p_offset: %d\n", phdr.p_offset);
     // printf("p_filesize: %d\n", phdr.p_filesz);
     // printf("p_memsize: %d\n", phdr.p_memsz);
     switch (phdr.p_type) {
