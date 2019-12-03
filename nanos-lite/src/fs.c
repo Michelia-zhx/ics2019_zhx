@@ -76,6 +76,7 @@ size_t fs_read(int fd, void *buf, size_t len){
       read_len = file_table[fd].size - file_table[fd].read_offset;
     printf("have computed read_len\n");
     ramdisk_read(buf, file_table[fd].read_offset, read_len);
+    printf("have done randisk_read.\n");
     file_table[fd].read_offset += read_len;
     return read_len;
   }
