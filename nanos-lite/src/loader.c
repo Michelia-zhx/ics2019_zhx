@@ -79,6 +79,7 @@ the first byte of the segment resides in memory.
 应的物理区间清零.*/
 
 void naive_uload(PCB *pcb, const char *filename) {
+  Log("in naive uloader");
   uintptr_t entry = loader(pcb, filename);
   Log("Jump to entry = %d", entry);
   ((void(*)())entry) ();
