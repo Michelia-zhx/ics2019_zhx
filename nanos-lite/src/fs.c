@@ -70,11 +70,11 @@ size_t fs_filesz(int fd){
 
 size_t fs_read(int fd, void *buf, size_t len){
   if (file_table[fd].read == NULL){
-    printf("file_table[fd].read == NULL");
+    printf("file_table[%d].read == NULL\n", fd);
     size_t read_len = len;
     if (file_table[fd].read_offset + len > file_table[fd].size)
       read_len = file_table[fd].size - file_table[fd].read_offset;
-    printf("have computed read_len");
+    printf("have computed read_len\n");
     ramdisk_read(buf, file_table[fd].read_offset, read_len);
     file_table[fd].read_offset += read_len;
     return read_len;
