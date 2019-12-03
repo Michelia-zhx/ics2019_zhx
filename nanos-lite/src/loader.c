@@ -32,7 +32,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   int file_index;
   if (filename == NULL) file_index = 23;
   else file_index = fs_open(filename, 0, 0);
-
+  printf("file_index: %d\n", file_index);
   Elf_Ehdr ehdr;
   fs_read(file_index, &ehdr, sizeof(Elf_Ehdr));
   //at this time, file_table[fd].read_offset = 0
