@@ -35,7 +35,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
   Elf_Ehdr ehdr;
   fs_read(file_index, &ehdr, sizeof(Elf_Ehdr));
-
+  //at this time, file_table[fd].read_offset = 0
   Elf_off phdr_offset = ehdr.e_phoff;
   printf("phdr_offset: %d\n", phdr_offset);
   Elf_Half phdr_size = ehdr.e_phentsize;
@@ -46,8 +46,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   for (int i=0; i<phdr_num; i ++) {
     Elf_Phdr phdr;
     printf("phdr_offset+i*phdr_size: %d\n", phdr_offset+i*phdr_size);
-    fs_lseek(file_index, i*phdr_size, SEEK_SET);
-    printf("phdr_offset+i*phdr_size: %d\n", phdr_offset+i*phdr_size);
+    fs_lseek(file_index, phdr_offset + i*phdr_size, SEEK_SET);
+    //the read_offset should be the offset contrast to the head of the file
     fs_read(file_index, &phdr, phdr_size);
     printf("phdr.type: %d\n", phdr.p_type);
     printf("p_offset: %d\n", phdr.p_offset);
