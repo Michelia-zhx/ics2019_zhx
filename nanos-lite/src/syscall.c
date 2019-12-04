@@ -31,7 +31,7 @@ _Context* do_syscall(_Context *c) {
 
     case SYS_brk:
       Log("in SYS_brk");
-      c->GPRx = mm_brk((uintptr_t)a[1], (uintptr_t)a[2]);
+      c->GPRx = 0;
       break;
 
     case(SYS_open):
