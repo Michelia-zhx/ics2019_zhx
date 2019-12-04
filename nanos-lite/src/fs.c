@@ -72,15 +72,15 @@ size_t fs_filesz(int fd){
 size_t fs_read(int fd, void *buf, size_t len){
   if (file_table[fd].read == NULL){
     // printf("file_table[%d].read == NULL\n", fd);
-    // size_t read_len = len;
+    size_t read_len = len;
     printf("len: %d, file_table[%d].size: %d, file_table[fd].read_offset: %d.\n", len, fd, file_table[fd].size, file_table[fd].read_offset);
     printf("file_table[%d].disk_offset: %d.\n", fd, file_table[fd].disk_offset);
-    // if (file_table[fd].read_offset + len > file_table[fd].size)
-      // read_len = file_table[fd].size - file_table[fd].read_offset;
-    ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].read_offset, len);
+    if (file_table[fd].read_offset + len > file_table[fd].size)
+      read_len = file_table[fd].size - file_table[fd].read_offset;
+    ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].read_offset, read_len);
     // printf("have done ramdisk_read.\n");
-    file_table[fd].read_offset += len;
-    return len;
+    file_table[fd].read_offset += read_len;
+    return read_len;
   }
   else{
     file_table[fd].read_offset += len;
@@ -108,7 +108,7 @@ size_t fs_write(int fd, const void *buf, size_t len){
       write_len = file_table[fd].write(buf, file_table[fd].disk_offset+file_table[fd].read_offset, write_len);
     else
       write_len = ramdisk_write(buf, file_table[fd].disk_offset+file_table[fd].read_offset, write_len);
-      
+
     file_table[fd].read_offset += write_len;
     return write_len;
   }
