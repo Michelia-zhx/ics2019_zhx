@@ -18,6 +18,7 @@ _Context* do_syscall(_Context *c) {
       break;
 
     case SYS_exit:
+      Log("in SYS_halt");
       _halt(0);
       break;
 
