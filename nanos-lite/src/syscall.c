@@ -3,7 +3,7 @@
 #include "proc.h"
 #include "fs.h"
 
-int mm_brk(uintptr_t brk, intptr_t increment);
+// int mm_brk(uintptr_t brk, intptr_t increment);
 
 _Context* do_syscall(_Context *c) {
   uintptr_t a[4];
