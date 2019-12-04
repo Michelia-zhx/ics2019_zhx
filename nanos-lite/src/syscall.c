@@ -11,9 +11,11 @@ _Context* do_syscall(_Context *c) {
   a[1] = c->GPR2;
   a[2] = c->GPR3;
   a[3] = c->GPR4;
+  printf("a[0]: %d", a[0]);
 
   switch (a[0]) {
-    case SYS_yield: 
+    case SYS_yield:
+      Log("in SYS_yield");
       _yield();
       break;
 
@@ -23,16 +25,17 @@ _Context* do_syscall(_Context *c) {
       break;
 
     case SYS_write:
-      
-      // c->GPRx = a[3]; // On success, the number of bytes written  is  returned
+      Log("in SYS_write");
       c->GPRx = fs_write(a[1], (void *)a[2], a[3]);
       break;
 
     case SYS_brk:
+      Log("in SYS_brk");
       c->GPRx = mm_brk((uintptr_t)a[1], (uintptr_t)a[2]);
       break;
 
     case(SYS_open):
+      Log("in SYS_open");
     	c->GPRx = fs_open((const char*)a[1],a[2],a[3]);
     	break;
 
