@@ -99,6 +99,7 @@ size_t fs_write(int fd, const void *buf, size_t len){
     }
     return len;
   }
+  printf("in fs_write\n");
   int write_len;
   if (file_table[fd].write != NULL)
     write_len = file_table[fd].write(buf, file_table[fd].disk_offset+file_table[fd].read_offset, len);
