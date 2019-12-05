@@ -61,7 +61,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         }
         break;
 
-        case 's':{
+        case 's': case 'c':{
           p = va_arg(ap, char*);
           while (*p) {
             *out = *p;
