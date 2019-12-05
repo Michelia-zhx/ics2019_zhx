@@ -35,8 +35,8 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   else {
     // int time = uptime();
     // sprintf(buf, "t %d\n", time);
-    if (down) sprintf(buf, "down1:\n");
-    else sprintf(buf, "down0:\n");
+    if (down) sprintf(buf, "t down1:\n");
+    else sprintf(buf, "t down0:\n");
   }
   return (strlen(buf) <= len ? strlen(buf) : len);
 }
