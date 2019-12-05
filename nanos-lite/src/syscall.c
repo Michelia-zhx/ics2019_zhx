@@ -15,42 +15,42 @@ _Context* do_syscall(_Context *c) {
 
   switch (a[0]) {
     case SYS_yield:
-      Log("in SYS_yield");
+      // Log("in SYS_yield");
       _yield();
       break;
 
     case SYS_exit:
-      Log("in SYS_halt");
+      // Log("in SYS_halt");
       _halt(0);
       break;
 
     case SYS_write:
-      Log("in SYS_write");
+      // Log("in SYS_write");
       c->GPRx = fs_write(a[1], (void *)a[2], a[3]);
       break;
 
     case SYS_brk:
-      Log("in SYS_brk");
+      // Log("in SYS_brk");
       c->GPRx = 0;
       break;
 
     case(SYS_open):
-      Log("in SYS_open");
+      // Log("in SYS_open");
     	c->GPRx = fs_open((const char*)a[1],a[2],a[3]);
     	break;
 
     case(SYS_read):
-      Log("SYS_read");
+      // Log("SYS_read");
       c->GPRx = fs_read(a[1], (void *)a[2], a[3]);
       break;
     
     case(SYS_close):   
-      Log("SYS_close");
+      // Log("SYS_close");
       c->GPRx = fs_close(a[1]);
       break;
     
     case(SYS_lseek):
-      Log("SYS_lseek");
+      // Log("SYS_lseek");
       c->GPRx = fs_lseek(a[1], a[2], a[3]);
       break;
     

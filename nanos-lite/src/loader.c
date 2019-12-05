@@ -28,41 +28,43 @@ size_t fs_lseek(int fd, size_t offset, int whence);
 int fs_close(int fd);
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  int fd = fs_open(filename, 0, 0);
-
+  // printf("In loader.c\n");
+  int file_index;
+  if (filename == NULL) file_index = 23;
+  else file_index = fs_open(filename, 0, 0);
+  // printf("file_index: %d\n", file_index);
   Elf_Ehdr ehdr;
-  printf("size of ehdr:%d\n", sizeof(Elf_Ehdr));
-  //ramdisk_read(&ehdr, 0, sizeof(Elf_Ehdr));
-  fs_read(fd, &ehdr, sizeof(Elf_Ehdr));
+  fs_read(file_index, &ehdr, sizeof(Elf_Ehdr));
+  // at this time, file_table[fd].read_offset = 0
+  Elf_off phdr_offset = ehdr.e_phoff;
+  // printf("phdr_offset: %d\n", phdr_offset);
+  Elf_Half phdr_size = ehdr.e_phentsize;
+  // printf("phdr_size: %d\n", phdr_size);
+  Elf_Half phdr_num = ehdr.e_phnum;
+  // printf("phdr_num: %d\n", phdr_num);
 
-  Elf_off ph_offset = ehdr.e_phoff;
-  printf("ph_offset:%d\n", ph_offset);
-  Elf_Half ph_size = ehdr.e_phentsize;
-  printf("ph_size:%d\n", ph_size);
-  Elf_Half ph_num = ehdr.e_phnum;
-  printf("ph_num:%d\n", ph_num);
-
-  for(int i = 0; i < ph_num; i++){   
+  for (int i=0; i<phdr_num; i ++) {
     Elf_Phdr phdr;
-    printf("offset+i*size:%d\n",ph_offset + i * ph_size);
-    //ramdisk_read(&phdr, di_offset + ph_offset + i * ph_size, ph_size);
-    printf("p_type:%d\n", phdr.p_type);
-    printf("ptload:%d\n", PT_LOAD);
-    printf("p_filesz:%d\n", phdr.p_filesz);
-    fs_lseek(fd, ph_offset + i * ph_size, SEEK_SET);
-    printf("ph_size:%d\n", ph_size);
-    fs_read(fd, &phdr, ph_size);
-    if(phdr.p_type == PT_LOAD){
-        printf("phdr.p_vaddr:%d\n",phdr.p_vaddr);
-        //ramdisk_write((const void *)phdr.p_vaddr, phdr.p_offset, phdr.p_filesz);
-        fs_lseek(fd, phdr.p_offset, SEEK_SET);
-        fs_read(fd, (void *)phdr.p_vaddr, phdr.p_filesz);
-        memset((void *)(phdr.p_vaddr + phdr.p_filesz), 0, phdr.p_memsz - phdr.p_filesz);
+    // printf("phdr_offset+i*phdr_size: %d\n", phdr_offset+i*phdr_size);
+    fs_lseek(file_index, phdr_offset + i*phdr_size, SEEK_SET);
+    //the read_offset should be the offset contrast to the head of the file
+    fs_read(file_index, &phdr, phdr_size);
+    // printf("phdr.type: %d\n", phdr.p_type);
+    // printf("p_offset: %d\n", phdr.p_offset);
+    // printf("p_filesize: %d\n", phdr.p_filesz);
+    // printf("p_memsize: %d\n", phdr.p_memsz);
+    switch (phdr.p_type) {
+      case PT_LOAD: {
+        fs_lseek(file_index, phdr.p_offset, SEEK_SET);
+        fs_read(file_index, (void *)phdr.p_vaddr, phdr.p_filesz);
+        memset((void *)(phdr.p_vaddr+phdr.p_filesz), 0, phdr.p_memsz-phdr.p_filesz);
+        break;
+      }
+      default:
+        break;
     }
   }
-  printf("return:%d\n", ehdr.e_entry);
-    
-  fs_close(fd);
+  fs_close(file_index);
   return ehdr.e_entry;
 }
 
