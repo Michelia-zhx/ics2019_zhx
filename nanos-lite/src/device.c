@@ -28,8 +28,8 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   key = key & 0x7fff;
   if (key != _KEY_NONE) {
     // Log("has key");
-    if (down) sprintf(buf, "down: %d, kd %s\n", down, keyname[key]);
-    else sprintf(buf, "down: %d, ku %s\n", down, keyname[key]);
+    if (down) sprintf(buf, "down1:");
+    else sprintf(buf, "down0:");
   }
   else {
     int time = uptime();
