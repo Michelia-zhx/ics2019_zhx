@@ -22,9 +22,9 @@ static const char *keyname[256] __attribute__((used)) = {
 size_t events_read(void *buf, size_t offset, size_t len) {
   // printf("in events_read\n");
   int key = read_key();
-  // int down = 0;
-  // if (key & 0x8000) down = 1;
-  // else down = 0;
+  int down = 0;
+  if (key & 0x8000) down = 1;
+  else down = 0;
   key = key & 0x7fff;
   if (key != _KEY_NONE) {
     int time = uptime();
@@ -33,8 +33,10 @@ size_t events_read(void *buf, size_t offset, size_t len) {
     // else sprintf(buf, "down0:\n");
   }
   else {
-    int time = uptime();
-    sprintf(buf, "t %d\n", time);
+    // int time = uptime();
+    // sprintf(buf, "t %d\n", time);
+    if (down) sprintf(buf, "down1:\n");
+    else sprintf(buf, "down0:\n");
   }
   return (strlen(buf) <= len ? strlen(buf) : len);
 }
