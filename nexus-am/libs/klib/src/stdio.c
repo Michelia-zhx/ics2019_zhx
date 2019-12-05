@@ -35,7 +35,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         }
       }
       switch (op) {
-        case 'd':
+        case 'd':{
           num = va_arg(ap, int);
           count = 0;
           if (num < 0){
@@ -52,25 +52,16 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             count += 1;
             num /= 10;
           }
-          /*
-          if (min_width != 0){
-            if (min_width > count){
-              for (int k=0; k<(min_width-count); ++k){
-                *out = '0';
-                out += 1;
-              }
-            }
-          }
-          */
           while (count != 0){
             *out = numstr[count-1];
             count -= 1;
             ret += 1;
             out += 1;
           }
-          break;
+        }
+        break;
 
-        case 's':
+        case 's': case 'c':{
           p = va_arg(ap, char*);
           while (*p) {
             *out = *p;
@@ -78,9 +69,10 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             p += 1;
             ret += 1;
           }
-          break;
+        }
+        break;
 
-        case 'p':
+        case 'p':{
           num = va_arg(ap,int);
         	char result[100];
           int step = 0; 
@@ -88,14 +80,15 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
       			result[step]="0123456789abcdef"[num%16];
      				num/=16;
      				step++;
-   					}while(num);
-   					result[step] = '\0';
-            while(step){
-              *out++ = result[step-1];
-              step--;
-              ret++;
-            }
-          break;
+          }while(num);
+          result[step] = '\0';
+          while(step){
+            *out++ = result[step-1];
+            step--;
+            ret++;
+          }
+        }
+        break;
         
         default:
           break;
