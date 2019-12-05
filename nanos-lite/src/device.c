@@ -26,17 +26,14 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   if (key & 0x8000) down = 1;
   else down = 0;
   key = key & 0x7fff;
+  key = 31;
   if (key != _KEY_NONE) {
-    int timee = uptime();
-    sprintf(buf, "t %d\n", timee);
-    // if (down) sprintf(buf, "down1:\n");
-    // else sprintf(buf, "down0:\n");
+    if(down) sprintf(buf,"kd %s\n",keyname[key]);
+  	else sprintf(buf,"ku %s\n",keyname[key]);
   }
   else {
-    // int time = uptime();
-    sprintf(buf, "t key: %d, down: %d\n", key, down);
-    // if (down) sprintf(buf, "t down1:\n");
-    // else sprintf(buf, "t down0:\n");
+    int cur_time = uptime();
+    sprintf(buf, "t %d\n", cur_time);
   }
   return (strlen(buf) <= len ? strlen(buf) : len);
 }
