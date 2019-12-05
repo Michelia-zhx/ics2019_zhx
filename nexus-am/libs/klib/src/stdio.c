@@ -58,9 +58,9 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             ret += 1;
             out += 1;
           }
+          break;
         }
-        break;
-
+        
         case 's':{
           p = va_arg(ap, char*);
           while (*p) {
@@ -69,8 +69,8 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             p += 1;
             ret += 1;
           }
+          break;
         }
-        break;
 
         case 'p':{
           num = va_arg(ap,int);
@@ -87,8 +87,8 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             step--;
             ret++;
           }
+          break;
         }
-        break;
         
         default:
           break;
