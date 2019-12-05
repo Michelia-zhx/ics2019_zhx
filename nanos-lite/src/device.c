@@ -33,7 +33,6 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   if (key == _KEY_NONE) {
     uint32_t cur_time = uptime();
     sprintf(buf, "t %d\n", cur_time);
-    
   }
   else {
     if(down) sprintf(buf,"kd %s\n",keyname[key]);
@@ -95,15 +94,18 @@ size_t events_read(void *buf, size_t offset, size_t len) {
 static char dispinfo[128] __attribute__((used)) = {};
 
 size_t dispinfo_read(void *buf, size_t offset, size_t len) {
-  return 0;
+  memcpy(buf, dispinfo + offset, len);
+  return strlen(buf);
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
-  return 0;
+  draw_rect((uint32_t *)buf, (offset/4)%screen_width(), (offset/4)/screen_height(), len, 1);
+  return len;
 }
 
 size_t fbsync_write(const void *buf, size_t offset, size_t len) {
-  return 0;
+  draw_sync();
+  return len;
 }
 
 void init_device() {
