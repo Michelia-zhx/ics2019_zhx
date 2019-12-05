@@ -33,7 +33,6 @@ size_t events_read(void *buf, size_t offset, size_t len) {
     int time = uptime();
     sprintf(buf, "t %d\n", time);
   }
-  
   return (strlen(buf) <= len ? strlen(buf) : len);
 }
 

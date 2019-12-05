@@ -21,7 +21,7 @@ int main() {
       printf("receive event: %s", buf);
     }
     else if (time % 1024 == 0) {
-      printf("receive time event for the %dth time: %s", time, buf);
+      //printf("receive time event for the %dth time: %s", time, buf);
     }
   }
 
