@@ -27,8 +27,8 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   else down = 0;
   key = key & 0x7fff;
   if (key != _KEY_NONE) {
-    int time = uptime();
-    sprintf(buf, "t %d\n", time);
+    int timee = uptime();
+    sprintf(buf, "t %d\n", timee);
     // if (down) sprintf(buf, "down1:\n");
     // else sprintf(buf, "down0:\n");
   }
