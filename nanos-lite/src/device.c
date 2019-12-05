@@ -33,7 +33,7 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   }
   else {
     int cur_time = uptime();
-    sprintf(buf, "t %d\n", cur_time);
+    sprintf(buf, "t %s\n", keyname[key]);
   }
   return (strlen(buf) <= len ? strlen(buf) : len);
 }
