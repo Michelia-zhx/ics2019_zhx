@@ -92,7 +92,7 @@ size_t fs_read(int fd, void *buf, size_t len){
 }
 
 size_t fs_write(int fd, const void *buf, size_t len){
-  if (fd==1 || fd==2){
+  /*if (fd==1 || fd==2){
     char *addr = (char *)(buf);
     uintptr_t count = len;
     while (count){
@@ -103,6 +103,7 @@ size_t fs_write(int fd, const void *buf, size_t len){
     return len;
   }
   else{
+    */
     int write_len = len;
     if (file_table[fd].size < file_table[fd].read_offset + len)
       write_len = file_table[fd].size - file_table[fd].read_offset;
@@ -114,7 +115,7 @@ size_t fs_write(int fd, const void *buf, size_t len){
 
     file_table[fd].read_offset += write_len;
     return write_len;
-  }
+  // }
 }
 
 size_t fs_lseek(int fd, size_t offset, int whence){
