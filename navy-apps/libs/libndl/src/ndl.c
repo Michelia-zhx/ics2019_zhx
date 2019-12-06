@@ -137,13 +137,13 @@ static void get_display_info() {
     *(delim = strchr(buf, ':')) = '\0';
     sscanf(buf, "%s", key);
     sscanf(delim + 1, "%s", value);
-    assert(strcmp(key, "WIDTH") == 0 || strcmp(key, "HEIGHT") == 0);
+    // assert(strcmp(key, "WIDTH") == 0 || strcmp(key, "HEIGHT") == 0);
     if (strcmp(key, "WIDTH") == 0) sscanf(value, "%d", &screen_w);
     if (strcmp(key, "HEIGHT") == 0) sscanf(value, "%d", &screen_h);
   }
   fclose(dispinfo);
-  assert(screen_w == 400);
-  assert(screen_h == 300);
+  // assert(screen_w == 400);
+  // assert(screen_h == 300);
   // Log("screen_width: %d, screen_height: %d", screen_w, screen_h);
   assert(screen_w > 0 && screen_h > 0);
 }
