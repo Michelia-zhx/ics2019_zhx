@@ -77,7 +77,7 @@ size_t fs_filesz(int fd){
 
 size_t fs_read(int fd, void *buf, size_t len){
   // /*
-  if (file_table[fd].read == events_read && file_table[fd].open_offset == file_table[fd].size){
+  if (file_table[fd].read == events_read && file_table[fd].open_offset == file_table[fd].size-1){
     file_table[fd].open_offset = 0;
   }
   size_t read_len = len;
