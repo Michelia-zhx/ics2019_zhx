@@ -76,7 +76,7 @@ size_t fs_filesz(int fd){
 }
 
 size_t fs_read(int fd, void *buf, size_t len){
-  /*
+  // /*
   if (file_table[fd].read == NULL){
     // printf("file_table[%d].read == NULL\n", fd);
     size_t read_len = len;
@@ -93,7 +93,8 @@ size_t fs_read(int fd, void *buf, size_t len){
     file_table[fd].open_offset += len;
     return file_table[fd].read(buf, file_table[fd].open_offset-len, len);
   }
-  */
+  // */
+  /*
   if (file_table[fd].read == events_read && file_table[fd].open_offset == file_table[fd].size){
     file_table[fd].open_offset = 0;
   }
@@ -110,6 +111,7 @@ size_t fs_read(int fd, void *buf, size_t len){
   file_table[fd].open_offset+=len;
   // Log("%d\n",file(fd).open_offset);
   return len;
+  */
 }
 
 size_t fs_write(int fd, const void *buf, size_t len){
