@@ -101,7 +101,9 @@ size_t fs_read(int fd, void *buf, size_t len){
 
 size_t fs_write(int fd, const void *buf, size_t len){
   // /*
+  printf("begin write\n");
   if (fd==1 || fd==2){
+    printf("fd==1 || fd==2\n");
     char *addr = (char *)(buf);
     uintptr_t count = len;
     while (count){
