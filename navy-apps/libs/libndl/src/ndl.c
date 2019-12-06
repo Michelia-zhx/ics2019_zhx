@@ -144,8 +144,14 @@ static void get_display_info() {
     sscanf(buf, "%s", key);
     sscanf(delim + 1, "%s", value);
     // assert(strcmp(key, "WIDTH") == 0 || strcmp(key, "HEIGHT") == 0);
-    if (strcmp(key, "WIDTH") == 0) sscanf(value, "%d", &screen_w);
-    if (strcmp(key, "HEIGHT") == 0) sscanf(value, "%d", &screen_h);
+    if (strcmp(key, "WIDTH") == 0) {
+      printf("strcmp(key, \"WIDTH\") == 0\n");
+      sscanf(value, "%d", &screen_w);
+    }
+    if (strcmp(key, "HEIGHT") == 0) {
+      printf("strcmp(key, \"HEIGHT\") == 0\n");
+      sscanf(value, "%d", &screen_h);
+    }
     if (screen_w != 0) printf("screen_w: %d\n", screen_w);
     if (screen_h != 0) printf("screen_h: %d\n", screen_h);
   }
