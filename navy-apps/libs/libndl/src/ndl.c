@@ -32,13 +32,18 @@ int NDL_OpenDisplay(int w, int h) {
     evtdev = stdin;
   } else {
     get_display_info();
+    printf("finish get_display_info\n");
     assert(screen_w >= canvas_w);
     assert(screen_h >= canvas_h);
     pad_x = (screen_w - canvas_w) / 2;
     pad_y = (screen_h - canvas_h) / 2;
+    printf("pad_x: %d, pad_y: %d\n", pad_x, pad_y);
     fbdev = fopen("/dev/fb", "w"); assert(fbdev);
+    printf("finish fopen(/dev/fb)\n");
     evtdev = fopen("/dev/events", "r"); assert(evtdev);
+    printf("finish fopen(/dev/events)\n");
     fbsyncdev = fopen("/dev/fbsync", "w"); assert(fbsyncdev);
+    printf("finish fopen(/dev/fbsync)\n");
   }
 }
 
