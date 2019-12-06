@@ -1,6 +1,6 @@
 #include "fs.h"
 #include <klib.h>
-
+#define file(i) file_table[i]
 size_t ramdisk_read(void *buf, size_t offset, size_t len);
 size_t ramdisk_write(const void *buf, size_t offset, size_t len);
 void segment_write(void *dest, size_t offset, size_t len);
@@ -42,7 +42,7 @@ static Finfo file_table[] __attribute__((used)) = {
   {"/dev/fb", 0, 0, 0, invalid_read, fb_write},
   {"/proc/dispinfo", 30, 0, 0, dispinfo_read, NULL},
   {"/dev/fdsync", 0, 0, 0, NULL, fbsync_write},
-  {"/dev/events", 0, 0, 0, events_read, NULL},
+  {"/dev/events", 30, 0, 0, events_read, NULL},
   {"/dev/tty", 0, 0, 0, NULL, serial_write},
 #include "files.h"
 };
@@ -76,7 +76,7 @@ size_t fs_filesz(int fd){
 }
 
 size_t fs_read(int fd, void *buf, size_t len){
-  // /*
+  /*
   size_t read_len = len;
   if (file_table[fd].open_offset + len > file_table[fd].size)
     read_len = file_table[fd].size - file_table[fd].open_offset;
@@ -90,8 +90,8 @@ size_t fs_read(int fd, void *buf, size_t len){
     file_table[fd].open_offset += read_len;
     return num;
   }
-  // */
-  /*
+  */
+  // /*
   if (file_table[fd].open_offset + len > file_table[fd].size) {
     len = file_table[fd].size - file_table[fd].open_offset;
   }
@@ -104,7 +104,7 @@ size_t fs_read(int fd, void *buf, size_t len){
   file_table[fd].open_offset+=len;
   // Log("%d\n",file_table[fd].open_offset);
   return len;
-  */
+  // */
 }
 
 size_t fs_write(int fd, const void *buf, size_t len){
