@@ -42,7 +42,7 @@ static Finfo file_table[] __attribute__((used)) = {
   {"/dev/fb", 0, 0, 0, invalid_read, fb_write},
   {"/proc/dispinfo", 30, 0, 0, dispinfo_read, NULL},
   {"/dev/fdsync", 0, 0, 0, NULL, fbsync_write},
-  {"/dev/events", 1024, 0, 0, events_read, NULL},
+  {"/dev/events", 30, 0, 0, events_read, NULL},
   {"/dev/tty", 0, 0, 0, NULL, serial_write},
 #include "files.h"
 };
@@ -92,17 +92,20 @@ size_t fs_read(int fd, void *buf, size_t len){
   }
   */
   // /*
-  if (file_table[fd].open_offset + len > file_table[fd].size) {
-    len = file_table[fd].size - file_table[fd].open_offset;
+  if (file(fd).read == events_read && file(fd).open_offset == file(fd).size) {
+    file(fd).open_offset = 0;
   }
-  if (file_table[fd].read!=NULL) {
-    size_t ret = file_table[fd].read(buf,file_table[fd].open_offset,len);
-    file_table[fd].open_offset+=len;
+  if (file(fd).open_offset+len > file(fd).size) {
+    len = file(fd).size - file(fd).open_offset;
+  }
+  if (file(fd).read!=NULL) {
+    size_t ret = file(fd).read(buf,file(fd).open_offset,len);
+    file(fd).open_offset+=len;
     return ret;
   }
-  ramdisk_read(buf,file_table[fd].disk_offset + file_table[fd].open_offset,len);
-  file_table[fd].open_offset+=len;
-  // Log("%d\n",file_table[fd].open_offset);
+  ramdisk_read(buf,file(fd).disk_offset+file(fd).open_offset,len);
+  file(fd).open_offset+=len;
+  // Log("%d\n",file(fd).open_offset);
   return len;
   // */
 }
