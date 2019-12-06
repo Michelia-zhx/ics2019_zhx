@@ -143,6 +143,8 @@ static void get_display_info() {
     *(delim = strchr(buf, ':')) = '\0';
     sscanf(buf, "%s", key);
     sscanf(delim + 1, "%s", value);
+    printf("key: %s\n", key);
+    printf("value: %s\n", value);
     // assert(strcmp(key, "WIDTH") == 0 || strcmp(key, "HEIGHT") == 0);
     if (strcmp(key, "WIDTH") == 0) {
       printf("strcmp(key, \"WIDTH\") == 0\n");
