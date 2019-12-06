@@ -56,11 +56,6 @@ void init_fs() {
   Log("screen_width: %d, screen_height: %d\n", screen_width, screen_width);
 }
 
-int fs_close(int fd){
-  file_table[fd].open_offset = 0;
-  return 0;
-}
-
 int fs_open(const char *pathname, int flags, int mode){
   for (int i=0; i<NR_FILES; i ++){
     if (strcmp(pathname, file_table[i].name) == 0){
@@ -81,6 +76,7 @@ size_t fs_filesz(int fd){
 }
 
 size_t fs_read(int fd, void *buf, size_t len){
+  /*
   if (file_table[fd].read == NULL){
     // printf("file_table[%d].read == NULL\n", fd);
     size_t read_len = len;
@@ -97,6 +93,22 @@ size_t fs_read(int fd, void *buf, size_t len){
     file_table[fd].open_offset += len;
     return file_table[fd].read(buf, file_table[fd].open_offset-len, len);
   }
+  */
+  if (file_table[fd].read == events_read && file_table[fd].open_offset == file_table[fd].size){
+    file_table[fd].open_offset = 0;
+  }
+  if (file_table[fd].open_offset + len > file_table[fd].size) {
+    len = file_table[fd].size - file_table[fd].open_offset;
+  }
+  if (file_table[fd].read!=NULL) {
+    size_t ret = file_table[fd].read(buf,file_table[fd].open_offset,len);
+    file_table[fd].open_offset+=len;
+    return ret;
+  }
+  ramdisk_read(buf,file_table[fd].disk_offset + file_table[fd].open_offset,len);
+  file_table[fd].open_offset+=len;
+  // Log("%d\n",file(fd).open_offset);
+  return len;
 }
 
 size_t fs_write(int fd, const void *buf, size_t len){
@@ -140,4 +152,9 @@ size_t fs_lseek(int fd, size_t offset, int whence){
       panic("Invalid whence.\n");
   }
   return file_table[fd].open_offset;
+}
+
+int fs_close(int fd){
+  file_table[fd].open_offset = 0;
+  return 0;
 }
