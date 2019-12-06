@@ -148,10 +148,12 @@ static void get_display_info() {
       printf("strcmp(key, \"WIDTH\") == 0\n");
       sscanf(value, "%d", &screen_w);
     }
+    else printf("cmp1!=0\n");
     if (strcmp(key, "HEIGHT") == 0) {
       printf("strcmp(key, \"HEIGHT\") == 0\n");
       sscanf(value, "%d", &screen_h);
     }
+    else printf("cmp2!=0\n");
     if (screen_w != 0) printf("screen_w: %d\n", screen_w);
     if (screen_h != 0) printf("screen_h: %d\n", screen_h);
   }
