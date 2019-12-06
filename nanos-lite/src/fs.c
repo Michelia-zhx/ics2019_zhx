@@ -77,20 +77,17 @@ size_t fs_filesz(int fd){
 
 size_t fs_read(int fd, void *buf, size_t len){
   // /*
-  if (file_table[fd].read == events_read && file_table[fd].open_offset == file_table[fd].size-1){
-    file_table[fd].open_offset = 0;
-  }
-  size_t read_len = len;
-  if (file_table[fd].open_offset + len > file_table[fd].size)
-      read_len = file_table[fd].size - file_table[fd].open_offset;
   if (file_table[fd].read == NULL){
+    size_t read_len = len;
+    if (file_table[fd].open_offset + len > file_table[fd].size)
+      read_len = file_table[fd].size - file_table[fd].open_offset;
     ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].open_offset, read_len);
     file_table[fd].open_offset += read_len;
     return read_len;
   }
   else{
-    file_table[fd].open_offset += read_len;
-    return file_table[fd].read(buf, file_table[fd].open_offset-read_len, read_len);
+    file_table[fd].open_offset += len;
+    return file_table[fd].read(buf, file_table[fd].open_offset-len, len);
   }
   // */
   /*
