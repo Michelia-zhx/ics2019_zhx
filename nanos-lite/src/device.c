@@ -20,6 +20,7 @@ static const char *keyname[256] __attribute__((used)) = {
 };
 
 size_t events_read(void *buf, size_t offset, size_t len) {
+  /*
   // printf("in events_read\n");
   int key = read_key();
   // if (key != 0) printf("key: %d\n", key);
@@ -39,6 +40,37 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   	else sprintf(buf,"ku %s\n",keyname[key]);
   }
   return (strlen(buf) <= len ? strlen(buf) : len);
+  */
+  int key = read_key();
+  char file_buf[30];
+  // printf("%s\n",keyname[key]);
+  if (key==0){
+    uint32_t up = uptime();
+    sprintf(file_buf,"t %u\n",up);
+    // printf("%s\n", file_buf);
+    if (len > strlen(file_buf)){
+      len = strlen(file_buf);
+    }
+    // Log("%d\n",len);
+    memcpy(buf,(void*)(file_buf+offset),len);
+  }
+  else {
+    if (len > strlen(file_buf)){
+      len = strlen(file_buf);
+    }
+    if (key > 0x8000){
+      // key.keydown
+      key &= 0x7fff;
+      sprintf(file_buf,"kd %s\n", keyname[key]);
+      
+      memcpy(buf,(void*)(file_buf+offset),len);
+    }
+    else {
+      sprintf(file_buf,"ku %s\n", keyname[key]);
+      memcpy(buf,(void*)(file_buf+offset),len);
+    }
+  }
+  return len;
 }
 
 static char dispinfo[128] __attribute__((used)) = {};
