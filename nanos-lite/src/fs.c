@@ -98,7 +98,7 @@ size_t fs_read(int fd, void *buf, size_t len){
     return file_table[fd].read(buf, file_table[fd].open_offset-len, len);
   }
   */
- size_t free_size = fs_filesz(fd) - file_table[fd].open_offset;
+  size_t free_size = fs_filesz(fd) - file_table[fd].open_offset;
   if (free_size < len) len = free_size;
 
   if(file_table[fd].read==NULL){
@@ -109,8 +109,8 @@ size_t fs_read(int fd, void *buf, size_t len){
 	  return len;
   }
   else{
-	  size_t num = file_table[fd].read(buf,file_table[fd].open_offset,len);
-	  file_table[fd].open_offset += len;
+    file_table[fd].open_offset += len;
+	  size_t num = file_table[fd].read(buf,file_table[fd].open_offset-len,len);
 	  return num;
   }
 }
