@@ -42,7 +42,7 @@ static Finfo file_table[] __attribute__((used)) = {
   {"/dev/fb", 0, 0, 0, invalid_read, fb_write},
   {"/proc/dispinfo", 30, 0, 0, dispinfo_read, NULL},
   {"/dev/fdsync", 0, 0, 0, NULL, fbsync_write},
-  {"/dev/events", 0, 0, 0, events_read, NULL},
+  {"/dev/events", 1024, 0, 0, events_read, NULL},
   {"/dev/tty", 0, 0, 0, NULL, serial_write},
 #include "files.h"
 };
