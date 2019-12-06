@@ -46,7 +46,7 @@ static char dispinfo[128] __attribute__((used)) = {};
 
 size_t dispinfo_read(void *buf, size_t offset, size_t len) {
   memcpy(buf, dispinfo + offset, len);
-  return strlen(buf);
+  return len;
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
