@@ -95,7 +95,8 @@ size_t fs_read(int fd, void *buf, size_t len){
   }
   else{
     file_table[fd].open_offset += read_len;
-    return file_table[fd].read(buf, file_table[fd].open_offset-len, read_len);
+    size_t num = file_table[fd].read(buf, file_table[fd].open_offset-len, read_len);
+    return num;
   }
   // */
   /*
