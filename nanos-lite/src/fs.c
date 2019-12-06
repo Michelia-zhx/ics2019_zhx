@@ -39,10 +39,10 @@ static Finfo file_table[] __attribute__((used)) = {
   {"stdin", 0, 0, 0, invalid_read, invalid_write},
   {"stdout", 0, 0, 0, invalid_read, serial_write},
   {"stderr", 0, 0, 0, invalid_read, serial_write},
-  {"/dev/events", 0, 0, 0, events_read, NULL},
   {"/dev/fb", 0, 0, 0, invalid_read, fb_write},
-  {"/dev/fdsync", 0, 0, 0, NULL, fbsync_write},
   {"/proc/dispinfo", 30, 0, 0, dispinfo_read, NULL},
+  {"/dev/fdsync", 0, 0, 0, NULL, fbsync_write},
+  {"/dev/events", 0, 0, 0, events_read, NULL},
   {"/dev/tty", 0, 0, 0, NULL, serial_write},
 #include "files.h"
 };
@@ -50,7 +50,8 @@ static Finfo file_table[] __attribute__((used)) = {
 #define NR_FILES (sizeof(file_table) / sizeof(file_table[0]))
 
 void init_fs() {
-  file_table[4].size = screen_width() * screen_height() * 4;
+  int vga_id = fs_open("/dev/fb",0,0);
+  file_table[vga_id].size = screen_width() * screen_height()*sizeof(uint32_t);
   // TODO: initialize the size of /dev/fb
   Log("screen_width: %d, screen_height: %d\n", screen_width, screen_width);
 }
