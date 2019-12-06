@@ -52,21 +52,12 @@ char* strcat(char* dst, const char* src) {
 }
 
 int strcmp(const char* s1, const char* s2) {
-  int result = 0;
-  while (*s1 && *s2 && (*s1 == *s2)){
-    s1 += 1;
-    s2 += 1;
+  int a = 0;
+  while( (a= (*s1-*s2)) == 0 && *s1 && *s2) {
+    s1++;
+    s2++;
   }
-  if (!(*s1) && !(*s2)) result = 0;
-  else if (!(*s1) && *s2) result = -1;
-  else if (*s1 && !(*s2)) result = 1;
-  else if (*s1 < *s2) result = -1;
-  else if (*s1 > *s2) result = 1;
-  else {
-    printf("error in strcmp");
-    assert(0);
-  }
-  return result;
+  return a;
 }
 
 int strncmp(const char* s1, const char* s2, size_t n) {

@@ -49,7 +49,7 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len) {
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
-  draw_rect((uint32_t *)buf, (offset/4)%screen_width(), (offset/4)/screen_height(), len, 1);
+  draw_rect((uint32_t *)buf, (offset/4)%screen_width(), (offset/4)/screen_width(), len, 1);
   return len;
 }
 
@@ -61,8 +61,8 @@ size_t fbsync_write(const void *buf, size_t offset, size_t len) {
 void init_device() {
   Log("Initializing devices...");
   _ioe_init();
-  
+  Log("WIDTH:%d, HEIGHT:%d\n",screen_width(),screen_height());
   // TODO: print the string to array `dispinfo` with the format
   // described in the Navy-apps convention
-  sprintf(dispinfo,"WIDTH: %d, HEIGHT: %d\n",screen_width(),screen_height());
+  sprintf(dispinfo,"WIDTH:%d, HEIGHT:%d\n",screen_width(),screen_height());
 }
