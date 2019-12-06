@@ -80,32 +80,32 @@ size_t fs_filesz(int fd){
 }
 
 size_t fs_read(int fd, void *buf, size_t len){
-  /*
-  size_t read_len = len;
-  if (file_table[fd].open_offset + len > fs_filesz(fd))
-      read_len = fs_filesz(fd) - file_table[fd].open_offset;
+  // /*
+  size_t free_size = fs_filesz(fd) - file_table[fd].open_offset;
+  if (free_size < len) len = free_size;
+
   if (file_table[fd].read == NULL){
     // printf("file_table[%d].read == NULL\n", fd);
     // printf("len: %d, file_table[%d].size: %d, file_table[fd].read_offset: %d.\n", len, fd, file_table[fd].size, file_table[fd].read_offset);
     // printf("file_table[%d].disk_offset: %d.\n", fd, file_table[fd].disk_offset);
-    ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].open_offset, read_len);
+    ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
     // printf("have done ramdisk_read.\n");
-    file_table[fd].open_offset += read_len;
-    return read_len;
+    file_table[fd].open_offset += len;
+    return len;
   }
   else{
-    file_table[fd].open_offset += read_len;
-    size_t num = file_table[fd].read(buf, file_table[fd].open_offset-len, read_len);
+    file_table[fd].open_offset += len;
+    size_t num = file_table[fd].read(buf, file_table[fd].open_offset-len, len);
     return num;
   }
-  */
-  // /*
-  //size_t free_size = fs_filesz(fd) - file_table[fd].open_offset;
-  //if (free_size < len) len = free_size;
+  // */
+  /*
+  size_t free_size = fs_filesz(fd) - file_table[fd].open_offset;
+  if (free_size < len) len = free_size;
 
   if(file_table[fd].read==NULL){
-	  size_t free_size = fs_filesz(fd) - file_table[fd].open_offset;
-	  if (free_size < len) len = free_size;
+	  // size_t free_size = fs_filesz(fd) - file_table[fd].open_offset;
+	  // if (free_size < len) len = free_size;
 	  ramdisk_read(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
 	  file_table[fd].open_offset += len;
 	  return len;
@@ -115,7 +115,7 @@ size_t fs_read(int fd, void *buf, size_t len){
 	  size_t num = file_table[fd].read(buf,file_table[fd].open_offset-len,len);
 	  return num;
   }
-  // */
+  */
 }
 
 size_t fs_write(int fd, const void *buf, size_t len){
