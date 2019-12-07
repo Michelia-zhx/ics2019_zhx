@@ -187,13 +187,13 @@ PAL_RNGBlitToSurface(
    {
       return -1;
    }
-
+   Log("3");
    buf = (LPBYTE)calloc(1, 65000);
    if (buf == NULL)
    {
       return -1;
    }
-
+   Log("4");
    //
    // Read the frame.
    //
@@ -202,7 +202,7 @@ PAL_RNGBlitToSurface(
       free(buf);
       return -1;
    }
-
+   Log("5");
    //
    // Decompress the frame.
    //
@@ -214,13 +214,14 @@ PAL_RNGBlitToSurface(
    }
    Decompress(buf, rng, 65000);
    free(buf);
-
+   Log("6");
    //
    // Draw the frame to the surface.
    // FIXME: Dirty and ineffective code, needs to be cleaned up
    //
    while (TRUE)
    {
+      Log("in while");
       data = rng[ptr++];
       switch (data)
       {
