@@ -103,6 +103,7 @@ make_EHelper(shr) {
 }
 
 make_EHelper(setcc) {
+/*
   uint32_t cc = decinfo.opcode & 0xf;
 
   rtl_setcc(&s0, cc);
@@ -113,6 +114,13 @@ make_EHelper(setcc) {
     operand_write(id_dest, &s0);
   }
   // Log("%x",cpu.eax);
+
+  print_asm("set%s %s", get_cc_name(cc), id_dest->str);
+*/
+  uint32_t cc = decinfo.opcode & 0xf;
+
+  rtl_setcc(&s0, cc);
+  operand_write(id_dest, &s0);
 
   print_asm("set%s %s", get_cc_name(cc), id_dest->str);
 }
