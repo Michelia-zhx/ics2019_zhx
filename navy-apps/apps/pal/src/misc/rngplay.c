@@ -212,6 +212,7 @@ PAL_RNGBlitToSurface(
       free(buf);
       return -1;
    }
+   Log("between 5 and 6");
    Decompress(buf, rng, 65000);
    free(buf);
    Log("6");
