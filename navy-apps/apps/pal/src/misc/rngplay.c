@@ -490,7 +490,6 @@ PAL_RNGPlay(
          PAL_ProcessEvent();
          SDL_Delay(1);
       }
-      break; //我加的
    }
    Log("after loop");
    fclose(fp);
