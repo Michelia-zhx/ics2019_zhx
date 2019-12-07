@@ -3,10 +3,10 @@
 #include "nemu.h"
 #include "monitor/monitor.h"
 
-void (*ref_difftest_memcpy_from_dut)(paddr_t dest, void *src, size_t n) = NULL;
-void (*ref_difftest_getregs)(void *c) = NULL;
-void (*ref_difftest_setregs)(const void *c) = NULL;
-void (*ref_difftest_exec)(uint64_t n) = NULL;
+void (*ref_difftest_memcpy_from_dut)(paddr_t dest, void *src, size_t n);
+void (*ref_difftest_getregs)(void *c);
+void (*ref_difftest_setregs)(const void *c);
+void (*ref_difftest_exec)(uint64_t n);
 
 static bool is_skip_ref = false;
 static int skip_dut_nr_instr = 0;
@@ -68,7 +68,7 @@ void init_difftest(char *ref_so_file, long img_size) {
 
   void (*ref_difftest_init)(void) = dlsym(handle, "difftest_init");
   assert(ref_difftest_init);
-
+  
   Log("Differential testing: \33[1;32m%s\33[0m", "ON");
   Log("The result of every instruction will be compared with %s. "
       "This will help you a lot for debugging, but also significantly reduce the performance. "
