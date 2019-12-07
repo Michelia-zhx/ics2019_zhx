@@ -95,7 +95,6 @@ make_EHelper(inc) {
 }
 
 make_EHelper(dec) {
-/*
   rtl_subi(&s0,&id_dest->val,1);
   operand_write(id_dest,&s0);
 
@@ -106,28 +105,7 @@ make_EHelper(dec) {
   rtl_set_OF(&s0);  
 
   print_asm_template1(dec);
-*/
-  rtl_subi(&s0, &id_dest->val, 1);
-  if (s0 < id_dest->val) s1 = 1;
-  else s1 = 0;
-  
-  operand_write(id_dest, &s0);
-  
-  rtl_update_ZFSF(&s0, id_dest->val);
-  if (s0 < id_dest->val) t0 = 1;
-  else t0 = 0;
-  
-  rtl_or(&t0, &s1, &t0);
-  rtl_set_CF(&t0);
-  
-  rtl_xor(&t0, &id_dest->val, &id_src->val);
-  rtl_not(&t0, &t0);
-  rtl_xor(&t1, &id_dest->val, &s0);
-  rtl_and(&t0, &t0, &t1);
-  rtl_msb(&t0, &t0, id_dest->width);
-  rtl_set_OF(&t0);
 
-  print_asm_template1(dec);
 }
 
 make_EHelper(neg) {
