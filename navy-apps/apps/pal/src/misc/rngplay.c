@@ -445,12 +445,13 @@ PAL_RNGPlay(
    {
       Log("1");
       iTime = SDL_GetTicks() + iDelay;
-
+      Log("2");
       if (PAL_RNGBlitToSurface(iNumRNG, iStartFrame, gpScreen, fp) == -1)
       {
          //
          // Failed to get the frame, don't go further
          //
+         Log("in if");
          fclose(fp);
          return;
       }
