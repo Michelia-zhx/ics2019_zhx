@@ -1,7 +1,7 @@
 #include "cpu/exec.h"
 
 make_EHelper(add) {
-
+/*
   rtl_add(&s0, &id_dest->val, &id_src->val);
   if (s0 < id_dest->val) s1 = 1;
   else s1 = 0;
@@ -20,6 +20,24 @@ make_EHelper(add) {
   rtl_and(&t0, &t0, &t1);
   rtl_msb(&t0, &t0, id_dest->width);
   rtl_set_OF(&t0);
+
+  print_asm_template2(add);
+*/
+  rtl_add(&s0, &id_dest->val, &id_src->val);
+  
+  operand_write(id_dest, &s0);
+ 
+  if (id_dest->width != 4) {
+    rtl_andi(&s0, &s0, 0xffffffffu >> ((4 - id_dest->width) * 8));
+  }
+
+  rtl_update_ZFSF(&s0, id_dest->width);
+
+  rtl_is_add_carry(&s1, &s0, &id_dest->val);
+  rtl_set_CF(&s1);
+
+  rtl_is_add_overflow(&s1, &s0, &id_dest->val, &id_src->val, id_dest->width);
+  rtl_set_OF(&s1);
 
   print_asm_template2(add);
 
