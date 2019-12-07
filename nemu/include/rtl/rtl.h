@@ -6,14 +6,16 @@
 #include "rtl/relop.h"
 #include "rtl/rtl-wrapper.h"
 
-extern rtlreg_t s0, s1, t0, t1, t2, t3, ir;
+extern rtlreg_t s0, s1, t0, t1, ir;
 
 void decinfo_set_jmp(bool is_jmp);
 bool interpret_relop(uint32_t relop, const rtlreg_t src1, const rtlreg_t src2);
 
 /* RTL basic instructions */
 
-static inline void interpret_rtl_li(rtlreg_t* dest, uint32_t imm) {
+//static inline void interpret_rtl_li(rtlreg_t* dest, uint32_t imm) {
+static void interpret_rtl_li(rtlreg_t* dest, uint32_t imm) {
+  //printf("hi\n");
   *dest = imm;
 }
 
@@ -131,27 +133,26 @@ void interpret_rtl_exit(int state, vaddr_t halt_pc, uint32_t halt_ret);
 /* RTL pseudo instructions */
 
 static inline void rtl_not(rtlreg_t *dest, const rtlreg_t* src1) {
-  *dest = ~(*src1);
+  // dest <- ~src1
+  *dest = ~*src1;
 }
 
 static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
-  int32_t temp = (int32_t)* src1;
-  if(width == 4)
-    *dest=*src1;
+  // dest <- signext(src1[(width * 8 - 1) .. 0])
+  bool msb = (*src1 >> (width*8 - 1)) & 1;
+  if (!msb) {
+    if (width == 4) *dest = *src1;
+    else if (width == 2) *dest = (*src1 & 0x0000ffff);
+    else if (width == 1) *dest = (*src1 & 0x000000ff);
+    else assert(0);
+  }
   else {
-    if(width == 1) {
-      temp = temp << 24;
-      temp = temp >> 24;
-    } 
-    else if(width == 2) {
-      temp = temp << 16;
-      temp = temp >> 16;
-    }
-    else {
-      assert(0);
-    }
-    *dest = temp;
-  } 
+    if (width == 4) *dest = *src1;
+    else if (width == 2) *dest = (*src1 | 0xffff0000);
+    else if (width == 1) *dest = (*src1 | 0xffffff00);
+    else assert(0);
+  }
+  return;
 }
 
 static inline void rtl_setrelopi(uint32_t relop, rtlreg_t *dest,
@@ -162,41 +163,13 @@ static inline void rtl_setrelopi(uint32_t relop, rtlreg_t *dest,
 
 static inline void rtl_msb(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- src1[width * 8 - 1]
-  switch(width){
-  case 4: {
-    uint32_t temp = (uint32_t)*src1;
-    temp = temp >> 31;
-    if(temp == 1)
-      *dest = 1;
-    else
-      *dest = 0;
-  } break;
-  case 2: {
-    uint16_t temp = (uint16_t)*src1;
-    temp = temp >> 15;
-    if(temp == 1)
-      *dest = 1;
-    else
-      *dest = 0;
-  } break;
-  case 1: {
-    uint8_t temp = (uint8_t)*src1;
-    temp = temp >> 7;
-    if(temp == 1)
-      *dest = 1;
-    else
-      *dest = 0;
-  } break;
-  default:
-    assert(0);
-  }
+  *dest = (*src1 >> (width*8 - 1)) & 1;
 }
 
 static inline void rtl_mux(rtlreg_t* dest, const rtlreg_t* cond, const rtlreg_t* src1, const rtlreg_t* src2) {
   // dest <- (cond ? src1 : src2)
   TODO();
 }
-
 
 #include "isa/rtl.h"
 

@@ -3,21 +3,22 @@
 
 #include "common.h"
 
+#define LEN_WP_NAME 32
+
 typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
-  int new_val;
-  int old_val;
-  char expr[32];
-  /* TODO: Add more members if necessary */
 
+  /* TODO: Add more members if necessary */
+  char exp[LEN_WP_NAME];
+  uint32_t value;
 
 } WP;
 
-WP* new_wp();
-int free_wp(int n);
-void watchpoint_display();
-int watchpoint_set(char *s);
-WP* check_watchpoint();
+void new_wp();
+void free_wp(WP *wp);
+void delete_wp(int num);
+void info_wp_display();
+bool check();
 
 #endif
