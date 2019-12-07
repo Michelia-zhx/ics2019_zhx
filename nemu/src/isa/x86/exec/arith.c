@@ -1,7 +1,7 @@
 #include "cpu/exec.h"
 
 make_EHelper(add) {
-/*
+
   rtl_add(&s0, &id_dest->val, &id_src->val);
   
   operand_write(id_dest, &s0);
@@ -19,30 +19,11 @@ make_EHelper(add) {
   rtl_set_OF(&s1);
 
   print_asm_template2(add);
-*/
-  rtl_add(&s0, &id_dest->val, &id_src->val);
-  if (s0 < id_dest->val) s1 = 1;
-  else s1 = 0;
 
-  operand_write(id_dest, &s0);
-
-  rtl_update_ZFSF(&s0, id_dest->width);
-  if (s0 < id_dest->val) t0 = 1;
-  else t0 = 0;
-  rtl_or(&t0, &s1, &t0);
-  rtl_set_CF(&t0);
-
-  rtl_xor(&t0, &id_dest->val, &id_src->val);
-  rtl_not(&t0, &t0);
-  rtl_xor(&t1, &id_dest->val, &s0);
-  rtl_and(&t0, &t0, &t1);
-  rtl_msb(&t0, &t0, id_dest->width);
-  rtl_set_OF(&t0);
-
-  print_asm_template2(add);
 }
 
 make_EHelper(sub) {
+/*
   rtl_sub(&s0, &id_dest->val, &id_src->val);
   
   operand_write(id_dest, &s0);
@@ -60,7 +41,26 @@ make_EHelper(sub) {
   rtl_set_OF(&s1);
   
   print_asm_template2(sub);
-}
+*/
+
+  rtl_sub(&s0, &id_dest->val, &id_src->val);
+  if (id_dest->val < s0) s1 = 1;
+  else s1 = 0;
+  operand_write(id_dest, &s0);
+
+  rtl_update_ZFSF(&s0, id_dest->width);
+  if (id_dest->val < s0) t0 = 1;
+  else t1 = 0;
+  rtl_or(&t0, &s1, &t0);
+  rtl_set_CF(&t0);
+  
+  rtl_xor(&t0, &id_dest->val, &id_src->val);
+  rtl_xor(&t1, &id_dest->val, &s0);
+  rtl_and(&t0, &t0, &t1);
+  rtl_msb(&t0, &t0, id_dest->width);
+  rtl_set_OF(&t0);
+
+  print_asm_template2(sub);}
 
 make_EHelper(cmp) {
   rtl_sub(&s0, &id_dest->val, &id_src->val);
