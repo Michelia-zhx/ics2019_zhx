@@ -7,7 +7,6 @@
 
 void timer_intr() {
   if (nemu_state.state == NEMU_RUNNING) {
-    // printf("timer.c\n");
     extern void dev_raise_intr(void);
     dev_raise_intr();
   }
