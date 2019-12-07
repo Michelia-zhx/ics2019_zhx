@@ -126,12 +126,6 @@ make_EHelper(setcc) {
 }
 
 make_EHelper(not) {
-/*
-  rtl_not(&id_dest->val, &id_dest->val);
-  operand_write(id_dest, &id_dest->val);
-
-  print_asm_template1(not);
-*/
   rtl_not(&id_dest->val,&id_dest->val);
   operand_write(id_dest,&id_dest->val);
   
@@ -139,14 +133,15 @@ make_EHelper(not) {
 }
 
 make_EHelper(rol){
-/*  
+  
   rtl_shl(&t0,&id_dest->val,&id_src->val);
   rtl_shri(&t1,&id_dest->val,id_dest->width*8 - id_src->val);
   rtl_or(&t0,&t0,&t1);
   operand_write(id_dest,&t0);
   
   print_asm_template2(rol);
-*/
+
+/*
   rtl_li(&s0,id_dest->val);
   for (int i=0; i<id_src->val; i++) {
     rtl_msb(&s1,&s0,id_dest->width);
@@ -156,4 +151,5 @@ make_EHelper(rol){
   operand_write(id_dest,&s0);
 
   print_asm_template1(rol);
+*/
 }
