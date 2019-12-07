@@ -179,7 +179,7 @@ PAL_RNGBlitToSurface(
    INT                   x, y, i, n;
    LPBYTE                rng         = NULL;
    LPBYTE                buf         = NULL;
-
+   Log("in PAL_RNGBlitToSurface");
    //
    // Check for invalid parameters.
    //
@@ -446,6 +446,7 @@ PAL_RNGPlay(
       Log("1");
       iTime = SDL_GetTicks() + iDelay;
       Log("2");
+      /*
       if (PAL_RNGBlitToSurface(iNumRNG, iStartFrame, gpScreen, fp) == -1)
       {
          //
@@ -455,7 +456,7 @@ PAL_RNGPlay(
          fclose(fp);
          return;
       }
-
+      */
       //
       // Update the screen
       //
