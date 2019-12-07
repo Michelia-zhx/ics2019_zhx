@@ -458,7 +458,9 @@ PAL_RNGPlay(
       //
       // Update the screen
       //
+      Log("before VIDEO_updatescreen");
       VIDEO_UpdateScreen(NULL);
+      Log("after VIDEO_updatescreen");
 
       //
       // Fade in the screen if needed
