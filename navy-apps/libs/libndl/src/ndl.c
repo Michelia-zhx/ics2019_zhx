@@ -139,26 +139,26 @@ static void get_display_info() {
   screen_w = screen_h = 0;
   char buf[128], key[128], value[128], *delim;
   while (fgets(buf, 128, dispinfo)) {
-    printf("in get_displayinfo: while\n");
-    printf("buf: %s\n", buf);
+    // printf("in get_displayinfo: while\n");
+    // printf("buf: %s\n", buf);
     *(delim = strchr(buf, ':')) = '\0';
     sscanf(buf, "%s", key);
     sscanf(delim + 1, "%s", value);
-    printf("key: %s\n", key);
-    printf("value: %s\n", value);
+    // printf("key: %s\n", key);
+    // printf("value: %s\n", value);
     // assert(strcmp(key, "WIDTH") == 0 || strcmp(key, "HEIGHT") == 0);
     if (strcmp(key, "WIDTH") == 0) {
-      printf("strcmp(key, \"WID\") == 0\n");
+      // printf("strcmp(key, \"WID\") == 0\n");
       sscanf(value, "%d", &screen_w);
     }
-    else printf("cmp1!=0\n");
+    // else printf("cmp1!=0\n");
     if (strcmp(key, "HEIGHT") == 0) {
-      printf("strcmp(key, \"HEI\") == 0\n");
+      // printf("strcmp(key, \"HEI\") == 0\n");
       sscanf(value, "%d", &screen_h);
     }
-    else printf("cmp2!=0\n");
-    if (screen_w != 0) printf("screen_w: %d\n", screen_w);
-    if (screen_h != 0) printf("screen_h: %d\n", screen_h);
+    // else printf("cmp2!=0\n");
+    // if (screen_w != 0) printf("screen_w: %d\n", screen_w);
+    // if (screen_h != 0) printf("screen_h: %d\n", screen_h);
   }
   fclose(dispinfo);
   // assert(screen_w == 400);
