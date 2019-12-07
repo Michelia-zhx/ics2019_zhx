@@ -207,6 +207,7 @@ PAL_RNGBlitToSurface(
    // Decompress the frame.
    //
    rng = (LPBYTE)calloc(1, 65000);
+   Log("after LPBYTEshahsa");
    if (rng == NULL)
    {
       free(buf);
