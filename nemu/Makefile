@@ -45,6 +45,7 @@ OBJS = $(SRCS:src/%.c=$(OBJ_DIR)/%.o)
 
 # Compilation patterns
 $(OBJ_DIR)/%.o: src/%.c
+#	@$(CC) $(CFLAGS) $(SO_CFLAGS) -E $< | grep -ve '^#' | indent - > $(basename $@).i
 	@echo + CC $<
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(SO_CFLAGS) -c -o $@ $<
@@ -62,7 +63,7 @@ override ARGS ?= -l $(BUILD_DIR)/nemu-log.txt
 override ARGS += -d $(QEMU_SO)
 
 # Command to execute NEMU
-IMG :=
+IMG := ~/ics2019/nanos-lite/build/nanos-lite-x86-nemu.bin
 NEMU_EXEC := $(BINARY) $(ARGS) $(IMG)
 
 $(BINARY): $(OBJS)
@@ -84,6 +85,3 @@ clean:
 	-rm -rf $(BUILD_DIR)
 	$(MAKE) -C tools/gen-expr clean
 	$(MAKE) -C tools/qemu-diff clean
-
-count:
-	find /home/cx/ics2019/nemu/ -name *.c -or -name *.h | xargs cat | wc -l

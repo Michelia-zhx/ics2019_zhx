@@ -4,15 +4,20 @@ void raise_intr(uint32_t NO, vaddr_t ret_addr) {
   /* TODO: Trigger an interrupt/exception with ``NO''.
    * That is, use ``NO'' to index the IDT.
    */
-  assert((NO + 1) * 8 <= cpu.idtr.limit);
-  rtl_push((rtlreg_t *)&cpu.eflags.value);
-  rtl_push((rtlreg_t *)&cpu.cs);
-  rtl_push((rtlreg_t *)&ret_addr);
-  cpu.eflags.IF=0;
-  uint32_t low = vaddr_read(cpu.idtr.base + 8 * NO, 4);
-  uint32_t high = vaddr_read(cpu.idtr.base + 8 * NO + 4, 4);
-  uint32_t offset = (low & 0x0000ffff) | (high & 0xffff0000);
-  rtl_j(offset);
+  // printf("in raise_intr.c\n");
+  // printf("NO: %x, %d\n", NO, NO);
+  uint32_t addr = cpu.idtr.base + NO*8; // 2
+
+  uint32_t low = vaddr_read(addr, 2);
+  uint32_t high = vaddr_read(addr+6, 2);
+  uint32_t offset = (high << 16) | low; // 3
+
+  rtl_push(&cpu.eflags.value);
+  rtl_push(&cpu.cs);
+  rtl_push(&ret_addr);                  // 1
+
+  rtl_j(offset);                        // 4
+  cpu.eflags.IF = 0;
 }
 
 bool isa_query_intr(void) {

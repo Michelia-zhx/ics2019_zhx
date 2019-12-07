@@ -56,7 +56,6 @@ static inline long load_img() {
 
     fclose(fp);
 
-
     // mainargs
     strcpy(guest_to_host(0), mainargs);
   }
