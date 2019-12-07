@@ -164,11 +164,12 @@ PAL_Init(
 #endif
 #endif
 }
-
+/*
 VOID
 PAL_Shutdown(
    VOID
 )
+*/
 /*++
   Purpose:
 
