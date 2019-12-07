@@ -152,7 +152,7 @@ static void get_display_info() {
       sscanf(value, "%d", &screen_w);
     }
     else printf("cmp1!=0\n");
-    if (strcmp(key, "HEIGH") == 0) {
+    if (strcmp(key, "HEIG") == 0) {
       printf("strcmp(key, \"HEI\") == 0\n");
       sscanf(value, "%d", &screen_h);
     }
