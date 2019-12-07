@@ -24,7 +24,7 @@ void hello_fun(void *arg) {
 void init_proc() {
   switch_boot_pcb();
   // Log("hello");
-  naive_uload(NULL, "/bin/bmptest");
+  naive_uload(NULL, "/bin/init");
 
   Log("Initializing processes...");
   // load program here

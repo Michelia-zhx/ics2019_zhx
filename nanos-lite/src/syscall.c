@@ -3,6 +3,7 @@
 #include "proc.h"
 #include "fs.h"
 
+void naive_uload(PCB *pcb, const char *filename);
 // int mm_brk(uintptr_t brk, intptr_t increment);
 
 _Context* do_syscall(_Context *c) {
@@ -21,7 +22,7 @@ _Context* do_syscall(_Context *c) {
 
     case SYS_exit:
       // Log("in SYS_halt");
-      _halt(0);
+      naive_uload(NULL,"/bin/init");
       break;
 
     case SYS_write:
@@ -34,24 +35,29 @@ _Context* do_syscall(_Context *c) {
       c->GPRx = 0;
       break;
 
-    case(SYS_open):
+    case SYS_open:
       // Log("in SYS_open");
     	c->GPRx = fs_open((const char*)a[1],a[2],a[3]);
     	break;
 
-    case(SYS_read):
+    case SYS_read:
       // Log("SYS_read");
       c->GPRx = fs_read(a[1], (void *)a[2], a[3]);
       break;
     
-    case(SYS_close):   
+    case SYS_close:   
       // Log("SYS_close");
       c->GPRx = fs_close(a[1]);
       break;
     
-    case(SYS_lseek):
+    case SYS_lseek:
       // Log("SYS_lseek");
       c->GPRx = fs_lseek(a[1], a[2], a[3]);
+      break;
+
+    case SYS_execve:
+      naive_uload(NULL, (const char *)a[1]);
+      c->GPRx = 0;
       break;
     
     default: panic("Unhandled syscall ID = %d", a[0]);
