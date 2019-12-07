@@ -472,7 +472,9 @@ PAL_RNGPlay(
       //
       if (gpGlobals->fNeedToFadeIn)
       {
+         Log("in if after video_updatescreen");
          PAL_FadeIn(gpGlobals->wNumPalette, gpGlobals->fNightPalette, 1);
+         Log("after PAL_FadeIn");
          gpGlobals->fNeedToFadeIn = FALSE;
       }
 
