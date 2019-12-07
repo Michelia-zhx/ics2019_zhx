@@ -141,7 +141,7 @@ static void get_display_info() {
   while (fgets(buf, 128, dispinfo)) {
     printf("in get_displayinfo: while\n");
     printf("buf: %s\n", buf);
-    *(delim = strchr(buf, ':')) = '\0';
+    *(delim = strchr(buf, 'H')) = '\0';
     sscanf(buf, "%s", key);
     sscanf(delim + 1, "%s", value);
     printf("key: %s\n", key);
