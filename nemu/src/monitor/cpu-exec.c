@@ -21,7 +21,7 @@ void interpret_rtl_exit(int state, vaddr_t halt_pc, uint32_t halt_ret) {
 vaddr_t exec_once(void);
 void difftest_step(vaddr_t ori_pc, vaddr_t next_pc);
 void asm_print(vaddr_t ori_pc, int instr_len, bool print_flag);
-void log_clearbuf(void);
+void log_cleanbuf(void);
 
 static uint64_t g_nr_guest_instr = 0;
 
@@ -58,9 +58,13 @@ void cpu_exec(uint64_t n) {
               "we do not record more instruction trace beyond this point.\n"
               "To capture more trace, you can modify the LOG_MAX macro in %s\n\n", __FILE__);
   }
-  log_clearbuf();
+  log_cleanbuf();
+
     /* TODO: check watchpoints here. */
-    //if (check()) nemu_state.state = NEMU_STOP;
+  WP* p = check_watchpoint();
+  if (p != NULL) {
+    nemu_state.state = NEMU_STOP;
+  }
 
 #endif
 

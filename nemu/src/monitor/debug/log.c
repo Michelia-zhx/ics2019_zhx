@@ -30,7 +30,7 @@ void asm_print(vaddr_t ori_pc, int instr_len, bool print_flag) {
   }
 }
 
-void log_clearbuf(void) {
+void log_cleanbuf(void) {
   log_bytebuf[0] = '\0';
   log_asmbuf[0] = '\0';
 }
