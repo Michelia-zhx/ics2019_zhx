@@ -33,6 +33,7 @@ PAL_PollEvent(
 
 --*/
 {
+  Log("in PAL_PollEvent");
   NDL_Event evt;
   NDL_WaitEvent(&evt);
   
@@ -67,9 +68,10 @@ PAL_PollEvent(
       if (kd) PAL_KeyPressHandler(key);
       else PAL_KeyReleaseHandler(key);
     }
+    Log("before return true");
     return true;
   }
-
+  Log("before return false");
   return false;
 }
 
