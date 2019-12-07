@@ -475,10 +475,11 @@ PAL_RNGPlay(
       PAL_ProcessEvent();
       while (SDL_GetTicks() <= iTime)
       {
+         Log("in while");
          PAL_ProcessEvent();
          SDL_Delay(1);
       }
    }
-
+   Log("after loop");
    fclose(fp);
 }
