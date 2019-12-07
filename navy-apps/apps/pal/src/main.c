@@ -234,10 +234,15 @@ PAL_TrademarkScreen(
 
 --*/
 {
+   Log("in treadmarkscreen");
    PAL_SetPalette(3, FALSE);
+   Log("1");
    PAL_RNGPlay(6, 0, 1000, 25);
+   Log("2");
    UTIL_Delay(1000);
+   Log("3");
    PAL_FadeOut(1);
+   Log("4");
 }
 
 VOID
