@@ -1,6 +1,7 @@
 #include "cpu/exec.h"
 
 make_EHelper(add) {
+/*
   rtl_add(&s0, &id_dest->val, &id_src->val);
   if (s0 < id_dest->val) s1 = 1;
   else s1 = 0;
@@ -21,6 +22,7 @@ make_EHelper(add) {
   rtl_set_OF(&t0);
 
   print_asm_template2(add);
+*/
 }
 
 make_EHelper(sub) {
