@@ -16,10 +16,10 @@ void reg_test() {
   for (i = R_EAX; i <= R_EDI; i ++) {
     sample[i] = rand();
     reg_l(i) = sample[i];
-    assert(reg_w(i) == (sample[i] & 0xffff));
+    assert(reg_w(i) == (sample[i] & 0xffff)); //(cpu.gpr[index]._16)[i] == (sample[i] & 0xffff) 32位的变了16位的要跟着变
   }
 
-  assert(reg_b(R_AL) == (sample[R_EAX] & 0xff));
+  assert(reg_b(R_AL) == (sample[R_EAX] & 0xff)); //(cpu.gpr[index & 0x3]._8[index >> 2]) == (sample[R_EAX] & 0xff) 8位的变了eax等要跟着变
   assert(reg_b(R_AH) == ((sample[R_EAX] >> 8) & 0xff));
   assert(reg_b(R_BL) == (sample[R_EBX] & 0xff));
   assert(reg_b(R_BH) == ((sample[R_EBX] >> 8) & 0xff));
@@ -40,38 +40,33 @@ void reg_test() {
   assert(pc_sample == cpu.pc);
 }
 
-void isa_reg_display() {
-  int i,j;
-  for (i = 0; i <8; i++) {
-    printf("%s:   %8x    %d \r\n", regsl[i], cpu.gpr[i]._32, cpu.gpr[i]._32);
-  }
-  for (i = 0; i <8; i++) {
-    printf("%s:   %8x    %d  \r\n", regsw[i], cpu.gpr[i]._16, cpu.gpr[i]._16);
-  }
-  for (i = 0; i <8; i++) {
-    for (j = 0; j <2; j++) {
-      printf("%s:   %8x    %d  \r\n", regsb[i], cpu.gpr[i]._8[j], cpu.gpr[i]._8[j]);
-    }
-  }
+void isa_reg_display(){
+  printf("eax       0x%-20x      %-20d \n", cpu.eax, cpu.eax);
+  printf("ecx       0x%-20x      %-20d \n", cpu.ecx, cpu.ecx);
+  printf("edx       0x%-20x      %-20d \n", cpu.edx, cpu.edx);
+  printf("ebx       0x%-20x      %-20d \n", cpu.ebx, cpu.ebx);
+  printf("esp       0x%-20x      %-20d \n", cpu.esp, cpu.esp);
+  printf("ebp       0x%-20x      %-20d \n", cpu.ebp, cpu.ebp);
+  printf("esi       0x%-20x      %-20d \n", cpu.esi, cpu.esi);
+  printf("edi       0x%-20x      %-20d \n", cpu.edi, cpu.edi);
+  printf("ax        0x%-20x      %-20d \n", cpu.gpr[0]._16, cpu.gpr[0]._16);
+  printf("cx        0x%-20x      %-20d \n", cpu.gpr[1]._16, cpu.gpr[1]._16);
+  printf("dx        0x%-20x      %-20d \n", cpu.gpr[2]._16, cpu.gpr[2]._16);
+  printf("bx        0x%-20x      %-20d \n", cpu.gpr[3]._16, cpu.gpr[3]._16);
+  printf("sp        0x%-20x      %-20d \n", cpu.gpr[4]._16, cpu.gpr[4]._16);
+  printf("bp        0x%-20x      %-20d \n", cpu.gpr[5]._16, cpu.gpr[5]._16);
+  printf("si        0x%-20x      %-20d \n", cpu.gpr[6]._16, cpu.gpr[6]._16);
+  printf("di        0x%-20x      %-20d \n", cpu.gpr[7]._16, cpu.gpr[7]._16);
+  printf("al        0x%-20x      %-20d \n", cpu.gpr[0]._8[0], cpu.gpr[0]._8[0]);
+  printf("cl        0x%-20x      %-20d \n", cpu.gpr[0]._8[1], cpu.gpr[0]._8[1]);
+  printf("dl        0x%-20x      %-20d \n", cpu.gpr[1]._8[0], cpu.gpr[1]._8[0]);
+  printf("bl        0x%-20x      %-20d \n", cpu.gpr[1]._8[1], cpu.gpr[1]._8[1]);
+  printf("ah        0x%-20x      %-20d \n", cpu.gpr[2]._8[0], cpu.gpr[2]._8[0]);
+  printf("ch        0x%-20x      %-20d \n", cpu.gpr[2]._8[1], cpu.gpr[2]._8[1]);
+  printf("bh        0x%-20x      %-20d \n", cpu.gpr[3]._8[0], cpu.gpr[3]._8[0]);
+  printf("dh        0x%-20x      %-20d \n", cpu.gpr[3]._8[1], cpu.gpr[3]._8[1]);
 }
 
 uint32_t isa_reg_str2val(const char *s, bool *success) {
-  uint32_t out=0;
-  if(success) {
-    for (int i=0; i<8; i++) {
-      if(strcmp(s,regsl[i]) == 0) {
-        out = cpu.gpr[i]._32;
-        break; 
-      }
-      else if (strcmp(s,regsw[i]) == 0) {
-        out = cpu.gpr[i]._16;
-        break;
-      }
-      else if (strcmp(s,regsb[i]) == 0) {
-        out = cpu.gpr[i]._8[0];
-        break;
-      }
-    }
-  }
-  return out;
+  return 0;
 }

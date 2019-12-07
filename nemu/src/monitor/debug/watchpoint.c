@@ -1,18 +1,21 @@
 #include "monitor/watchpoint.h"
 #include "monitor/expr.h"
 
-#define NR_WP 32
+#include <string.h>
 
-int count=0;
+#define NR_WP 32
+#define LEN_WP_NAME 32
 
 static WP wp_pool[NR_WP] = {};
-static WP *head = NULL, *free_ = NULL;
+static WP *head = NULL, *free_ = NULL; // head用于组织使用中的监视点结构, free_用于组织空闲的监视点结构
 
 void init_wp_pool() {
   int i;
   for (i = 0; i < NR_WP; i ++) {
     wp_pool[i].NO = i;
     wp_pool[i].next = &wp_pool[i + 1];
+    wp_pool[i].exp[0] = '\0';
+    wp_pool[i].value = 0;
   }
   wp_pool[NR_WP - 1].next = NULL;
 
@@ -22,94 +25,102 @@ void init_wp_pool() {
 
 /* TODO: Implement the functionality of watchpoint */
 
-WP* new_wp() {
-  if (count == 0) {
-    init_wp_pool();
-  }
-  WP *p = free_;
-  if (p != NULL) {
-    free_ = free_->next;
-    p -> next = head;
-    head = p;
-    count++;
-    return p;
+void new_wp(char *args){
+  WP *p;
+  if (free_ == NULL){
+    panic("No more watchpoints.");
   }
   else {
-    assert(0);
-  }
-}
-
-int free_wp(int n) {
-  WP *p = head;
-  if (p == NULL) {
-    printf("No watchpoint \n");
-    return 0;
-  }
-  if (head->NO == n) {
-    head = head -> next;
-    p -> next = free_;
-    free_ = p;
-    printf("NO.%d Watchpoint deleted\n", n);
-    return 1;
-  }
-  else {
-    WP *q;
-    while (p -> NO != n) {
-      q = p;
-      p = p -> next;
+    p = free_;
+    free_ = p->next;
+    p->next = NULL;
+    if (head == NULL){
+      head = p;
     }
-    q -> next = p -> next;
-    p -> next = free_;
-    free_ = p;
-    printf("NO.%d Watchpoint deleted\n", n);
-    count --;
-    return 1;
-  }
-  return 0;
-}
-
-void watchpoint_display() {
-  WP *p = head;
-  if (p == NULL) {
-    printf("No watchpoint \n");
-  }
-  else {
-    while (p !=NULL) {
-      printf("%d    %s    %#x\n", p->NO, p->expr, p->old_val);
-      p = p -> next;
+    else {
+      WP *q = head;
+      while (q->next!=NULL) q = q->next;
+      q->next = p;
     }
-  }
-}
-
-int watchpoint_set(char *s) {
-  WP *p = new_wp();
-  printf("NO.%d Watchpoint set", p->NO);
-  strcpy(head->expr,s);
-  bool success = true;
-  p->old_val = expr(p->expr,&success);
-  if (!success) {
-    printf("Fail to Eval\n");
-    return 0;
-  }
-  return 1;
-}
-
-WP* check_watchpoint() {
-  WP *p = head;
-  if (p == NULL) {
-   // printf("NO Watchpoint! \n");
-    return false;
-  }
-  else {
+    strncpy(p->exp, args, LEN_WP_NAME);
     bool success = true;
-    while (p != NULL) {
-      p -> new_val = expr(p -> expr,&success);
-      if (success) {
-        p -> old_val = p -> new_val;
-        printf("Program stop!\n");
-        return p;
+    p->value = expr(args, &success);
+    Log("Watch point %d is built, exp is %s, value is %d.", p->NO, p->exp, p->value);
+  }
+  return;
+}
+
+void free_wp(WP *wp){
+  Log("Free watch point %d.", wp->NO);
+  wp->next = NULL;
+  if (free_ == NULL){
+    free_ = wp;
+  }
+  else {
+    WP *p = free_;
+    while (p->next!=NULL) p = p->next;
+    p->next = wp;
+  }
+  return;
+}
+
+void delete_wp(int num){
+  WP *p = head;
+  bool is_found = false;
+  if (p->NO == num){
+    is_found = true;
+    head = head->next;
+    free_wp(p);
+  }
+  else {
+    while (p->next!=NULL){
+      if (p->next->NO == num){
+        is_found = true;
+        WP *temp = p->next;
+        p->next = temp->next;
+        free_wp(temp);
+        break;
       }
+      p = p->next;
     }
   }
-  return NULL;
+  if (is_found == false){
+    Log("Can't find watch point %d.\n", num);
+  }
+  return;
+}
+
+void info_wp_display(){
+  WP *p = head;
+  printf("NO\texpression\tcurrent value\t\n");
+  if (head == NULL){
+    printf("No watch point is in use.\n");
+  }
+  else {
+    printf("%d\t%s\t%d\t\n", p->NO, p->exp, p->value);
+    while (p->next != NULL){
+      p = p->next;
+      printf("%d\t%s\t%d\t\n", p->NO, p->exp, p->value);
+    }
+  }
+  return;
+}
+
+bool check(){
+  WP *p = head;
+  if (p != NULL){
+    bool flag = false;
+    bool success = true;
+    while (p->next != NULL){
+      int cur_value = expr(p->exp, &success);
+      if (cur_value != p->value){
+        flag = true;
+        Log("Value of watch point %d has changed\nOld value: %d\nNew value: %d\n", p->NO, p->value, cur_value);
+      }
+      p = p->next;
+    }
+    if (flag == true) return true;
+    else return false;
+  }
+  return false; 
 }
