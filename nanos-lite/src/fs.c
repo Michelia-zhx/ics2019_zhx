@@ -39,10 +39,10 @@ static Finfo file_table[] __attribute__((used)) = {
   {"stdin", 0, 0, 0, invalid_read, invalid_write},
   {"stdout", 0, 0, 0, invalid_read, serial_write},
   {"stderr", 0, 0, 0, invalid_read, serial_write},
-  {"/dev/fb", 0, 0, 0, invalid_read, fb_write},
-  {"/proc/dispinfo", 30, 0, 0, dispinfo_read, NULL},
-  {"/dev/fbsync", 0, 0, 0, NULL, fbsync_write},
   {"/dev/events", 30, 0, 0, events_read, NULL},
+  {"/dev/fb", 0, 0, 0, invalid_read, fb_write},
+  {"/dev/fbsync", 0, 0, 0, NULL, fbsync_write},
+  {"/proc/dispinfo", 30, 0, 0, dispinfo_read, NULL},
   {"/dev/tty", 0, 0, 0, NULL, serial_write},
 #include "files.h"
 };
@@ -155,28 +155,13 @@ size_t fs_write(int fd, const void *buf, size_t len){
 size_t fs_lseek(int fd, size_t offset, int whence){
   switch (whence) {
     case SEEK_SET:
-      if (offset > file_table[fd].size) {
-        file_table[fd].open_offset = file_table[fd].size;
-      }
-      else {
-        file_table[fd].open_offset = offset;
-      }
+      file_table[fd].open_offset = offset;
       break;
     case SEEK_CUR:
-      if (file_table[fd].open_offset+offset > file_table[fd].size) {
-        file_table[fd].open_offset = file_table[fd].size;
-      }
-      else {
-        file_table[fd].open_offset += offset;
-      }
+      file_table[fd].open_offset += offset;
       break;
     case SEEK_END:
-      if (offset > 0) {
-        file_table[fd].open_offset = file_table[fd].size;
-      }
-      else {
-        file_table[fd].open_offset = file_table[fd].size+offset;
-      }
+      file_table[fd].open_offset = file_table[fd].size + offset;
       break;  
     default:
       panic("Invalid whence.\n");
