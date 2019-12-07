@@ -179,7 +179,7 @@ PAL_RNGBlitToSurface(
    INT                   x, y, i, n;
    LPBYTE                rng         = NULL;
    LPBYTE                buf         = NULL;
-   Log("in PAL_RNGBlitToSurface");
+   // Log("in PAL_RNGBlitToSurface");
    //
    // Check for invalid parameters.
    //
@@ -187,13 +187,13 @@ PAL_RNGBlitToSurface(
    {
       return -1;
    }
-   Log("3");
+   // Log("3");
    buf = (LPBYTE)calloc(1, 65000);
    if (buf == NULL)
    {
       return -1;
    }
-   Log("4");
+   // Log("4");
    //
    // Read the frame.
    //
@@ -202,28 +202,28 @@ PAL_RNGBlitToSurface(
       free(buf);
       return -1;
    }
-   Log("5");
+   // Log("5");
    //
    // Decompress the frame.
    //
    rng = (LPBYTE)calloc(1, 65000);
-   Log("after LPBYTEshahsa");
+   // Log("after LPBYTEshahsa");
    if (rng == NULL)
    {
       free(buf);
       return -1;
    }
-   Log("between 5 and 6");
+   // Log("between 5 and 6");
    Decompress(buf, rng, 65000);
    free(buf);
-   Log("6");
+   // Log("6");
    //
    // Draw the frame to the surface.
    // FIXME: Dirty and ineffective code, needs to be cleaned up
    //
    while (TRUE)
    {
-      Log("in while");
+      // Log("in while");
       data = rng[ptr++];
       switch (data)
       {

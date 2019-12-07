@@ -83,9 +83,9 @@ void SDL_WaitUntil(uint32_t tick) {
 }
 
 uint32_t SDL_GetTicks() {
-  Log("in SDL_GetTicks");
+  // Log("in SDL_GetTicks");
   while (PAL_PollEvent(NULL));
-  Log("before return systime");
+  // Log("before return systime");
   return systime;
 }
 
