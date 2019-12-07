@@ -446,7 +446,7 @@ PAL_RNGPlay(
       Log("1");
       iTime = SDL_GetTicks() + iDelay;
       Log("2");
-      /*
+      
       if (PAL_RNGBlitToSurface(iNumRNG, iStartFrame, gpScreen, fp) == -1)
       {
          //
@@ -456,7 +456,7 @@ PAL_RNGPlay(
          fclose(fp);
          return;
       }
-      */
+      
       //
       // Update the screen
       //
