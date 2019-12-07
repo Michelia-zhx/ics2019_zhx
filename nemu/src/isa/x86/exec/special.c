@@ -7,12 +7,12 @@ make_EHelper(nop) {
 
 make_EHelper(inv) {
   /* invalid opcode */
-
+  //printf("In make_EHelper(inv)\n");
   uint32_t temp[2];
   *pc = cpu.pc;
   temp[0] = instr_fetch(pc, 4);
   temp[1] = instr_fetch(pc, 4);
-
+  //printf("temp: %x, %x\n", temp[0], temp[1]);
   uint8_t *p = (void *)temp;
   printf("invalid opcode(PC = 0x%08x): %02x %02x %02x %02x %02x %02x %02x %02x ...\n\n",
       cpu.pc, p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7]);

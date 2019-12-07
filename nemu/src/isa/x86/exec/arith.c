@@ -2,128 +2,100 @@
 
 make_EHelper(add) {
   rtl_add(&s0, &id_dest->val, &id_src->val);
-  if (s0 < id_dest->val) s1 = 1;
-  else s1 = 0;
-
+  
   operand_write(id_dest, &s0);
+ 
+  if (id_dest->width != 4) {
+    rtl_andi(&s0, &s0, 0xffffffffu >> ((4 - id_dest->width) * 8));
+  }
 
   rtl_update_ZFSF(&s0, id_dest->width);
-  if (s0 < id_dest->val) t0 = 1;
-  else t0 = 0;
-  rtl_or(&t0, &s1, &t0);
-  rtl_set_CF(&t0);
 
-  rtl_xor(&t0, &id_dest->val, &id_src->val);
-  rtl_not(&t0, &t0);
-  rtl_xor(&t1, &id_dest->val, &s0);
-  rtl_and(&t0, &t0, &t1);
-  rtl_msb(&t0, &t0, id_dest->width);
-  rtl_set_OF(&t0);
+  rtl_is_add_carry(&s1, &s0, &id_dest->val);
+  rtl_set_CF(&s1);
+
+  rtl_is_add_overflow(&s1, &s0, &id_dest->val, &id_src->val, id_dest->width);
+  rtl_set_OF(&s1);
 
   print_asm_template2(add);
 }
 
 make_EHelper(sub) {
-  // s0 = dest - src
   rtl_sub(&s0, &id_dest->val, &id_src->val);
-  if (id_dest->val < s0) s1 = 1;
-  else s1 = 0;
+  
   operand_write(id_dest, &s0);
+ 
+  if (id_dest->width != 4) {
+    rtl_andi(&s0, &s0, 0xffffffffu >> ((4 - id_dest->width) * 8));
+  }
 
   rtl_update_ZFSF(&s0, id_dest->width);
-  if (id_dest->val < s0) t0 = 1;
-  else t1 = 0;
-  rtl_or(&t0, &s1, &t0);
-  rtl_set_CF(&t0);
-  
-  rtl_xor(&t0, &id_dest->val, &id_src->val);
-  rtl_xor(&t1, &id_dest->val, &s0);
-  rtl_and(&t0, &t0, &t1);
-  rtl_msb(&t0, &t0, id_dest->width);
-  rtl_set_OF(&t0);
 
+  rtl_is_sub_carry(&s1, &s0, &id_dest->val);
+  rtl_set_CF(&s1);
+
+  rtl_is_sub_overflow(&s1, &s0, &id_dest->val, &id_src->val, id_dest->width);
+  rtl_set_OF(&s1);
+  
   print_asm_template2(sub);
 }
 
 make_EHelper(cmp) {
-  //Log("%x %x",id_dest->val,id_src->val);
   rtl_sub(&s0, &id_dest->val, &id_src->val);
-  if (id_dest->val < s0) s1 = 1;
-  else s1 = 0;
   
-  rtl_update_ZFSF(&s0, id_dest->width);
-  //Log("%x", cpu.eflags.ZF);
-  if (id_dest->val < s0) t0 = 1;
-  else t1 = 0;
-  rtl_or(&t0, &s1, &t0);
-  rtl_set_CF(&t0);
-  
-  rtl_xor(&t0, &id_dest->val, &id_src->val);
-  rtl_xor(&t1, &id_dest->val, &s0);
-  rtl_and(&t0, &t0, &t1);
-  rtl_msb(&t0, &t0, id_dest->width);
-  rtl_set_OF(&t0);
+  if (id_dest->width != 4) {
+    rtl_andi(&s0, &s0, 0xffffffffu >> ((4 - id_dest->width) * 8));
+  }
 
+  rtl_update_ZFSF(&s0, id_dest->width);
+
+  rtl_is_sub_carry(&s1, &s0, &id_dest->val);
+  rtl_set_CF(&s1);
+
+  rtl_is_sub_overflow(&s1, &s0, &id_dest->val, &id_src->val, id_dest->width);
+  rtl_set_OF(&s1);
+  
   print_asm_template2(cmp);
 }
 
 make_EHelper(inc) {
-  rtl_addi(&s0, &id_dest->val, 1);
-  if (s0 < id_dest->val) s1 = 1;
-  else s1 = 0;
-  operand_write(id_dest, &s0);
+  rtl_addi(&s0,&id_dest->val,1);
+  operand_write(id_dest,&s0);
 
-  rtl_update_ZFSF(&s0, id_dest->width);
-  if (s0 < id_dest->val) t0 = 1;
-  else t0 = 0;
-  rtl_or(&t0, &s1, &t0);
-  rtl_set_CF(&t0);
+  rtl_update_ZFSF(&s0,id_dest->width);
 
-  rtl_xor(&t0, &id_dest->val, &id_src->val);
-  rtl_not(&t0, &t0);
-  rtl_xor(&t1, &id_dest->val, &s0);
-  rtl_and(&t0, &t0, &t1);
-  rtl_msb(&t0, &t0, id_dest->width);
-  rtl_set_OF(&t0);
+  rtl_li(&s1,1);
+  rtl_is_add_overflow(&s0, &s0, &id_dest->val, &s1, id_dest->width);
+  rtl_set_OF(&s0);  
 
   print_asm_template1(inc);
 }
 
 make_EHelper(dec) {
-  rtl_subi(&s0, &id_dest->val, 1);
-  if (s0 < id_dest->val) s1 = 1;
-  else s1 = 0;
+  rtl_subi(&s0,&id_dest->val,1);
+  operand_write(id_dest,&s0);
+
+  rtl_update_ZFSF(&s0,id_dest->width);
   
-  operand_write(id_dest, &s0);
-  
-  rtl_update_ZFSF(&s0, id_dest->val);
-  if (s0 < id_dest->val) t0 = 1;
-  else t0 = 0;
-  
-  rtl_or(&t0, &s1, &t0);
-  rtl_set_CF(&t0);
-  
-  rtl_xor(&t0, &id_dest->val, &id_src->val);
-  rtl_xor(&t1, &id_dest->val, &s0);
-  rtl_and(&t0, &t0, &t1);
-  rtl_msb(&t0, &t0, id_dest->width);
-  rtl_set_OF(&t0);
+  rtl_li(&s1,1);
+  rtl_is_sub_overflow(&s0, &s0, &id_dest->val, &s1, id_dest->width);
+  rtl_set_OF(&s0);  
 
   print_asm_template1(dec);
 }
 
 make_EHelper(neg) {
-  if (id_dest->val == 0) {
-    rtl_li(&s0, 0);
-    rtl_set_CF(&s0);
-  }
-  else {
-    rtl_li(&s0, 1);
-    rtl_set_CF(&s0);
-  }
-  rtl_li(&s0, 0);
-  rtl_sub(&id_dest->val, &s0, &id_dest->val);
-  operand_write(id_dest, &id_dest->val);
+  rtl_setrelopi(RELOP_EQ, &s0, &id_dest->val, 0);
+  rtl_set_CF(&s0);
+ 
+  rtl_li(&s1,-id_dest->val);
+  operand_write(id_dest, &s1);
+  
+  rtl_update_ZFSF(&s1,id_dest->width);
+
+  rtl_is_sub_overflow(&s0,&s1,&id_dest->val,&id_src->val,id_dest->width);
+  rtl_set_OF(&s0);
+
   print_asm_template1(neg);
 }
 
@@ -132,7 +104,7 @@ make_EHelper(adc) {
   rtl_add(&s0, &id_dest->val, &id_src->val);
   // s1 = s0 + CF
   rtl_get_CF(&s1);
-  rtl_add(&s1, &s0, &s1); // s1 = dest + src + CF
+  rtl_add(&s1, &s0, &s1);
 
   operand_write(id_dest, &s1);
 
@@ -143,13 +115,13 @@ make_EHelper(adc) {
   rtl_update_ZFSF(&s1, id_dest->width);
 
   // update CF
-  rtl_is_add_carry(&s1, &s1, &s0); // dest+src进位或si
+  rtl_is_add_carry(&s1, &s1, &s0);
   rtl_is_add_carry(&s0, &s0, &id_dest->val);
-  rtl_or(&s0, &s0, &s1); // &s0=0 or &s1=0
+  rtl_or(&s0, &s0, &s1);
   rtl_set_CF(&s0);
 
   // update OF
-  rtl_is_add_overflow(&s0, &s1, &id_dest->val, &id_src->val, id_dest->width); //根据dest+src+CF和原来的判断是否溢出
+  rtl_is_add_overflow(&s0, &s1, &id_dest->val, &id_src->val, id_dest->width);
   rtl_set_OF(&s0);
 
   print_asm_template2(adc);
@@ -160,7 +132,7 @@ make_EHelper(sbb) {
   rtl_sub(&s0, &id_dest->val, &id_src->val);
   // s1 = s0 - CF
   rtl_get_CF(&s1);
-  rtl_sub(&s1, &s0, &s1); //s1 = dest-src-CF
+  rtl_sub(&s1, &s0, &s1);
 
   operand_write(id_dest, &s1);
 
@@ -168,12 +140,12 @@ make_EHelper(sbb) {
     rtl_andi(&s1, &s1, 0xffffffffu >> ((4 - id_dest->width) * 8));
   }
 
-  rtl_update_ZFSF(&s1, id_dest->width); //判断是否为0和符号
+  rtl_update_ZFSF(&s1, id_dest->width);
 
   // update CF
-  rtl_is_sub_carry(&s1, &s1, &s0); // 根据s0(dest-src)和s1(dest-src-CF)判断是否借位
-  rtl_is_sub_carry(&s0, &s0, &id_dest->val); //根据s0(dest-src)和dest判断是否借位
-  rtl_or(&s0, &s0, &s1); //只要有一个判断出借位了就设置CF为1
+  rtl_is_sub_carry(&s1, &s1, &s0);
+  rtl_is_sub_carry(&s0, &s0, &id_dest->val);
+  rtl_or(&s0, &s0, &s1);
   rtl_set_CF(&s0);
 
   // update OF
