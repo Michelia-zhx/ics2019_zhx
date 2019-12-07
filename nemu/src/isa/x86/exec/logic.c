@@ -2,12 +2,23 @@
 #include "cc.h"
 
 make_EHelper(test) {
+/*
   rtl_and(&id_dest->val, &id_dest->val, &id_src->val);
   rtl_update_ZFSF(&id_dest->val, id_dest->width);
   rtl_li(&s0, 0);
   rtl_set_CF(&s0);
   rtl_set_OF(&s0);
   
+  print_asm_template2(test);
+*/
+  rtl_and(&id_dest->val, &id_dest->val, &id_src->val);
+
+  rtl_li(&s0,0);
+  rtl_set_CF(&s0);
+  rtl_set_OF(&s0);
+
+  rtl_update_ZFSF(&id_dest->val, id_dest->width);  
+
   print_asm_template2(test);
 }
 
