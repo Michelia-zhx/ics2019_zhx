@@ -440,22 +440,22 @@ PAL_RNGPlay(
    UINT            iTime;
    int             iDelay = 800 / (iSpeed == 0 ? 16 : iSpeed);
    FILE           *fp;
-   Log("in PAL_RNGPlay");
+   // Log("in PAL_RNGPlay");
    fp = UTIL_OpenRequiredFile("rng.mkf");
-   Log("after UTIL_OpenRequiredFile");
+   // Log("after UTIL_OpenRequiredFile");
 
    for (; iStartFrame <= iEndFrame; iStartFrame++)
    {
-      Log("1");
+      // Log("1");
       iTime = SDL_GetTicks() + iDelay;
-      Log("2");
+      // Log("2");
       
       if (PAL_RNGBlitToSurface(iNumRNG, iStartFrame, gpScreen, fp) == -1)
       {
          //
          // Failed to get the frame, don't go further
          //
-         Log("in if PAL_RNGBlitToSurface == -1");
+         // Log("in if PAL_RNGBlitToSurface == -1");
          fclose(fp);
          return;
       }
@@ -463,34 +463,34 @@ PAL_RNGPlay(
       //
       // Update the screen
       //
-      Log("before VIDEO_updatescreen");
+      // Log("before VIDEO_updatescreen");
       VIDEO_UpdateScreen(NULL);
-      Log("after VIDEO_updatescreen");
+      // Log("after VIDEO_updatescreen");
 
       //
       // Fade in the screen if needed
       //
       if (gpGlobals->fNeedToFadeIn)
       {
-         Log("in if after video_updatescreen");
+         // Log("in if after video_updatescreen");
          PAL_FadeIn(gpGlobals->wNumPalette, gpGlobals->fNightPalette, 1);
-         Log("after PAL_FadeIn");
+         // Log("after PAL_FadeIn");
          gpGlobals->fNeedToFadeIn = FALSE;
       }
 
       //
       // Delay for a while
       //
-      Log("before processevent");
+      // Log("before processevent");
       PAL_ProcessEvent();
-      Log("after processevent");
+      // Log("after processevent");
       while (SDL_GetTicks() <= iTime)
       {
-         Log("in while");
+         // Log("in while");
          PAL_ProcessEvent();
          SDL_Delay(1);
       }
    }
-   Log("after loop");
+   // Log("after loop");
    fclose(fp);
 }

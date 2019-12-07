@@ -148,7 +148,7 @@ PAL_Init(
    PAL_InitResources();
    Log("PAL_InitResources success");
    SOUND_OpenAudio();
-   Log("after SOUND_OpenAudio()");
+   // Log("after SOUND_OpenAudio()");
 
 #ifdef PAL_WIN95
 #ifdef _DEBUG
@@ -185,7 +185,7 @@ PAL_Shutdown(
 
 --*/
 {
-   Log("before AOUND_CloseAudio");
+   // Log("before AOUND_CloseAudio");
    SOUND_CloseAudio();
 	Log("SOUND_CloseAudio success");
    PAL_FreeFont();
@@ -234,15 +234,15 @@ PAL_TrademarkScreen(
 
 --*/
 {
-   Log("in treadmarkscreen");
+   // Log("in treadmarkscreen");
    PAL_SetPalette(3, FALSE);
-   Log("7");
+   // Log("7");
    PAL_RNGPlay(6, 0, 1000, 25);
-   Log("8");
+   // Log("8");
    UTIL_Delay(1000);
-   Log("9");
+   // Log("9");
    PAL_FadeOut(1);
-   Log("10");
+   // Log("10");
 }
 
 VOID
@@ -555,20 +555,20 @@ Log("in main");
    sdlpal_psp_init();
 #endif
    PAL_Init(wScreenWidth, wScreenHeight, fFullScreen);
-   Log("finish init");
+   // Log("finish init");
 
    //
    // Show the trademark screen and splash screen
    //
    PAL_TrademarkScreen();
-   Log("finish trademarkscreen");
+   // Log("finish trademarkscreen");
    PAL_SplashScreen();
-   Log("finish splashscreen");
+   // Log("finish splashscreen");
 
    //
    // Run the main game routine
    //
-   Log("before gamemain");
+   // Log("before gamemain");
    PAL_GameMain();
 
    //
