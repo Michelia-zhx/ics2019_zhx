@@ -6,9 +6,10 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include <string.h>
 
 void cpu_exec(uint64_t);
+void isa_reg_display();
+uint32_t paddr_read();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -37,20 +38,81 @@ static int cmd_q(char *args) {
   return -1;
 }
 
+static int cmd_si(char *args) {
+  char *arg = strtok(NULL, " ");
+  int step;
+  if (arg == NULL) {
+    cpu_exec(1);
+  }
+  else {
+    sscanf(arg, "%d",&step);
+    cpu_exec(step);
+  }
+  return 0;
+}
+
+static int cmd_info(char *args) {
+  char *arg = strtok(NULL, " ");
+  if (strcmp(arg, "r") == 0) {
+    isa_reg_display();
+  }
+  else if (strcmp(arg, "w") == 0) {
+   watchpoint_display();
+  }
+  else {
+    if(arg == NULL) {
+      printf("Input Error! You are expected to input 'r' or 'w' after 'info' \r\n");
+    }
+    else {
+      printf("Input Error! You are expected to input 'r' or 'w' after 'info' \r\n");
+    }
+  } 
+  return 0;
+} 
+
+static int cmd_x(char *args) {
+  int N,i;
+  uint32_t EXPR,result;
+  char *arg1 = strtok(NULL, " ");
+  char *arg2 = strtok(NULL, " ");
+  sscanf(arg1, "%d",&N);
+  sscanf(arg2, "%x",&EXPR);
+  for (i = 0; i <N; i++ ) {
+    printf("%#x   ",EXPR);
+    result = paddr_read(EXPR,4);
+    printf("%#x \r\n",result);
+    EXPR +=4;
+  }
+  return 0;
+}
+
+static int cmd_p(char *args) {
+  char *arg = strtok(NULL, "\n");
+  bool success = true;
+  int out = expr(arg,&success);
+  if (success)
+    printf("%d\n", out);
+  else
+    printf("Eval failed\n");
+  return 0;  
+}
+ 
+static int cmd_w(char *args) {
+  watchpoint_set(args);
+  return 0;
+}
+
+static int cmd_d(char *args) {
+  char *arg = strtok(NULL, " ");
+  int N=0;
+  sscanf(arg, "%d", &N);
+  if (!free_wp(N)) {
+    printf("Delete NO.%d watchpoint failed\n", N);
+  }
+  return 0;
+}
+ 
 static int cmd_help(char *args);
-
-static int cmd_si(char *args);
-
-static int cmd_info(char *args);
-
-static int cmd_p(char *args);
-
-static int cmd_x_N(char *args);
-
-static int cmd_w(char *args);
-
-static int cmd_d(char *args);
-
 
 static struct {
   char *name;
@@ -60,12 +122,13 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "si", "Step through the program to run N orders and then pause, default N=1", cmd_si},
-  { "info", "Display the state of the program", cmd_info},
-  { "p", "Calculate the value of expression EXPR", cmd_p},
-  { "x", "Calculate the value of expression EXPR and set as the starting memory address, print successive N 4 bytes in hexadecimal form", cmd_x_N},
-  { "w", "When the value of EXPR changes, pause the program", cmd_w},
-  { "d", "Delete the watchpoint of index N", cmd_d}
+  { "si", "Let the program execute N instructions step by step and then suspend execution.When N is not given, the default is 1", cmd_si},
+  { "info", "Print register status when inputting instruction 'r', print monitoring point information when inputting instruction 'w'", cmd_info},
+  { "x", "Find the value of the expression EXPR and use the result as the starting memory address and ouput N consecutive  4 bytes which are in hexadecimal form", cmd_x},
+  { "p", "Expression evalution", cmd_p},
+  { "w", "Set watchpoint for an expression", cmd_w},
+  { "d", "Delete watchpoints", cmd_d},
+  /* TODO: Add more commands */
 
 };
 
@@ -75,7 +138,6 @@ static int cmd_help(char *args) {
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
   int i;
-  printf("%s", arg);
 
   if (arg == NULL) {
     /* no argument given */
@@ -92,92 +154,6 @@ static int cmd_help(char *args) {
     }
     printf("Unknown command '%s'\n", arg);
   }
-  return 0;
-}
-
-static int cmd_si(char *args){
-  /* extract the first argument */
-  char *arg = strtok(NULL, " ");
-  int i=0;
-  if (arg == NULL) i = 1;
-  else i = atoi(arg);
-  if (i==0) {
-    Log("Invalid Input");
-    i = 1;
-  }
-  for (int j=1; j<=i; ++j){
-    cpu_exec(1);
-  }
-  return 0;
-}//单步执行
-
-extern void isa_reg_display();
-
-static int cmd_info(char *args){
-  char *arg = strtok(NULL, " ");
-  if (arg==NULL){
-    printf("For example: 'info r'--display the state of register; 'info w'--display the state of watchpoint.");
-    return 0;
-  }
-  if (arg[0]=='w'){
-    info_wp_display();
-  }
-  if (arg[0]=='r'){
-    isa_reg_display();
-  }
-  return 0;
-}//打印寄存器
-
-static int cmd_p(char *args){
-  bool *success = (bool*)malloc(sizeof(bool));
-  *success = true;
-  int result = expr(args, success);
-  if (*success==true) printf("$ %d\n", result);
-  free(success);
-  return 0;
-}
-
-extern uint32_t paddr_read(paddr_t addr, int len);
-extern int htoi(char s[]);
-
-static int cmd_x_N(char *args){
-  char *arg = strtok(NULL, " ");
-  int n = atoi(arg);
-  if (n<=0){
-    Log("Invalid Input");
-    return -1;
-  }
-  arg = strtok(NULL, " ");
-  char addr[15];
-  strcpy(addr, arg);
-  paddr_t address = htoi(addr);
-  printf("the address is:%x\n", address);
-  paddr_t four = 0x4;
-  for (int i=0; i<n; ++i){
-    if (i%4==0){
-      printf("0x%-14x:", address);
-    }
-    printf("0x%-14x", paddr_read(address, 4));
-    address = address + four;
-    if ((i+1)%4==0){
-      printf("\n");
-    }
-  }
-  printf("\n");
-  return 0;
-}//扫描内存
-
-static int cmd_w(char *args){
-  new_wp(args);
-  return 0;
-}
-
-static int cmd_d(char *args){
-  if(args!=NULL){
-    int num = atoi(args);
-    delete_wp(num);
-  }
-  else Log("Invalid Input");
   return 0;
 }
 

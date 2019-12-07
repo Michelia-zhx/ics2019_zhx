@@ -78,7 +78,6 @@ void load_addr(vaddr_t *pc, ModR_M *m, Operand *rm) {
 }
 
 void read_ModR_M(vaddr_t *pc, Operand *rm, bool load_rm_val, Operand *reg, bool load_reg_val) {
-  //printf("Hello, I'm in read_ModR_M, in modrm.c\n");
   ModR_M m;
   m.val = instr_fetch(pc, 1);
   decinfo.isa.ext_opcode = m.opcode;
