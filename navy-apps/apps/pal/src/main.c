@@ -526,7 +526,7 @@ main_loop() {
       chdir(buf);
    }
 #endif
-
+Log("in main");
 #ifdef __WINPHONE__
    SDL_SetHint(SDL_HINT_ORIENTATIONS, "LandscapeRight");
    SDL_SetHint(SDL_HINT_WINRT_HANDLE_BACK_BUTTON, "1");
@@ -550,17 +550,20 @@ main_loop() {
    sdlpal_psp_init();
 #endif
    PAL_Init(wScreenWidth, wScreenHeight, fFullScreen);
-
+   Log("finish init");
 
    //
    // Show the trademark screen and splash screen
    //
    PAL_TrademarkScreen();
+   Log("finish trademarkscreen");
    PAL_SplashScreen();
+   Log("finish splashscreen");
 
    //
    // Run the main game routine
    //
+   Log("before gamemain");
    PAL_GameMain();
 
    //
