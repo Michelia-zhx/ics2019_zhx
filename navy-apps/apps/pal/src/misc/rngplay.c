@@ -481,7 +481,9 @@ PAL_RNGPlay(
       //
       // Delay for a while
       //
+      Log("before processevent");
       PAL_ProcessEvent();
+      Log("after processevent");
       while (SDL_GetTicks() <= iTime)
       {
          Log("in while");
