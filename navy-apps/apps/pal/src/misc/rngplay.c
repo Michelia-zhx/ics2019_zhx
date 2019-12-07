@@ -455,7 +455,7 @@ PAL_RNGPlay(
          //
          // Failed to get the frame, don't go further
          //
-         Log("in if");
+         Log("in if PAL_RNGBlitToSurface == -1");
          fclose(fp);
          return;
       }
@@ -490,6 +490,7 @@ PAL_RNGPlay(
          PAL_ProcessEvent();
          SDL_Delay(1);
       }
+      break; //我加的
    }
    Log("after loop");
    fclose(fp);
