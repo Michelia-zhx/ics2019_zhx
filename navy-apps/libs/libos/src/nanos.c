@@ -57,6 +57,10 @@ int _open(const char *path, int flags, mode_t mode) {
   return _syscall_(SYS_open, (intptr_t)path, flags, mode);
 }
 
+int _read(int fd, void *buf, size_t count) {
+   return _syscall_(SYS_read, fd, (intptr_t)buf, count);
+}
+
 int _write(int fd, void *buf, size_t count) {
   return _syscall_(SYS_write, fd, (intptr_t)buf, count);
 }
@@ -71,10 +75,6 @@ void *_sbrk(intptr_t increment) {
     return (void *)ret;  // On success, sbrk() returns the previous program break.
   }
   return (void *)(-1);  // On error, (void *) -1 is returned, and errno is set to ENOMEM.
-}
-
-int _read(int fd, void *buf, size_t count) {
-   return _syscall_(SYS_read, fd, (intptr_t)buf, count);
 }
 
 int _close(int fd) {
