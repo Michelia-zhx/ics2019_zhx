@@ -531,7 +531,7 @@ main_loop() {
       chdir(buf);
    }
 #endif
-Log("in main");
+// Log("in main");
 #ifdef __WINPHONE__
    SDL_SetHint(SDL_HINT_ORIENTATIONS, "LandscapeRight");
    SDL_SetHint(SDL_HINT_WINRT_HANDLE_BACK_BUTTON, "1");
