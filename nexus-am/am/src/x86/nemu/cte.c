@@ -61,6 +61,7 @@ _Context *_kcontext(_Area stack, void (*entry)(void *), void *arg) {
   printf("ct = %d  end = %d\n", (uintptr_t)c, (uintptr_t)stack.end);
   memset(c, 0, sizeof(_Context));
   c->pc = (uintptr_t)entry;
+  c->irq = 0x81;
   c->cs = 8;
   return c;
 }
