@@ -12,20 +12,6 @@ void __am_vecnull();
 
 _Context* __am_irq_handle(_Context *c) {
   _Context *next = c;
-  /*
-  printf("address of c:%d\n", &c);
-  // printf("data at the address of c: %d\n", paddr_read(&c, 4));
-  printf("in am_irq_handle\n");  
-  printf("&c.irq = %d\n",&(c->irq));
-  printf("c.eax = %d\n",c->eax); 
-  printf("&c.ecx = %d\n",&(c->ecx));
-  printf("c.edx = %d\n",c->edx);
-  printf("c.ebx = %d\n",c->ebx);
-  printf("c.esp = %d\n",c->esp);
-  printf("c.ebp = %d\n",c->ebp);
-  printf("c.esi = %d\n",c->esi);
-  printf("c.edi = %d\n",c->edi);
-  */
   if (user_handler) {
     _Event ev = {0};
     switch (c->irq) {
@@ -70,7 +56,11 @@ int _cte_init(_Context*(*handler)(_Event, _Context*)) {
 }
 
 _Context *_kcontext(_Area stack, void (*entry)(void *), void *arg) {
-  return NULL;
+  _Context *c = (_Context *)stack.end - 1;
+  memset(c, 0, sizeof(_Context));
+  c->pc = (uintptr_t)entry;
+  c->cs = 8;
+  return c;
 }
 
 void _yield() {
