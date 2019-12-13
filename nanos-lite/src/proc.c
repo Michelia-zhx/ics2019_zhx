@@ -25,6 +25,7 @@ void hello_fun(void *arg) {
 void init_proc() {
   context_kload(&pcb[0], (void *)hello_fun);
   switch_boot_pcb();
+  printf("proc.c:in init_proc(): &hello_fun = %d\n",(void*)hello_fun);
   // Log("hello");
   // naive_uload(NULL, "/bin/init");
 
