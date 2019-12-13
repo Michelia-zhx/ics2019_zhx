@@ -56,6 +56,7 @@ int _cte_init(_Context*(*handler)(_Event, _Context*)) {
 }
 
 _Context *_kcontext(_Area stack, void (*entry)(void *), void *arg) {
+  printf("in _kcontext\n");
   _Context *c = stack.end - sizeof(_Context);
   // memset(c, 0, sizeof(_Context));
   c->pc = (uintptr_t)entry;
